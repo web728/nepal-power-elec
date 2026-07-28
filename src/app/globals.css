@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/*
+ * Brand colors and typography are taken from the official Branding
+ * Guidelines PDF (Sky / Yellow / Teal, Poppins-only) — NOT from the
+ * Website Design & Development Specification's proposed navy/blue/cyan
+ * palette and Inter typeface. See docs/FILE_INVENTORY.md, conflict #2,
+ * for why the Branding Guidelines take priority here. The spec's
+ * structural rules (spacing, breakpoints, component behavior, motion
+ * durations) are still followed — those aren't brand decisions.
+ */
+:root {
+  --color-sky: #35a8e0;
+  --color-sky-dark: #2688b8;
+  --color-yellow: #ebbc17;
+  --color-yellow-dark: #c99f0f;
+  --color-teal: #05756a;
+  --color-teal-dark: #044f47;
+  --color-ink: #14212b;
+  --color-muted: #5b6b74;
+  --color-bg: #f5f8f9;
+  --color-border: #dce4e6;
+  --color-success: #1f8a57;
+  --color-error: #c42b2b;
+
+  --background: #ffffff;
+  --foreground: var(--color-ink);
+}
+
+@theme inline {
+  --color-sky: var(--color-sky);
+  --color-sky-dark: var(--color-sky-dark);
+  --color-yellow: var(--color-yellow);
+  --color-yellow-dark: var(--color-yellow-dark);
+  --color-teal: var(--color-teal);
+  --color-teal-dark: var(--color-teal-dark);
+  --color-ink: var(--color-ink);
+  --color-muted: var(--color-muted);
+  --color-bg: var(--color-bg);
+  --color-border: var(--color-border);
+  --color-success: var(--color-success);
+  --color-error: var(--color-error);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-poppins);
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-poppins), "Segoe UI", Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-poppins), "Segoe UI", Arial, sans-serif;
+  font-weight: 700;
+}
+
+.container-px {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+@media (min-width: 640px) {
+  .container-px {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--color-teal);
+  color: white;
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  border-radius: 0 0 0.5rem 0;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+::selection {
+  background: var(--color-sky);
+  color: white;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-sky);
+  outline-offset: 2px;
+}
+
+/* ── Animated CTA border system ── */
+
+@property --cta-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes cta-border-spin {
+  to {
+    --cta-angle: 360deg;
+  }
+}
+
+.cta-animated {
+  position: relative;
+  isolation: isolate;
+}
+
+.cta-animated::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--cta-angle),
+    var(--cta-c1) 0%,
+    var(--cta-c2) 33%,
+    var(--cta-c3) 66%,
+    var(--cta-c1) 100%
+  );
+  animation: cta-border-spin 4s linear infinite;
+}
+
+.cta-animated:focus-visible {
+  outline-offset: 4px;
+}
+
+.cta-animated:disabled::before,
+.cta-animated[aria-disabled="true"]::before {
+  animation-play-state: paused;
+  opacity: 0.3;
+}
+
+.cta-visitor {
+  --cta-c1: #ffffff;
+  --cta-c2: #ebbc17;
+  --cta-c3: #35a8e0;
+}
+
+.cta-exhibitor {
+  --cta-c1: #35a8e0;
+  --cta-c2: #ebbc17;
+  --cta-c3: #ffffff;
+}
+
+.cta-submit {
+  --cta-c1: #35a8e0;
+  --cta-c2: #ebbc17;
+  --cta-c3: #ffffff;
+}

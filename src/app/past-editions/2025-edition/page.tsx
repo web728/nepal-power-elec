@@ -1,0 +1,106 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import { PageHero } from "@/components/sections/page-hero";
+import { Container } from "@/components/ui/container";
+import { Button } from "@/components/ui/button";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import { galleryImageCaption } from "@/lib/content/home-content";
+
+const breadcrumbs = [
+  { label: "Past Editions", href: "/past-editions/2025-edition" },
+  { label: "2025 Edition" },
+];
+
+export const metadata: Metadata = {
+  title: { absolute: "2025 Edition | Nepal Electric, Power and Lights Expo" },
+  description:
+    "Review verified highlights and organizer-reported results from the 2025 Nepal Electric, Power and Lights Expo.",
+  alternates: { canonical: "/past-editions/2025-edition" },
+};
+
+export default function Edition2025Page() {
+  return (
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { label: "Past Editions", href: "/past-editions/2025-edition" },
+          { label: "2025 Edition", href: "/past-editions/2025-edition" },
+        ]}
+      />
+      <PageHero
+        title="4th Nepal Electric, Power and Lights International Expo"
+        description="29-31 August 2025 · Bhrikuti Mandap Exhibition Hall · Kathmandu, Nepal"
+        breadcrumbs={breadcrumbs}
+      />
+      <Container as="section" className="py-12 sm:py-16">
+        <p className="max-w-3xl text-base leading-relaxed text-ink sm:text-lg">
+          The 2025 edition brought together exhibitors and visitors across the electrical, power,
+          energy, lighting, renewable-energy and allied sectors.
+        </p>
+
+        <div className="mt-12">
+          <SectionHeading title="Organizer-Reported Results" />
+          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+            <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+              150+ exhibitors
+            </li>
+            <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+              Participation from 5+ countries
+            </li>
+            <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+              15,000+ visitors
+            </li>
+          </ul>
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">
+            The post-show report also presents visitor-role data, industry representation,
+            business intent, company size, survey findings, photographs and media coverage.
+          </p>
+        </div>
+
+        <div className="mt-12">
+          <SectionHeading title="Opening Ceremony" />
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">
+            According to the organizer-issued post-show report: the report records the attendance
+            of Damodar Bhandari, identified in the document as Minister of Industry, Commerce and
+            Supplies, at the opening ceremony.
+          </p>
+        </div>
+
+        <div className="mt-10 rounded-xl border border-yellow/40 bg-yellow/10 px-5 py-4">
+          <p className="text-sm leading-relaxed text-ink">
+            <span className="font-semibold">Source note: </span>
+            All figures and survey results on this page are taken from the organizer-issued
+            report. The document does not disclose a complete independent audit or detailed
+            methodology.
+          </p>
+        </div>
+
+        <figure className="mt-12 overflow-hidden rounded-xl border border-border">
+          <Image
+            src="/images/gallery/2025/nepal-electric-expo-2025-glimpses-01.webp"
+            alt="Exhibition floor, stands and visitor activity at the 2025 Nepal Electric, Power and Lights Expo"
+            width={1600}
+            height={1131}
+            className="h-auto w-full"
+          />
+          <figcaption className="border-t border-border bg-bg px-4 py-3 text-sm text-muted">
+            {galleryImageCaption}
+          </figcaption>
+        </figure>
+
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Button href="/past-editions/post-show-statistics" variant="primary">
+            View Statistics
+          </Button>
+          <Button href="/past-editions/photo-gallery" variant="outline">
+            View Gallery
+          </Button>
+          <Button href="/downloads/2025-post-show-report" variant="ghost">
+            Download Report
+          </Button>
+        </div>
+      </Container>
+    </>
+  );
+}

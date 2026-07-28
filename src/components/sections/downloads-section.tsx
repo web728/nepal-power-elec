@@ -1,0 +1,58 @@
+import { FileText, Download } from "lucide-react";
+import { Container } from "@/components/ui/container";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { Badge } from "@/components/ui/badge";
+import { TrackedLink } from "@/components/ui/tracked-link";
+import { AnalyticsEvents } from "@/lib/analytics";
+import { siteConfig } from "@/lib/site-config";
+
+const downloads = [
+  {
+    title: "2026 Event Brochure",
+    description: `Full details on the ${siteConfig.dates.display} edition, including sectors, venue and participation information.`,
+    href: "/downloads/Nepal-Electric-Power-Lights-Expo-2026-Brochure.pdf",
+    event: AnalyticsEvents.BROCHURE_DOWNLOAD,
+  },
+  {
+    title: "2025 Post-Show Report",
+    description: "Organizer-reported results and visitor survey findings from the 2025 (4th) edition.",
+    href: "/downloads/Nepal-Electric-Power-Lights-Expo-2025-Post-Show-Report.pdf",
+    event: AnalyticsEvents.REPORT_DOWNLOAD,
+  },
+];
+
+export function DownloadsSection() {
+  return (
+    <section id="downloads" className="bg-white py-16 sm:py-22 scroll-mt-24">
+      <Container>
+        <SectionHeading eyebrow="Resources" title="Event Documents" align="center" className="mx-auto" />
+
+        <div className="mx-auto mt-10 grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
+          {downloads.map((doc) => (
+            <div
+              key={doc.title}
+              className="group flex flex-col items-start rounded-xl border border-border bg-white p-6 shadow-sm transition-shadow duration-200 hover:shadow-md"
+            >
+              <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-teal/10 text-teal">
+                <FileText className="h-6 w-6" aria-hidden="true" />
+              </span>
+              <Badge tone="muted">PDF</Badge>
+              <h3 className="mt-3 text-lg font-semibold text-ink">{doc.title}</h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{doc.description}</p>
+              <TrackedLink
+                event={doc.event}
+                params={{ source: "downloads_section" }}
+                href={doc.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-sky px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-sky-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky focus-visible:outline-offset-2"
+              >
+                <Download className="h-4 w-4" aria-hidden="true" /> Download PDF
+              </TrackedLink>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}

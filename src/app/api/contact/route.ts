@@ -6,6 +6,29 @@ import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
 import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
 import { contactEnquiryEmail, organizerNotificationEmail } from "@/lib/email/templates";
 
+// Google reCAPTCHA v2 Token Verifier
+async function verifyRecaptcha(token: string) {
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+  if (!secretKey) {
+    console.error("RECAPTCHA_SECRET_KEY is missing in environment variables.");
+    return false;
+  }
+
+  try {
+    const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `secret=${encodeURIComponent(secretKey)}&response=${encodeURIComponent(token)}`,
+    });
+
+    const data = await response.json();
+    return data.success;
+  } catch (error) {
+    console.error("reCAPTCHA verification error:", error);
+    return false;
+  }
+}
+
 export async function POST(request: Request) {
   const clientKey = getClientKey(request);
   const rate = checkRateLimit(`contact:${clientKey}`);
@@ -16,7 +39,19 @@ export async function POST(request: Request) {
   const body = await request.json();
   if (isHoneypotFilled(body)) return honeypotResponse();
 
-  const parsed = contactFormSchema.safeParse(body);
+  // 1. Google reCAPTCHA Token Check
+  const { recaptchaToken, ...formData } = body;
+  if (!recaptchaToken) {
+    return NextResponse.json({ error: "Please complete the reCAPTCHA verification." }, { status: 400 });
+  }
+
+  const isHuman = await verifyRecaptcha(recaptchaToken);
+  if (!isHuman) {
+    return NextResponse.json({ error: "reCAPTCHA verification failed. Please try again." }, { status: 400 });
+  }
+
+  // 2. Validate Form Data
+  const parsed = contactFormSchema.safeParse(formData);
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid submission." }, { status: 400 });
   }

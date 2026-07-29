@@ -20,7 +20,10 @@ export default function VenuePage() {
   return (
     <>
       <BreadcrumbJsonLd items={[{ label: "Venue", href: "/venue" }]} />
-      <PageHero title="Bhrikuti Mandap Exhibition Hall, Kathmandu" breadcrumbs={breadcrumbs} />
+      <PageHero title="Bhrikuti Mandap Exhibition Hall, Kathmandu" breadcrumbs={breadcrumbs}
+       bgImage="/images/hero/0L1A2244-min-scaled.jpg" 
+        bgOpacity="opacity-50"
+         />
       <Container as="section" className="py-12 sm:py-16">
         <p className="max-w-3xl text-base leading-relaxed text-ink sm:text-lg">
           The 5th Nepal Electric, Power and Lights International Expo 2026 will be held at

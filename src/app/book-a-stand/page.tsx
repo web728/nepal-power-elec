@@ -31,7 +31,10 @@ export default function BookAStandPage() {
           { label: "Book a Stand", href: "/book-a-stand" },
         ]}
       />
-      <PageHero title="Apply to Exhibit at the 2026 Edition" breadcrumbs={breadcrumbs} />
+      <PageHero title="Apply to Exhibit at the 2026 Edition" breadcrumbs={breadcrumbs}
+       bgImage="/images/hero/np11-scaled.jpg" 
+        bgOpacity="opacity-50" />
+        
 
       <Container as="section" className="py-12 sm:py-16">
         <p className="max-w-3xl text-base leading-relaxed text-ink sm:text-lg">

@@ -22,6 +22,8 @@ export default function AboutTheExpoPage() {
       <PageHero
         title="Connecting the Electrical, Power and Energy Value Chain"
         breadcrumbs={breadcrumbs}
+        bgImage="/images/hero/Large-image-Energy-connectivity.jpg" 
+        bgOpacity="opacity-50" 
       />
       <Container as="section" className="py-12 sm:py-16">
         <p className="max-w-3xl text-base leading-relaxed text-ink sm:text-lg">

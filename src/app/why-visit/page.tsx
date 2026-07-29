@@ -28,6 +28,8 @@ export default function WhyVisitPage() {
       <PageHero
         title="Discover Products, Suppliers and Business Connections"
         breadcrumbs={breadcrumbs}
+          bgImage="/images/hero/0L1A2244-min-scaled.jpg" 
+        bgOpacity="opacity-50"
       />
       <Container as="section" className="py-12 sm:py-16">
         <p className="max-w-3xl text-base leading-relaxed text-ink sm:text-lg">

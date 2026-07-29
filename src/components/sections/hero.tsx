@@ -9,65 +9,85 @@ const REG_EXHIBITOR = siteConfig.registration.exhibitor;
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-linear-to-br from-teal-dark via-teal-dark to-teal">
+    <section className="relative overflow-hidden bg-teal-950">
+      {/* 1. Background Image */}
+      <Image
+        src="/images/hero/exhibit.png"
+        alt="Hero Background"
+        fill
+        priority
+        className="object-cover object-center pointer-events-none"
+        sizes="100vw"
+      />
+
+      {/* 2. Dark Overlay / Gradient (Text readability ke liye) */}
+      {/* Humne opacity `/95`, `/90`, `/80` se kam karke `/70`, `/60`, `/50` kar di hai */}
+      <div 
+        className="absolute inset-0 bg-gradient-to-br from-teal-dark/70 via-teal-dark/60 to-teal/50 pointer-events-none" 
+        aria-hidden="true" 
+      />
+
       {/* Subtle radial accent */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 50% 60% at 80% 50%, rgba(53, 168, 224, 0.08) 0%, transparent 70%)",
+            "radial-gradient(ellipse 50% 60% at 80% 50%, rgba(53, 168, 224, 0.09) 0%, transparent 90%)",
         }}
         aria-hidden="true"
       />
-      <Container className="relative grid grid-cols-1 gap-10 py-16 sm:py-22 lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-28">
+
+      <Container className="relative grid grid-cols-1 gap-6 py-6 sm:py-10 lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-12">
         <div className="lg:col-span-7">
-          <p className="text-sm font-bold uppercase tracking-widest text-yellow">
+          <p className="text-xs font-bold uppercase tracking-widest text-yellow">
             5TH NEPAL ELECTRIC, POWER AND LIGHTS INTERNATIONAL EXPO 2026
           </p>
-          <h1 className="mt-4 max-w-2xl text-[34px] leading-[1.1] text-white sm:text-[46px] lg:text-[54px]">
+          <h1 className="mt-2 max-w-2xl text-[28px] leading-[1.15] text-white sm:text-[38px] lg:text-[44px]">
             {siteConfig.marketingLine}
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/85 sm:text-base">
             Meet manufacturers, suppliers, buyers, engineers, distributors and project professionals across
             Nepal&apos;s electrical, power, lighting, renewable-energy and allied industries.
           </p>
 
-          <div className="mt-6 inline-flex items-center gap-3 rounded-lg border border-white/20 bg-white/8 px-5 py-3.5">
-            <div className="h-10 w-1 rounded-full bg-yellow" aria-hidden="true" />
-            <p className="text-sm font-semibold text-white sm:text-base">
+          <div className="mt-4 inline-flex items-center gap-3 rounded-lg border border-white/20 bg-white/8 px-4 py-2.5">
+            <div className="h-8 w-1 rounded-full bg-yellow" aria-hidden="true" />
+            <p className="text-xs font-semibold text-white sm:text-sm">
               {siteConfig.dates.display} · {siteConfig.venue.name} · {siteConfig.venue.city},{" "}
               {siteConfig.venue.country}
             </p>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-5">
+          <div className="mt-6 flex flex-wrap items-center gap-3 sm:gap-4">
             <TrackedLink
               event={AnalyticsEvents.BOOK_STAND_START}
               params={{ source: "hero" }}
               href={REG_EXHIBITOR}
               target="_blank"
               rel="noopener noreferrer"
-              className="cta-animated cta-exhibitor inline-flex min-h-[48px] items-center justify-center gap-2 rounded-lg bg-teal px-7 py-3 text-base font-semibold text-white transition-colors duration-150 hover:bg-teal-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+              className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-lg bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-teal-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
             >
               Book a Stand
             </TrackedLink>
+
             <TrackedLink
               event={AnalyticsEvents.VISITOR_REGISTER_START}
               params={{ source: "hero" }}
               href={REG_VISITOR}
               target="_blank"
               rel="noopener noreferrer"
-              className="cta-animated cta-visitor inline-flex min-h-[48px] items-center justify-center gap-2 rounded-lg bg-yellow px-7 py-3 text-base font-semibold text-ink transition-colors duration-150 hover:bg-yellow-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+              className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-lg bg-amber-400 px-5 py-2.5 text-sm font-semibold text-slate-900 transition-colors duration-150 hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
             >
               Register to Visit
             </TrackedLink>
+
             <TrackedLink
               event={AnalyticsEvents.BROCHURE_DOWNLOAD}
               params={{ source: "hero" }}
               href="/downloads/Nepal-Electric-Power-Lights-Expo-2026-Brochure.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[48px] items-center justify-center gap-1.5 text-base font-semibold text-white underline decoration-white/50 underline-offset-4 hover:text-yellow hover:decoration-yellow"
+              className="inline-flex min-h-[42px] items-center justify-center gap-1.5 text-sm font-semibold text-white underline decoration-white/50 underline-offset-4 hover:text-yellow hover:decoration-yellow"
             >
               Download Brochure
             </TrackedLink>
@@ -75,8 +95,8 @@ export function Hero() {
         </div>
 
         <div className="lg:col-span-5">
-          <figure className="overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-2xl shadow-black/20">
-            <div className="relative aspect-[1600/1131] w-full">
+          <figure className="overflow-hidden rounded-xl border border-white/15 bg-white/5 shadow-2xl shadow-black/20">
+            <div className="relative aspect-[16/10] w-full">
               <Image
                 src="/images/gallery/2025/nepal-electric-expo-2025-glimpses-01.webp"
                 alt="Grid of photographs showing exhibitor stands, visitors and the exhibition floor at the 2025 edition of the Nepal Electric, Power and Lights Expo"

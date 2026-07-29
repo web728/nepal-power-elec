@@ -29,6 +29,8 @@ export default function WhyExhibitPage() {
       <PageHero
         title="Present Your Products to Nepal's Electrical and Energy Market"
         breadcrumbs={breadcrumbs}
+          bgImage="/images/hero/images-3.jpeg" 
+        bgOpacity="opacity-50"
       />
       <Container as="section" className="py-12 sm:py-16">
         <p className="max-w-3xl text-base leading-relaxed text-ink sm:text-lg">

@@ -24,6 +24,13 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Helper function to blur focus on click
+  const handleLinkClick = () => {
+    if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  };
+
   return (
     <header
       className={cn(
@@ -53,6 +60,7 @@ export function Header() {
                 href={item.href}
                 className="flex items-center gap-1 rounded px-3 py-2 text-sm font-semibold text-ink hover:text-sky-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky"
                 aria-haspopup={item.children ? "true" : undefined}
+                onClick={handleLinkClick}
               >
                 {item.label}
                 {item.children && (
@@ -69,6 +77,7 @@ export function Header() {
                       key={child.href}
                       href={child.href}
                       className="block px-4 py-2.5 text-sm text-ink hover:bg-bg hover:text-sky-dark focus-visible:bg-bg focus-visible:text-sky-dark focus-visible:outline-none"
+                      onClick={handleLinkClick}
                     >
                       {child.label}
                     </Link>

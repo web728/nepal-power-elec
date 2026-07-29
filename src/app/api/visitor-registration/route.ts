@@ -6,6 +6,26 @@ import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
 import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
 import { visitorRegistrationEmail, organizerNotificationEmail } from "@/lib/email/templates";
 
+// Google reCAPTCHA Verification Helper
+async function verifyRecaptcha(token: string) {
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+  if (!secretKey) {
+    console.error("RECAPTCHA_SECRET_KEY is missing in environment variables.");
+    return false;
+  }
+
+  const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: `secret=${encodeURIComponent(secretKey)}&response=${encodeURIComponent(token)}`,
+  });
+
+  const data = await response.json();
+  return data.success;
+}
+
 export async function POST(request: Request) {
   const clientKey = getClientKey(request);
   const rate = checkRateLimit(`visitor-registration:${clientKey}`);
@@ -16,7 +36,20 @@ export async function POST(request: Request) {
   const body = await request.json();
   if (isHoneypotFilled(body)) return honeypotResponse();
 
-  const parsed = visitorRegistrationSchema.safeParse(body);
+  // 1. Extract recaptchaToken & Verify
+  const { recaptchaToken, ...formData } = body;
+
+  if (!recaptchaToken) {
+    return NextResponse.json({ error: "reCAPTCHA verification is required." }, { status: 400 });
+  }
+
+  const isCaptchaValid = await verifyRecaptcha(recaptchaToken);
+  if (!isCaptchaValid) {
+    return NextResponse.json({ error: "Invalid reCAPTCHA verification. Please try again." }, { status: 400 });
+  }
+
+  // 2. Schema Validation
+  const parsed = visitorRegistrationSchema.safeParse(formData);
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid submission." }, { status: 400 });
   }

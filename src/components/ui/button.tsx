@@ -23,12 +23,9 @@ const buttonVariants = cva(
         ghost: "text-sky hover:bg-sky/10 active:bg-sky/15",
         destructive: "bg-error text-white hover:bg-error/90",
         link: "text-sky underline-offset-4 hover:underline",
-        "cta-exhibitor":
-          "cta-animated cta-exhibitor bg-teal text-white hover:bg-teal-dark active:bg-teal-dark",
-        "cta-visitor":
-          "cta-animated cta-visitor bg-yellow text-ink hover:bg-yellow-dark active:bg-yellow-dark",
-        "cta-submit":
-          "cta-animated cta-submit bg-teal text-white hover:bg-teal-dark active:bg-teal-dark",
+        "cta-exhibitor": "bg-yellow text-ink hover:bg-yellow/90 active:bg-yellow-dark",
+        "cta-visitor": "bg-yellow text-ink hover:bg-yellow/90 active:bg-yellow-dark",
+        "cta-submit": "bg-yellow text-ink hover:bg-yellow/90 active:bg-yellow-dark",
       },
       size: {
         default: "h-10 px-5 py-2",

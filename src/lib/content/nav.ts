@@ -59,7 +59,7 @@ export const mainNav: NavItem[] = [
       { label: "News", href: "/news" },
       { label: "Press Releases", href: "/press-releases" },
       { label: "Photo Gallery", href: "/past-editions/photo-gallery" },
-      { label: "Media Enquiry", href: "/media-enquiry" },
+      // { label: "Media Enquiry", href: "/media-enquiry" },
     ],
   },
   {

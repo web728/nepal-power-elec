@@ -22,7 +22,10 @@ export default function RegisterToVisitPage() {
           { label: "Register to Visit", href: "/register-to-visit" },
         ]}
       />
-      <PageHero title="Register Your Interest in Attending" breadcrumbs={breadcrumbs} />
+      <PageHero title="Register Your Interest in Attending" breadcrumbs={breadcrumbs}
+       bgImage="/images/hero/np-scaled.jpg" 
+        bgOpacity="opacity-50"
+         />
 
       <Container as="section" className="py-12 sm:py-16">
         <p className="max-w-3xl text-base leading-relaxed text-ink sm:text-lg">

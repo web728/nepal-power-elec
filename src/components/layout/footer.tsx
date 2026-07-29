@@ -8,11 +8,27 @@ import { CookieSettingsButton } from "@/components/layout/cookie-settings-button
 
 export function Footer() {
   return (
-    <footer className="bg-teal-dark text-white/80">
-      <Container className="py-14">
+    <footer className="relative overflow-hidden bg-teal-dark text-white/80">
+      {/* 1. Background Image */}
+      <Image
+        src="/images/hero/Electric_Power_Transmission_and_Distribution_Equipment_Market_A.jpg" 
+        alt="Footer Background"
+        fill
+        className="object-cover object-center pointer-events-none opacity-110" 
+        sizes="100vw"
+      />
+
+      {/* 2. Dark Overlay / Gradient (Text readability ke liye) */}
+      <div
+        className="absolute inset-0 bg-gradient-to-b from-teal-dark/95 via-teal-dark/90 to-teal-dark/95 pointer-events-none"
+        aria-hidden="true"
+      />
+
+      {/* Main Content (Z-Index ke sath) */}
+      <Container className="relative z-10 py-14">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Image src={siteConfig.eventLogo} alt="" width={200} height={54} className="h-11 w-auto" />
+            <Image src={siteConfig.eventLogo} alt="" width={200} height={54} className="h-23 w-auto" />
             <p className="mt-4 text-sm leading-relaxed">{siteConfig.eventName}</p>
             <p className="mt-2 text-sm leading-relaxed">{siteConfig.dates.display}</p>
             <p className="mt-2 text-sm leading-relaxed">{siteConfig.venue.full}</p>
@@ -54,7 +70,8 @@ export function Footer() {
         </div>
       </Container>
 
-      <div className="border-t border-white/10">
+      {/* Bottom Bar */}
+      <div className="relative z-10 border-t border-white/10">
         <Container className="flex flex-col items-center justify-between gap-4 py-6 text-xs text-white/60 sm:flex-row">
           <p>
             © {new Date().getFullYear()} {siteConfig.eventName}. All rights reserved.

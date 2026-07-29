@@ -26,7 +26,10 @@ export default function VisitorProfilePage() {
           { label: "Visitor Profile", href: "/visitor-profile" },
         ]}
       />
-      <PageHero title="Who Should Attend?" breadcrumbs={breadcrumbs} />
+      <PageHero title="Who Should Attend?" breadcrumbs={breadcrumbs}
+       bgImage="/images/hero/download-2.jpeg" 
+        bgOpacity="opacity-50"
+         />
       <Container as="section" className="py-12 sm:py-16">
         <div>
           <SectionHeading title="Professional Roles" />

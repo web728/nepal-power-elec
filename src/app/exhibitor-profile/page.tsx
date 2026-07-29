@@ -28,7 +28,10 @@ export default function ExhibitorProfilePage() {
           { label: "Exhibitor Profile", href: "/exhibitor-profile" },
         ]}
       />
-      <PageHero title="Companies and Technologies Relevant to the Expo" breadcrumbs={breadcrumbs} />
+      <PageHero title="Companies and Technologies Relevant to the Expo" breadcrumbs={breadcrumbs}
+         bgImage="/images/hero/0L1A2244-min-scaled.jpg" 
+        bgOpacity="opacity-50"
+         />
       <Container as="section" className="py-12 sm:py-16">
         <div className="grid gap-6 md:grid-cols-2">
           {sectors.map((sector) => (

@@ -21,7 +21,9 @@ export default function OrganizersPage() {
   return (
     <>
       <BreadcrumbJsonLd items={[{ label: "Organizers", href: "/organizers" }]} />
-      <PageHero title="Jointly Organized by Three Event Companies" breadcrumbs={breadcrumbs} />
+      <PageHero title="Jointly Organized by Three Event Companies" breadcrumbs={breadcrumbs}
+        bgImage="/images/hero/0L1A2244-min-scaled.jpg" 
+        bgOpacity="opacity-50"  />
       <Container as="section" className="py-12 sm:py-16">
         <p className="max-w-3xl text-base leading-relaxed text-ink sm:text-lg">
           The 5th Nepal Electric, Power and Lights International Expo 2026 is jointly organized
@@ -43,7 +45,7 @@ export default function OrganizersPage() {
             src={siteConfig.organizersLockupImage}
             alt="Organizing partners of the Nepal Electric, Power and Lights Expo 2026"
             width={5000}
-            height={675}
+            height={575}
             className="h-auto w-full"
           />
         </div>

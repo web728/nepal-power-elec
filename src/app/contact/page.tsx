@@ -18,7 +18,10 @@ export default function ContactPage() {
   return (
     <>
       <BreadcrumbJsonLd items={[{ label: "Contact", href: "/contact" }]} />
-      <PageHero title="Connect with the Organizing Team" breadcrumbs={breadcrumbs} />
+      <PageHero title="Connect with the Organizing Team" breadcrumbs={breadcrumbs} 
+        bgImage="/images/hero/excellent-business-opportunities-for-upvc-dealers-and-upvc-profile-distributors.jpg" 
+        bgOpacity="opacity-50"
+        />
 
       <Container as="section" className="py-12 sm:py-16">
         <p className="max-w-3xl text-base leading-relaxed text-ink sm:text-lg">

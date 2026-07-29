@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, useRef, type FormEvent } from "react";
 import Link from "next/link";
+import ReCAPTCHA from "react-google-recaptcha";
 import { contactFormSchema, type ContactFormInput } from "@/lib/validations/forms";
 import { enquiryTypeOptions, countryOptions } from "@/lib/content/form-options";
 import { TextField, TextAreaField, SelectField, CheckboxField } from "@/components/ui/form-fields";
@@ -23,14 +24,19 @@ const initialValues: ContactFormInput = {
   privacyConsent: false,
 };
 
-type Errors = Partial<Record<keyof ContactFormInput, string>>;
+type Errors = Partial<Record<keyof ContactFormInput, string>> & {
+  recaptcha?: string;
+};
 
 export function ContactForm() {
   const [values, setValues] = useState<ContactFormInput>(initialValues);
   const [errors, setErrors] = useState<Errors>({});
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const [referenceNumber, setReferenceNumber] = useState<string | null>(null);
+  
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const { showToast } = useToast();
 
   function update<K extends keyof ContactFormInput>(key: K, value: ContactFormInput[K]) {
@@ -41,10 +47,12 @@ export function ContactForm() {
     e.preventDefault();
     setSubmitError(false);
 
+    // 1. Validate Form Schema
     const result = contactFormSchema.safeParse(values);
+    const nextErrors: Errors = {};
+
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors;
-      const nextErrors: Errors = {};
       let firstKey: string | null = null;
       for (const key in fieldErrors) {
         const messages = fieldErrors[key as keyof typeof fieldErrors];
@@ -53,19 +61,32 @@ export function ContactForm() {
           if (!firstKey) firstKey = key;
         }
       }
+    }
+
+    // 2. Validate reCAPTCHA
+    if (!captchaToken) {
+      nextErrors.recaptcha = "Please complete the reCAPTCHA verification.";
+    }
+
+    if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
-      if (firstKey) document.getElementById(firstKey)?.focus();
+      const firstErrorKey = Object.keys(nextErrors)[0];
+      if (firstErrorKey && firstErrorKey !== "recaptcha") {
+        document.getElementById(firstErrorKey)?.focus();
+      }
       return;
     }
 
     setErrors({});
     setIsSubmitting(true);
+
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...result.data,
+          recaptchaToken: captchaToken, // reCAPTCHA Token
           [HONEYPOT_FIELD]: (document.getElementById(HONEYPOT_FIELD) as HTMLInputElement)?.value ?? "",
         }),
       });
@@ -77,6 +98,9 @@ export function ContactForm() {
           body?.error || "The form could not be submitted. Review the highlighted fields and try again.",
           "error"
         );
+        // Reset Captcha on error
+        recaptchaRef.current?.reset();
+        setCaptchaToken(null);
         return;
       }
 
@@ -87,6 +111,8 @@ export function ContactForm() {
     } catch {
       setSubmitError(true);
       showToast("The form could not be submitted. Review the highlighted fields and try again.", "error");
+      recaptchaRef.current?.reset();
+      setCaptchaToken(null);
     } finally {
       setIsSubmitting(false);
     }
@@ -211,6 +237,28 @@ export function ContactForm() {
             </>
           }
         />
+
+       {/* Google reCAPTCHA v2 Component */}
+<div className="flex flex-col items-start gap-1">
+  {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
+    <ReCAPTCHA
+      ref={recaptchaRef}
+      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+      onChange={(token) => {
+        setCaptchaToken(token);
+        if (token) setErrors((prev) => ({ ...prev, recaptcha: undefined }));
+      }}
+      onExpired={() => setCaptchaToken(null)}
+    />
+  ) : (
+    <p className="text-xs text-error font-mono">
+      [reCAPTCHA Error: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is missing in .env]
+    </p>
+  )}
+  {errors.recaptcha && (
+    <p className="text-xs font-medium text-error">{errors.recaptcha}</p>
+  )}
+</div>
       </div>
 
       <div>

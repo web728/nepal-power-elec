@@ -19,7 +19,10 @@ export default function FaqPage() {
     <>
       <BreadcrumbJsonLd items={[{ label: "FAQ", href: "/faq" }]} />
       <FaqJsonLd items={generalFaqs} />
-      <PageHero title="Frequently Asked Questions" breadcrumbs={breadcrumbs} />
+      <PageHero title="Frequently Asked Questions" breadcrumbs={breadcrumbs}
+       bgImage="/images/hero/electricity-transmission-pylon-silhouetted-against-blue-sky-d-copy-min-scaled.jpg" 
+        bgOpacity="opacity-50"
+         />
       <Container as="section" className="py-12 sm:py-16">
         <Accordion items={generalFaqs} />
       </Container>

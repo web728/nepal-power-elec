@@ -1,7 +1,6 @@
 import { connectDB } from "@/lib/mongodb";
 import { Submission } from "@/lib/models/submission";
 import { generateReferenceNumber, isDuplicateSubmission } from "@/lib/rate-limit";
-import { appendToSheet } from "@/lib/google-sheets";
 
 export class DuplicateSubmissionError extends Error {
   constructor() {
@@ -34,12 +33,6 @@ export async function submitLead<T extends Record<string, unknown>>(
       data: payload,
       submittedAt: new Date(),
     });
-  }
-
-  try {
-    await appendToSheet(formSource, referenceNumber, payload);
-  } catch (err) {
-    console.error(`[sheets:${formSource}] Failed to append to Google Sheet`, err);
   }
 
   return { referenceNumber };

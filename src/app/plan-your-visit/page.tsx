@@ -30,6 +30,8 @@ export default function PlanYourVisitPage() {
         title="Prepare for Your Visit to Kathmandu"
         description={heroDescription}
         breadcrumbs={breadcrumbs}
+          bgImage="/images/hero/0L1A2531-min-scaled.jpg" 
+        bgOpacity="opacity-50"
       />
       <Container as="section" className="py-12 sm:py-16">
         <div>

@@ -72,7 +72,7 @@ export const siteConfig = {
   eventLogo: "/images/brand/event/nepal-electric-power-lights-expo-2026-primary-logo.png",
   registration: {
     visitor: "https://exporegistration.in/nepalpowerelec-visitor.aspx",
-    exhibitor: "https://nepalpowerelec.com/exhibitor-registration/",
+    exhibitor: "https://nepalpowerelec.com/book-a-stand/",
   },
   social: {
     linkedin: null as string | null,

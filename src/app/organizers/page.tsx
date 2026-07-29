@@ -40,15 +40,17 @@ export default function OrganizersPage() {
           </p>
         </div>
 
-        <div className="mt-12 overflow-hidden rounded-xl border border-border">
-          <Image
-            src={siteConfig.organizersLockupImage}
-            alt="Organizing partners of the Nepal Electric, Power and Lights Expo 2026"
-            width={5000}
-            height={575}
-            className="h-auto w-full"
-          />
-        </div>
+          <div className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-xl border border-border bg-white p-6 shadow-sm sm:p-10">
+                 <div className="relative aspect-[2000/270] w-full">
+                   <Image
+                     src={siteConfig.organizersLockupImage}
+                     alt="Logos of the three joint organizers: Futurex Trade Fair and Events Pvt. Ltd., Exhibitions & Trade Services India Pvt. Ltd., and Media Space Solutions Pvt. Ltd."
+                     fill
+                     className="object-contain"
+                     sizes="(min-width: 1024px) 900px, 100vw"
+                   />
+                 </div>
+               </div>
 
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {siteConfig.organizers.map((org) => (

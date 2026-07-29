@@ -34,34 +34,13 @@ export default function BookAStandPage() {
       <PageHero title="Apply to Exhibit at the 2026 Edition" breadcrumbs={breadcrumbs}
        bgImage="/images/hero/np11-scaled.jpg" 
         bgOpacity="opacity-50" />
-        
+
 
       <Container as="section" className="py-12 sm:py-16">
         <p className="max-w-3xl text-base leading-relaxed text-ink sm:text-lg">
           Submit your company and product information to begin the participation process. The organizing team
           will review your enquiry and contact you using the details provided.
         </p>
-
-        <div className="mt-10 max-w-3xl rounded-xl border border-border bg-bg p-6 sm:p-8">
-          <h2 className="text-lg font-semibold text-ink">What Happens Next</h2>
-          <ol className="mt-4 flex flex-col gap-3">
-            {whatHappensNext.map((step, i) => (
-              <li key={step} className="flex gap-3 text-sm leading-relaxed text-ink sm:text-base">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-sky text-xs font-bold text-white">
-                  {i + 1}
-                </span>
-                {step}
-              </li>
-            ))}
-          </ol>
-        </div>
-
-        <div className="mt-6 flex max-w-3xl gap-4 rounded-xl border-2 border-yellow bg-yellow/10 px-5 py-5">
-          <AlertTriangle className="mt-0.5 h-6 w-6 shrink-0 text-yellow-dark" aria-hidden="true" />
-          <p className="text-sm font-medium leading-relaxed text-ink sm:text-base">
-            Submitting this form does not reserve a stand, confirm a location or create a binding booking.
-          </p>
-        </div>
 
         <div className="mt-12 max-w-3xl">
           <ExhibitorEnquiryForm />

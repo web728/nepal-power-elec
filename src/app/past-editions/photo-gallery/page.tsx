@@ -74,15 +74,6 @@ export default function PhotoGalleryPage() {
           ))}
         </div>
 
-        <div className="mt-10 rounded-xl border border-yellow/40 bg-yellow/10 px-5 py-4">
-          <p className="text-sm leading-relaxed text-ink">
-            <span className="font-semibold">Image notice: </span>
-            Companies or individuals shown in photographs from the 2025 edition are not
-            automatically confirmed for the 2026 edition. Images should be used only where the
-            organizers hold the relevant publication rights.
-          </p>
-        </div>
-
         <div className="mt-10 flex flex-wrap gap-3">
           <Button href="/past-editions/2025-edition" variant="primary">
             View 2025 Edition

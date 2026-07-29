@@ -57,13 +57,6 @@ export default function ExhibitorCategoriesPage() {
           })}
         </div>
 
-        <div className="mt-10 rounded-xl border border-yellow/40 bg-yellow/10 px-5 py-4">
-          <p className="text-sm leading-relaxed text-ink">
-            The final product range depends on confirmed exhibitor participation. Category
-            inclusion does not confirm that a specific company or product will be present.
-          </p>
-        </div>
-
         <div className="mt-10 flex flex-wrap gap-3">
           <Button href={siteConfig.registration.exhibitor} target="_blank" rel="noopener noreferrer" variant="cta-exhibitor">
             Book a Stand

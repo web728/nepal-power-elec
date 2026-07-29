@@ -33,14 +33,6 @@ export default function ContactPage() {
       <OrganizersSection />
 
       <Container as="section" className="py-12 sm:py-16">
-        <div className="flex max-w-3xl gap-4 rounded-xl border-2 border-yellow bg-yellow/10 px-5 py-5">
-          <AlertTriangle className="mt-0.5 h-6 w-6 shrink-0 text-yellow-dark" aria-hidden="true" />
-          <p className="text-sm font-medium leading-relaxed text-ink sm:text-base">
-            Submitting an enquiry does not confirm exhibition space, visitor admission, media accreditation or
-            partnership status.
-          </p>
-        </div>
-
         <div className="mt-10 max-w-3xl">
           <ContactForm />
         </div>

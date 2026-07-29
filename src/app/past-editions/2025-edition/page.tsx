@@ -67,15 +67,6 @@ export default function Edition2025Page() {
           </p>
         </div>
 
-        <div className="mt-10 rounded-xl border border-yellow/40 bg-yellow/10 px-5 py-4">
-          <p className="text-sm leading-relaxed text-ink">
-            <span className="font-semibold">Source note: </span>
-            All figures and survey results on this page are taken from the organizer-issued
-            report. The document does not disclose a complete independent audit or detailed
-            methodology.
-          </p>
-        </div>
-
         <figure className="mt-12 overflow-hidden rounded-xl border border-border">
           <Image
             src="/images/gallery/2025/nepal-electric-expo-2025-glimpses-01.webp"

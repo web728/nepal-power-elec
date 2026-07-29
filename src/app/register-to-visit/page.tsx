@@ -33,15 +33,6 @@ export default function RegisterToVisitPage() {
           2026. Registration helps the organizing team prepare visitor communication and entry processing.
         </p>
 
-        <div className="mt-6 flex max-w-3xl gap-4 rounded-xl border-2 border-yellow bg-yellow/10 px-5 py-5">
-          <AlertTriangle className="mt-0.5 h-6 w-6 shrink-0 text-yellow-dark" aria-hidden="true" />
-          <p className="text-sm font-medium leading-relaxed text-ink sm:text-base">
-            Submitting the form records the visitor&apos;s interest in attending. Admission remains subject to
-            registration verification, the event entry process, venue capacity, security requirements and
-            appropriate conduct.
-          </p>
-        </div>
-
         <div className="mt-12 max-w-3xl">
           <VisitorRegistrationForm />
         </div>

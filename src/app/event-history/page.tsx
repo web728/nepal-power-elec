@@ -70,14 +70,6 @@ export default function EventHistoryPage() {
           </Card>
         </div>
 
-        {/* Disclaimer Note */}
-        <div className="mt-10 rounded-xl border border-yellow/40 bg-yellow/10 px-5 py-4">
-          <p className="text-sm leading-relaxed text-ink">
-            Previous-edition figures are organizer-reported. They do not guarantee attendance,
-            enquiries, or commercial outcomes for upcoming editions.
-          </p>
-        </div>
-
         {/* Action Buttons */}
         <div className="mt-10 flex flex-wrap gap-3">
           <Button href="/past-editions/2025-edition" variant="primary">

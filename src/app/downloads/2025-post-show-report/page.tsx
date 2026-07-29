@@ -53,11 +53,6 @@ export default function PostShowReportDownloadPage() {
             </ul>
           </div>
 
-          <div className="mt-8 rounded-lg border-l-4 border-yellow bg-yellow/10 px-5 py-4 text-sm leading-relaxed text-ink">
-            The report is organizer-issued. It does not disclose a complete independent audit or
-            detailed survey methodology.
-          </div>
-
           <div className="mt-10 flex flex-wrap gap-3">
             <Button
               href="/downloads/Nepal-Electric-Power-Lights-Expo-2025-Post-Show-Report.pdf"

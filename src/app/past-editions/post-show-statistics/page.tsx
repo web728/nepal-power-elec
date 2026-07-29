@@ -103,12 +103,6 @@ export default function PostShowStatisticsPage() {
           </ul>
         </div>
 
-        <div className="mt-10 rounded-xl border border-yellow/40 bg-yellow/10 px-5 py-4">
-          <p className="text-sm leading-relaxed text-ink">
-            <span className="font-semibold">Methodology note: </span>
-            {methodologyNote}
-          </p>
-        </div>
       </Container>
     </>
   );

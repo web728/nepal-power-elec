@@ -63,14 +63,6 @@ export default function MediaCoveragePage() {
           </p>
         </div>
 
-        <div className="mt-10 rounded-xl border border-yellow/40 bg-yellow/10 px-5 py-4">
-          <p className="text-sm leading-relaxed text-ink">
-            <span className="font-semibold">Historical content: </span>
-            Independent media reports represent their respective publishers. Coverage of the 2025
-            edition does not imply a continuing partnership or confirmed 2026 participation.
-          </p>
-        </div>
-
         <div className="mt-10 flex flex-wrap gap-3">
           <Button href="/press-releases" variant="primary">
             View Press Releases

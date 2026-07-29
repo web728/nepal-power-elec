@@ -62,14 +62,6 @@ export default function WhyExhibitPage() {
           </p>
         </div>
 
-        <div className="mt-12 flex gap-4 rounded-xl border-2 border-yellow bg-yellow/10 px-5 py-5">
-          <AlertTriangle className="mt-0.5 h-6 w-6 shrink-0 text-yellow-dark" aria-hidden="true" />
-          <p className="text-sm font-medium leading-relaxed text-ink sm:text-base">
-            Participation does not guarantee sales, contracts, leads, distributor appointments or
-            return on investment.
-          </p>
-        </div>
-
         <div className="mt-10 flex flex-wrap gap-3">
           <Button href="/exhibitor-profile" variant="primary">
             View Exhibitor Profile

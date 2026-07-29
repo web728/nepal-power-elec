@@ -60,14 +60,6 @@ export default function WhyVisitPage() {
           </p>
         </div>
 
-        <div className="mt-10 rounded-xl border border-yellow/40 bg-yellow/10 px-5 py-4">
-          <p className="text-sm leading-relaxed text-ink">
-            <span className="font-semibold">Visitor note: </span>
-            Attendance does not guarantee that a particular product, brand or company will be
-            present. The final range depends on confirmed exhibitors.
-          </p>
-        </div>
-
         <div className="mt-10 flex flex-wrap gap-3">
           <Button href={siteConfig.registration.visitor} target="_blank" rel="noopener noreferrer" variant="cta-visitor">
             Register to Visit

@@ -4,10 +4,72 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { siteConfig } from "@/lib/site-config";
 
+// Supported By Partners with Exact Image Paths and Official Links
+const supportedByLogos = [
+  {
+    id: 1,
+    name: "Nepal Chamber of Commerce",
+    src: "/logo/nepal-chamber.png",
+    url: "https://ncc.org.np/",
+  },
+  {
+    id: 2,
+    name: "Nepal Electricity Authority",
+    src: "/logo/NEA Official Logo.png",
+    url: "https://www.neanepal.org.np/",
+  },
+  {
+    id: 3,
+    name: "SCAEF Nepal",
+    src: "/logo/scaff.png",
+    url: "https://scaef.org.np/",
+  },
+  {
+    id: 4,
+    name: "IPPAN",
+    src: "/logo/IPPAN-New-Logo.png",
+    url: "https://www.ippan.org.np/",
+  },
+];
+
 export function OrganizersSection() {
   return (
     <section className="bg-bg py-16 sm:py-22">
       <Container>
+        {/* ================= SUPPORTED BY SECTION ================= */}
+        <div className="mb-16">
+          <SectionHeading
+            eyebrow="Patrons"
+            title="Supported By"
+            align="center"
+            className="mx-auto"
+          />
+
+          <div className="mx-auto mt-8 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
+            {supportedByLogos.map((logo) => (
+              <a
+                key={logo.id}
+                href={logo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Visit ${logo.name}`}
+                className="group flex items-center justify-center rounded-xl border border-border bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-teal hover:shadow-md"
+              >
+                <div className="relative aspect-[3/2] w-full">
+                  <Image
+                    src={logo.src}
+                    alt={logo.name}
+                    fill
+                    className="object-contain transition-transform duration-200 group-hover:scale-105"
+                    sizes="(min-width: 640px) 200px, 50vw"
+                  />
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* ================= ORGANIZERS SECTION ================= */}
         <SectionHeading
           eyebrow="Organizers"
           title="Organized Jointly By"

@@ -219,7 +219,7 @@ const ALL_GALLERY_IMAGES = [
   },
   {
     id: 41,
-    src: "/uploads/v.jpg",
+    src: "/uploads/np18-1024x681.jpg",
     alt: "Exhibitors group photo at the closing event",
   },
 ];

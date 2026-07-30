@@ -9,7 +9,7 @@ import { galleryImageCaption } from "@/lib/content/home-content";
 // 6 Images configuration with titles using your exact assets
 const images = [
   {
-    src: "/uploads/0L1A2244-min-1536x1024.jpg",
+    src: "/uploads/0L1A2244-min-1-1024x683.jpg",
     alt: "Collage of photographs of exhibitor stands and visitors at the 2025 edition of the Nepal Electric, Power and Lights Expo",
     title: "Exhibition Floor Highlights",
   },
@@ -24,7 +24,7 @@ const images = [
     title: "Inauguration Ceremony",
   },
   {
-    src: "/uploads/AYU_7443-min-1-2048x1365.jpg",
+    src: "/uploads/AYU_7443-min-1536x1024.jpg",
     alt: "Product demonstrations on the expo floor",
     title: "Product Demonstrations",
   },

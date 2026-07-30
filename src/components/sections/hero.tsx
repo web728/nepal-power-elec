@@ -99,7 +99,7 @@ export function Hero() {
           <figure className="overflow-hidden rounded-xl border border-white/15 bg-white/5 shadow-2xl shadow-black/20">
             <div className="relative aspect-[16/10] w-full">
               <Image
-                src="/uploads/0L1A2376-min-scaled.jpg"
+                src="/uploads/0L1A2376-min-1-1024x683.jpg"
                 alt="Grid of photographs showing exhibitor stands, visitors and the exhibition floor at the 2025 edition of the Nepal Electric, Power and Lights Expo"
                 fill
                 className="object-cover"

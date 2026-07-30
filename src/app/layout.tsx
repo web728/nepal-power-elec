@@ -39,6 +39,9 @@ export const metadata: Metadata = {
     "electrical trade fair Nepal 2026",
   ],
   authors: siteConfig.organizers.map((o) => ({ name: o.name })),
+  verification: {
+    google: "TDIdPkUrusKHPTwtgGrFVVXlKAcfT0G14yTkocbOS4E",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },

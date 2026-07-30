@@ -2,17 +2,6 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site-config";
 import { mainNav } from "@/lib/content/nav";
 
-// Next.js App Router metadata file — generates /sitemap.xml at build/request
-// time. This is distinct from the human-readable HTML sitemap page at
-// src/app/sitemap/page.tsx (linked in the footer), which this file also
-// lists as an entry (its own XML record) but does not otherwise touch.
-//
-// Route set = every href reachable from mainNav (top-level items and their
-// dropdown children) + a short list of known routes that live outside the
-// nav (home, downloads sub-pages, legal pages, the HTML sitemap page).
-// Deliberately excluded: /search, /404, /admin*, /dashboard, /login — none
-// of these should be indexed or listed in the XML sitemap.
-
 type Priority = 1.0 | 0.8 | 0.6 | 0.3;
 type ChangeFreq = "yearly" | "monthly" | "weekly";
 
@@ -41,9 +30,9 @@ const EXTRA_PATHS = [
 function collectNavPaths(): string[] {
   const paths = new Set<string>();
   for (const item of mainNav) {
-    paths.add(item.href);
+    if (item.href) paths.add(item.href);
     for (const child of item.children ?? []) {
-      paths.add(child.href);
+      if (child.href) paths.add(child.href);
     }
   }
   return Array.from(paths);
@@ -62,13 +51,27 @@ function changeFrequencyFor(path: string): ChangeFreq {
   return "monthly";
 }
 
+// Fixed static date for static/legal content to avoid constant false freshness
+const STATIC_LAST_MOD = new Date("2026-01-01");
+
 export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = siteConfig.siteUrl.replace(/\/$/, ""); // Strip trailing slash from base config
   const allPaths = Array.from(new Set([...collectNavPaths(), ...EXTRA_PATHS]));
 
-  return allPaths.map((path) => ({
-    url: `${siteConfig.siteUrl}${path}`,
-    lastModified: new Date(),
-    changeFrequency: changeFrequencyFor(path),
-    priority: priorityFor(path),
-  }));
+  return allPaths.map((path) => {
+    // Form clean URL path
+    const url = path === "/" ? `${baseUrl}/` : `${baseUrl}${path}`;
+    
+    // Legal & static pages get a fixed date, high priority/frequent pages get current date
+    const lastModified = LEGAL_PATHS.has(path) || path === "/sitemap" 
+      ? STATIC_LAST_MOD 
+      : new Date();
+
+    return {
+      url,
+      lastModified,
+      changeFrequency: changeFrequencyFor(path),
+      priority: priorityFor(path),
+    };
+  });
 }

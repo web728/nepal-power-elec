@@ -4,7 +4,8 @@ import { useState, useRef, type FormEvent } from "react";
 import Link from "next/link";
 import ReCAPTCHA from "react-google-recaptcha";
 import { exhibitorEnquirySchema, type ExhibitorEnquiryInput } from "@/lib/validations/forms";
-import { productCategoryOptions, companyTypeOptions, countryOptions } from "@/lib/content/form-options";
+import { productCategoryOptions, companyTypeOptions } from "@/lib/content/form-options";
+import { countryOptions } from "@/lib/countries";
 import { TextField, TextAreaField, SelectField, CheckboxField } from "@/components/ui/form-fields";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
@@ -17,7 +18,7 @@ const initialValues: ExhibitorEnquiryInput = {
   designation: "",
   email: "",
   phone: "",
-  country: "",
+  country: "India",
   companyName: "",
   companyWebsite: "",
   companyAddress: "",

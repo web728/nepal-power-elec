@@ -67,9 +67,6 @@ export default function MediaCoveragePage() {
           <Button href="/press-releases" variant="primary">
             View Press Releases
           </Button>
-          <Button href="/media-enquiry" variant="outline">
-            Media Enquiry
-          </Button>
           <Button href="/downloads/2025-post-show-report" variant="ghost">
             Download Report
           </Button>

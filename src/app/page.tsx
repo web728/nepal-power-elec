@@ -42,8 +42,8 @@ export default function HomePage() {
         ctaLabel="Why Visit"
         ctaHref="/why-visit"
         tone="dark"
-        bgImage="/images/hero/excellent-business-opportunities-for-upvc-dealers-and-upvc-profile-distributors.jpg" 
-        bgOpacity="opacity-40"
+        bgImage="/uploads/cloud-service-provider.jpg" 
+        bgOpacity="opacity-60"
       />
       <StatsSection />
       <GallerySection />

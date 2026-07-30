@@ -10,6 +10,7 @@ import { useToast } from "@/components/ui/toast";
 import { CheckCircle2 } from "lucide-react";
 import { HoneypotField } from "@/components/ui/honeypot-field";
 import { HONEYPOT_FIELD } from "@/lib/honeypot";
+import { countryOptions } from "@/lib/countries"; // 👈 Import countries list
 
 const interestOptions = [
   { label: "Exhibiting at the Expo", value: "Exhibiting" },
@@ -24,6 +25,7 @@ const initialValues: QuickEnquiryInput = {
   fullName: "",
   email: "",
   phone: "",
+  country: "India",
   interest: "",
   message: "",
   privacyConsent: false,
@@ -171,6 +173,19 @@ export function QuickEnquiryForm() {
           onChange={(e) => update("phone", e.target.value)}
           error={errors.phone}
         />
+        
+        {/* Country Dropdown Field 👇 */}
+        <SelectField
+          id="country"
+          label="Country"
+          required
+          placeholder="Select your country"
+          options={countryOptions}
+          value={values.country}
+          onChange={(e) => update("country", e.target.value)}
+          error={errors.country}
+        />
+
         <SelectField
           id="interest"
           label="I'm Interested In"

@@ -9,10 +9,10 @@ const REG_EXHIBITOR = siteConfig.registration.exhibitor;
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-teal-950">
+    <section className="relative overflow-hidden bg-teal-900">
       {/* 1. Background Image */}
       <Image
-        src="/images/hero/exhibit.png"
+        src="/uploads/distribution-electric-substation-with-power-lines-transformers_156373-17.webp"
         alt="Hero Background"
         fill
         priority
@@ -22,10 +22,11 @@ export function Hero() {
 
       {/* 2. Dark Overlay / Gradient (Text readability ke liye) */}
       {/* Humne opacity `/95`, `/90`, `/80` se kam karke `/70`, `/60`, `/50` kar di hai */}
-      <div 
-        className="absolute inset-0 bg-gradient-to-br from-teal-dark/70 via-teal-dark/60 to-teal/50 pointer-events-none" 
-        aria-hidden="true" 
-      />
+     {/* Improved Dark Overlay Gradient */}
+<div 
+  className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/75 to-slate-900/50 pointer-events-none" 
+  aria-hidden="true" 
+/>
 
       {/* Subtle radial accent */}
       <div
@@ -98,7 +99,7 @@ export function Hero() {
           <figure className="overflow-hidden rounded-xl border border-white/15 bg-white/5 shadow-2xl shadow-black/20">
             <div className="relative aspect-[16/10] w-full">
               <Image
-                src="/images/gallery/2025/nepal-electric-expo-2025-glimpses-01.webp"
+                src="/uploads/0L1A2376-min-scaled.jpg"
                 alt="Grid of photographs showing exhibitor stands, visitors and the exhibition floor at the 2025 edition of the Nepal Electric, Power and Lights Expo"
                 fill
                 className="object-cover"

@@ -4,7 +4,8 @@ import { useState, useRef, type FormEvent } from "react";
 import Link from "next/link";
 import ReCAPTCHA from "react-google-recaptcha";
 import { visitorRegistrationSchema, type VisitorRegistrationInput } from "@/lib/validations/forms";
-import { industryOptions, companyTypeOptions, productCategoryOptions, countryOptions } from "@/lib/content/form-options";
+import { industryOptions, companyTypeOptions, productCategoryOptions } from "@/lib/content/form-options";
+import { countryOptions } from "@/lib/countries";
 import { TextField, TextAreaField, SelectField, CheckboxField } from "@/components/ui/form-fields";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
@@ -17,7 +18,7 @@ const initialValues: VisitorRegistrationInput = {
   designation: "",
   email: "",
   phone: "",
-  country: "",
+  country: "India",
   companyName: "",
   companyWebsite: "",
   industry: "",

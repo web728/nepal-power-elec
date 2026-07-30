@@ -4,7 +4,8 @@ import { useState, useRef, type FormEvent } from "react";
 import Link from "next/link";
 import ReCAPTCHA from "react-google-recaptcha";
 import { contactFormSchema, type ContactFormInput } from "@/lib/validations/forms";
-import { enquiryTypeOptions, countryOptions } from "@/lib/content/form-options";
+import { enquiryTypeOptions } from "@/lib/content/form-options";
+import { countryOptions } from "@/lib/countries";
 import { TextField, TextAreaField, SelectField, CheckboxField } from "@/components/ui/form-fields";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
@@ -16,7 +17,7 @@ const initialValues: ContactFormInput = {
   fullName: "",
   email: "",
   phone: "",
-  country: "",
+  country: "India",
   company: "",
   enquiryType: "",
   subject: "",
@@ -238,27 +239,27 @@ export function ContactForm() {
           }
         />
 
-       {/* Google reCAPTCHA v2 Component */}
-<div className="flex flex-col items-start gap-1">
-  {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
-    <ReCAPTCHA
-      ref={recaptchaRef}
-      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-      onChange={(token) => {
-        setCaptchaToken(token);
-        if (token) setErrors((prev) => ({ ...prev, recaptcha: undefined }));
-      }}
-      onExpired={() => setCaptchaToken(null)}
-    />
-  ) : (
-    <p className="text-xs text-error font-mono">
-      [reCAPTCHA Error: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is missing in .env]
-    </p>
-  )}
-  {errors.recaptcha && (
-    <p className="text-xs font-medium text-error">{errors.recaptcha}</p>
-  )}
-</div>
+        {/* Google reCAPTCHA v2 Component */}
+        <div className="flex flex-col items-start gap-1">
+          {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={(token) => {
+                setCaptchaToken(token);
+                if (token) setErrors((prev) => ({ ...prev, recaptcha: undefined }));
+              }}
+              onExpired={() => setCaptchaToken(null)}
+            />
+          ) : (
+            <p className="text-xs font-mono text-error">
+              [reCAPTCHA Error: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is missing in .env]
+            </p>
+          )}
+          {errors.recaptcha && (
+            <p className="text-xs font-medium text-error">{errors.recaptcha}</p>
+          )}
+        </div>
       </div>
 
       <div>

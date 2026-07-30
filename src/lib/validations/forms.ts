@@ -97,6 +97,7 @@ export const quickEnquirySchema = z.object({
   fullName: z.string().min(1, "Enter your full name.").max(150),
   email: z.string().min(1, "Enter a valid email address.").email("Enter a valid email address."),
   phone: z.string().optional().or(z.literal("")),
+  country: z.string().min(1, "Select your country."),
   interest: z.string().min(1, "Select your area of interest."),
   message: z.string().min(1, "Enter your message.").max(2000),
   privacyConsent: consentRequired,

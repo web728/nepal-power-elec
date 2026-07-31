@@ -7,15 +7,7 @@ import { siteConfig } from "@/lib/site-config";
 import { CookieSettingsButton } from "@/components/layout/cookie-settings-button";
 import { MapPin, ExternalLink } from "lucide-react";
 
-// Inline SVG Social Icons for zero-dependency build safety
-function FacebookIcon({ className = "h-5 w-5" }: { className?: string }) {
-  return (
-    <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.891h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
-    </svg>
-  );
-}
-
+// Inline SVG Social Icons
 function TwitterIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
     <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -36,43 +28,57 @@ export function Footer() {
   const facebookPageUrl = encodeURIComponent("https://www.facebook.com/100940879513531");
 
   return (
-    <footer className="relative overflow-hidden bg-teal-dark text-white/80">
-      {/* 1. Background Image */}
+    <footer className="relative overflow-hidden bg-teal-dark">
+      {/* 1. Background Image with balanced opacity */}
       <Image
         src="/images/hero/Electric_Power_Transmission_and_Distribution_Equipment_Market_A.jpg"
         alt="Footer Background"
         fill
-        className="object-cover object-center pointer-events-none opacity-20"
+        className="object-cover object-center pointer-events-none opacity-25"
         sizes="100vw"
+        priority
       />
 
-      {/* 2. Dark Overlay */}
+      {/* 2. Gradient Overlay for text contrast */}
       <div
-        className="absolute inset-0 bg-gradient-to-b from-teal-dark/95 via-teal-dark/90 to-teal-dark/95 pointer-events-none"
+        className="absolute inset-0 bg-gradient-to-b from-teal-dark/20 via-teal-dark/30 to-teal-dark pointer-events-none"
         aria-hidden="true"
       />
 
       {/* Main Content */}
-      <Container className="relative z-10 py-14">
+      <Container className="relative z-10 py-12 sm:py-16">
         {/* Top Section: Quick Links & Information */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          
           {/* Column 1: Logo & Info */}
           <div className="flex flex-col justify-between">
             <div>
-              <Image src={siteConfig.eventLogo} alt="" width={200} height={54} className="h-20 w-auto" />
-              <p className="mt-4 text-sm font-medium leading-relaxed text-white/90">{siteConfig.eventName}</p>
-              <p className="mt-1 text-sm text-white/70">{siteConfig.dates.display}</p>
+              <div className="inline-block rounded-lg bg-white p-2 shadow-sm">
+                <Image 
+                  src={siteConfig.eventLogo} 
+                  alt={siteConfig.eventName} 
+                  width={200} 
+                  height={54} 
+                  className="h-24 w-auto object-contain" 
+                />
+              </div>
+              <p className="mt-4 text-sm font-semibold leading-relaxed text-white">
+                {siteConfig.eventName}
+              </p>
+              <p className="mt-1 text-sm text-white/80">{siteConfig.dates.display}</p>
               <p className="mt-1 text-sm text-white/70">{siteConfig.venue.full}</p>
             </div>
           </div>
 
           {/* Column 2: Quick Links */}
           <div>
-            <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">Quick Links</h3>
+            <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">
+              Quick Links
+            </h3>
             <ul className="flex flex-col gap-2.5 text-sm">
               {footerQuickLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="transition-colors hover:text-yellow">
+                  <Link href={link.href} className="text-white/80 transition-colors hover:text-yellow">
                     {link.label}
                   </Link>
                 </li>
@@ -104,7 +110,7 @@ export function Footer() {
                 title="Bhrikuti Mandap Location Map"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.482701886867!2d85.31692407632626!3d27.70238397618451!2m3!1f0!0f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19ab91cb8ef7%3A0x7d6c6e7bb46376eb!2sBhrikuti%20Mandap!5e0!3m2!1sen!2snp!4v1700000000000!5m2!1sen!2snp"
                 width="100%"
-                height="135"
+                height="130"
                 style={{ border: 0 }}
                 allowFullScreen={false}
                 loading="lazy"
@@ -126,9 +132,12 @@ export function Footer() {
         {/* Section 2: Social Media & Newsletter */}
         <div className="mt-12 border-t border-white/10 pt-10">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+            
             {/* Newsletter Column */}
             <div className="lg:col-span-5">
-              <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-white">Stay Updated</h3>
+              <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-white">
+                Stay Updated
+              </h3>
               <p className="mb-4 text-sm text-white/80">
                 Receive verified announcements about registration, documents and previous-edition highlights.
               </p>
@@ -141,36 +150,39 @@ export function Footer() {
                 Follow Us On Social Media
               </h3>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {/* Left Side: Facebook Live Feed Widget */}
-                <div className="overflow-hidden rounded-xl border border-white/15 bg-white/5 p-2 shadow-sm">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 items-stretch">
+                {/* Left Side: Facebook Widget (Height & Crop Fixed) */}
+                <div className="flex h-[136px] items-center justify-center overflow-hidden rounded-xl border border-white/15 bg-white/10 p-1.5 shadow-sm">
                   <iframe
                     title="Facebook Page Feed"
-                    src={`https://www.facebook.com/plugins/page.php?href=${facebookPageUrl}&tabs=timeline&width=340&height=180&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false`}
+                    src={`https://www.facebook.com/plugins/page.php?href=${facebookPageUrl}&tabs=&width=340&height=130&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false`}
                     width="100%"
-                    height="180"
+                    height="130"
                     style={{ border: "none", overflow: "hidden" }}
                     scrolling="no"
                     frameBorder="0"
+                    className="rounded-lg"
                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                   />
                 </div>
 
-                {/* Right Side: Other Social Platforms */}
+                {/* Right Side: X & LinkedIn Cards */}
                 <div className="flex flex-col justify-between gap-3">
                   {/* X / Twitter Card */}
                   <a
                     href="https://x.com/nepalpowerelec"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center justify-between rounded-xl border border-white/15 bg-white/5 p-3.5 transition-all hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/10"
+                    className="group flex items-center justify-between rounded-xl border border-white/15 bg-white/5 p-3 transition-all hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/10"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-black/40 text-white">
-                        <TwitterIcon className="h-5 w-5" />
+                      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-black/50 text-white border border-white/10">
+                        <TwitterIcon className="h-4 w-4" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-white group-hover:text-yellow">X (Twitter)</p>
+                        <p className="text-sm font-semibold text-white group-hover:text-yellow transition-colors">
+                          X (Twitter)
+                        </p>
                         <p className="text-xs text-white/60">@nepalpowerelec</p>
                       </div>
                     </div>
@@ -182,14 +194,16 @@ export function Footer() {
                     href="https://www.linkedin.com/company/nepalpowerelec/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center justify-between rounded-xl border border-white/15 bg-white/5 p-3.5 transition-all hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/10"
+                    className="group flex items-center justify-between rounded-xl border border-white/15 bg-white/5 p-3 transition-all hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/10"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0A66C2]/20 text-[#0A66C2]">
-                        <LinkedinIcon className="h-5 w-5 fill-current" />
+                      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#0A66C2]/30 text-[#0A66C2] border border-[#0A66C2]/20">
+                        <LinkedinIcon className="h-4 w-4 fill-current" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-white group-hover:text-yellow">LinkedIn</p>
+                        <p className="text-sm font-semibold text-white group-hover:text-yellow transition-colors">
+                          LinkedIn
+                        </p>
                         <p className="text-xs text-white/60">Nepal Power Elec Expo</p>
                       </div>
                     </div>
@@ -198,20 +212,21 @@ export function Footer() {
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </Container>
 
       {/* Bottom Bar */}
-      <div className="relative z-10 border-t border-white/10">
-        <Container className="flex flex-col items-center justify-between gap-4 py-6 text-xs text-white/60 sm:flex-row">
+      <div className="relative z-10 border-t border-white/10 bg-black/20">
+        <Container className="flex flex-col items-center justify-between gap-4 py-5 text-xs text-white/60 sm:flex-row">
           <p>
             © {new Date().getFullYear()} {siteConfig.eventName}. All rights reserved.
           </p>
           <ul className="flex flex-wrap justify-center gap-x-5 gap-y-2">
             {footerLegalLinks.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="hover:text-yellow">
+                <Link href={link.href} className="hover:text-yellow transition-colors">
                   {link.label}
                 </Link>
               </li>

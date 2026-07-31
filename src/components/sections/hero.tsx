@@ -11,9 +11,9 @@ import { siteConfig } from "@/lib/site-config";
 const REG_VISITOR = siteConfig.registration.visitor;
 const REG_EXHIBITOR = siteConfig.registration.exhibitor;
 
-/** Central place to manage gallery images — add/remove/reorder freely. Works well with 8–10 images. */
+/** Central place to manage gallery images — works for mobile carousel */
 const GALLERY_IMAGES = [
-   { src: "/uploads/0L1A2654-min-1536x1024.jpg", alt: "Exhibition floor" },
+  { src: "/uploads/0L1A2654-min-1536x1024.jpg", alt: "Exhibition floor" },
   { src: "/uploads/0L1A2354-min-1-1024x683.jpg", alt: "Exhibitor stand" },
   { src: "/uploads/IMG_8276-min-300x200.jpg", alt: "Visitors networking" },
   { src: "/uploads/np7-1024x681.jpg", alt: "Product demo" },
@@ -23,37 +23,6 @@ const GALLERY_IMAGES = [
   { src: "/uploads/0L1A2531-min-1-1024x683.jpg", alt: "Award ceremony" },
   { src: "/uploads/559A5415-min.jpg", alt: "Ribbon cutting" },
 ];
-
-const GALLERY_COLUMNS = 3;
-
-/**
- * Auto-generates non-overlapping grid positions for any image count (works cleanly for 8–10).
- * Each row alternates a slight vertical offset and each image gets a small alternating
- * tilt — keeps things aligned but still feels organic instead of a rigid grid.
- */
-function generateGalleryLayout(count: number) {
-  const rows = Math.ceil(count / GALLERY_COLUMNS);
-  const colWidth = 100 / GALLERY_COLUMNS;
-  const rowHeight = 100 / rows;
-
-  return Array.from({ length: count }, (_, i) => {
-    const col = i % GALLERY_COLUMNS;
-    const row = Math.floor(i / GALLERY_COLUMNS);
-
-    // stagger alternate rows sideways a little so columns don't feel too rigid
-    const rowStagger = row % 2 === 1 ? colWidth * 0.18 : 0;
-    // stagger alternate columns vertically a little for the same reason
-    const colStagger = col % 2 === 1 ? rowHeight * 0.12 : -rowHeight * 0.06;
-
-    const left = `${Math.min(col * colWidth + rowStagger, 100 - colWidth)}%`;
-    const top = `${Math.min(row * rowHeight + colStagger, 100 - rowHeight)}%`;
-
-    const rotate = (i % 2 === 0 ? -1 : 1) * (4 + ((i * 7) % 5)); // small varied tilt, deterministic
-    const size = 120 + ((i * 13) % 30); // 120–150px, varied but deterministic (no layout shift)
-
-    return { top, left, rotate, size };
-  });
-}
 
 type Particle = {
   x: number;
@@ -183,105 +152,8 @@ function HeroParticles() {
 }
 
 /**
- * Desktop: floating image gallery.
- * Images drift continuously with independent float cycles; hover lifts,
- * de-rotates, and scales the image above its neighbours.
- */
-function FloatingImageGallery() {
-  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  const layout = generateGalleryLayout(GALLERY_IMAGES.length);
-  const images = GALLERY_IMAGES.map((img, i) => ({ ...img, ...layout[i] }));
-  const rows = Math.ceil(GALLERY_IMAGES.length / GALLERY_COLUMNS);
-  const containerHeight = 190 + rows * 110; // grows automatically as more images/rows are added
-
-  useEffect(() => {
-    const floatTweens: gsap.core.Tween[] = [];
-
-    imageRefs.current.forEach((el, i) => {
-      if (!el) return;
-
-      const duration = 3 + Math.random() * 2; // 3s–5s, desynced per image
-      const distance = 12 + Math.random() * 10; // 12px–22px drift
-
-      const tween = gsap.to(el, {
-        y: `+=${distance}`,
-        duration,
-        delay: i * 0.3,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-      });
-      floatTweens.push(tween);
-    });
-
-    return () => {
-      floatTweens.forEach((t) => t.kill());
-    };
-  }, []);
-
-  function handleEnter(i: number) {
-    const el = imageRefs.current[i];
-    if (!el) return;
-    gsap.to(el, {
-      scale: 2,
-      rotate: 0,
-      zIndex: 20,
-      boxShadow: "0 20px 40px rgba(0,0,0,0.35)",
-      duration: 0.35,
-      ease: "power2.out",
-      overwrite: "auto",
-    });
-  }
-
-  function handleLeave(i: number, originalRotate: number) {
-    const el = imageRefs.current[i];
-    if (!el) return;
-    gsap.to(el, {
-      scale: 1,
-      rotate: originalRotate,
-      zIndex: 1,
-      boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
-      duration: 0.35,
-      ease: "power2.out",
-      overwrite: "auto",
-    });
-  }
-
-  return (
-    <div
-      className="relative hidden w-full [perspective:1000px] lg:block"
-      style={{ height: containerHeight }}
-    >
-      {images.map((img, i) => (
-        <div
-          key={img.src}
-          ref={(el) => {
-            imageRefs.current[i] = el;
-          }}
-          onMouseEnter={() => handleEnter(i)}
-          onMouseLeave={() => handleLeave(i, img.rotate)}
-          className="absolute cursor-pointer overflow-hidden rounded-xl border border-white/15 will-change-transform"
-          style={{
-            top: img.top,
-            left: img.left,
-            width: img.size,
-            height: img.size * 0.75,
-            transform: `rotate(${img.rotate}deg)`,
-            boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
-          }}
-        >
-          <Image src={img.src} alt={img.alt} fill className="object-cover" sizes="200px" />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/**
  * Mobile: infinite auto-scrolling carousel.
- * The image track is duplicated once and looped with xPercent -50,
- * giving a seamless, endless scroll with no visible reset jump.
+ * Hidden on desktop (`lg:hidden`).
  */
 function MobileImageCarousel() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -293,9 +165,6 @@ function MobileImageCarousel() {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
-    // Track holds two copies of the image list back to back.
-    // Animating xPercent from 0 to -50 moves exactly one full copy's width,
-    // so the loop point is invisible.
     const tween = gsap.to(track, {
       xPercent: -50,
       duration: GALLERY_IMAGES.length * 4,
@@ -335,7 +204,7 @@ export function Hero() {
     <section className="relative overflow-hidden">
       {/* 1. Background Image */}
       <Image
-        src="/uploads/nepal-electric-home-page-banner.png"
+        src="/uploads/nepal-electric-home-page-banner.jpeg"
         alt="Hero Background"
         fill
         priority
@@ -353,15 +222,15 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      {/* 3. Ambient particles — idle drift + cursor repel */}
+      {/* Ambient particles */}
       <HeroParticles />
 
-      <Container className="relative z-[2] grid grid-cols-1 gap-6 py-6 sm:py-10 lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-12">
-        <div className="lg:col-span-7">
+      <Container className="relative z-[2] py-8 sm:py-12 lg:py-16">
+        <div className="max-w-3xl">
           <p className="text-xs font-bold uppercase tracking-widest text-yellow drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">
             5TH NEPAL ELECTRIC, POWER AND LIGHTS INTERNATIONAL EXPO 2026
           </p>
-          <h1 className="mt-2 max-w-2xl text-[28px] leading-[1.15] text-white sm:text-[38px] lg:text-[44px] drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
+          <h1 className="mt-2 max-w-2xl text-[28px] leading-[1.15] text-white sm:text-[38px] lg:text-[48px] drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
             {siteConfig.marketingLine}
           </h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/90 sm:text-base drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
@@ -412,15 +281,10 @@ export function Hero() {
             </TrackedLink>
           </div>
 
-          {/* Mobile-only infinite scroll carousel sits under the copy on small screens */}
-          <div className="mt-6">
+          {/* Mobile-only infinite scroll carousel */}
+          <div className="mt-8 lg:hidden">
             <MobileImageCarousel />
           </div>
-        </div>
-
-        {/* Desktop-only floating gallery */}
-        <div className="lg:col-span-5">
-          <FloatingImageGallery />
         </div>
       </Container>
     </section>

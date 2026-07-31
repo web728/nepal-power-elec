@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FileText, Download } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -23,8 +24,49 @@ const downloads = [
 
 export function DownloadsSection() {
   return (
-    <section id="downloads" className="bg-white py-16 sm:py-22 scroll-mt-24">
-      <Container>
+    <section id="downloads" className="relative overflow-hidden bg-white py-16 sm:py-22 scroll-mt-24">
+      {/* 1. Top Left Graphic - Hidden on Mobile (`hidden sm:block`) */}
+      <div className="absolute left-0 top-0 pointer-events-none z-0 opacity-100 overflow-hidden hidden sm:block">
+        <Image
+          src="/brandings/wind.png"
+          alt="Background Graphic Left"
+          width={1200}
+          height={1200}
+          className="
+            h-auto object-contain rotate-180
+            /* Tablet Sizing */
+            sm:w-[500px] sm:-translate-x-[20%] sm:-translate-y-[25%]
+            /* Laptop / Desktop Sizing (Matched with Right Side) */
+            lg:w-[650px] lg:-translate-x-[15%] lg:-translate-y-[20%]
+            /* Extra Large Screens */
+            xl:w-[650px] xl:-translate-x-[20%] xl:-translate-y-[15%]
+          "
+        />
+      </div>
+
+      {/* 2. Top Right Graphic - Visible on Mobile & Synced with Left on Desktop */}
+      <div className="absolute right-0 top-0 pointer-events-none z-0 opacity-100 overflow-hidden">
+        <Image
+          src="/brandings/wind.png"
+          alt="Background Graphic Right"
+          width={1200}
+          height={1200}
+          className="
+            h-auto object-contain
+            /* Mobile Sizing */
+            w-[200vw] max-w-none translate-x-[15%] -translate-y-[10%]
+            /* Tablet Sizing */
+            sm:w-[500px] sm:translate-x-[20%] sm:-translate-y-[25%]
+            /* Laptop / Desktop Sizing (Matched with Left Side) */
+            lg:w-[650px] lg:translate-x-[15%] lg:-translate-y-[20%]
+            /* Extra Large Screens */
+            xl:w-[650px] xl:translate-x-[20%] xl:-translate-y-[15%]
+          "
+        />
+      </div>
+
+      {/* Content Container */}
+      <Container className="relative z-10">
         <SectionHeading eyebrow="Resources" title="Event Documents" align="center" className="mx-auto" />
 
         <div className="mx-auto mt-10 grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">

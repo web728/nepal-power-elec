@@ -52,7 +52,7 @@ export const siteConfig = {
     {
       key: "etsipl",
       name: "Exhibitions & Trade Services India Pvt. Ltd.",
-      contactName: "Ms. Vijyanka Brighuvanshi",
+      contactName: "Mr. Vijyanka Brighuvanshi",
       phone: "+91 9324232529",
       phoneHref: "+919324232529",
       email: "vijayanka@etsipl.in",

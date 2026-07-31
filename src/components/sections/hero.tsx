@@ -43,14 +43,14 @@ function HeroParticles() {
 
     function initParticles() {
       // Density scales with area so mobile doesn't get overcrowded/laggy
-      const count = Math.max(24, Math.min(65, Math.floor((width * height) / 16000)));
+  const count = Math.max(50, Math.min(120, Math.floor((width * height) / 9000)));
       particlesRef.current = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
         vx: (Math.random() - 0.5) * 0.18,
         vy: (Math.random() - 0.5) * 0.18,
-        size: Math.random() * 1.6 + 0.6,
-        opacity: Math.random() * 0.5 + 0.15,
+      size: Math.random() * 2.2 + 1.0,
+opacity: Math.random() * 0.4 + 0.4,
       }));
     }
 
@@ -108,7 +108,7 @@ function HeroParticles() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+  ctx.fillStyle = `rgba(251, 191, 36, ${p.opacity})`;
         ctx.fill();
       }
 
@@ -153,13 +153,13 @@ export function Hero() {
   const rotateX = useRef<((value: number) => void) | null>(null);
   const rotateY = useRef<((value: number) => void) | null>(null);
 
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card) return;
+ useEffect(() => {
+  const card = cardRef.current;
+  if (!card) return;
 
-    rotateX.current = gsap.quickTo(card, "rotateX", { duration: 0.5, ease: "power3.out" });
-    rotateY.current = gsap.quickTo(card, "rotateY", { duration: 0.5, ease: "power3.out" });
-  }, []);
+  rotateX.current = gsap.quickTo(card, "rotationX", { duration: 0.5, ease: "power3.out" });
+  rotateY.current = gsap.quickTo(card, "rotationY", { duration: 0.5, ease: "power3.out" });
+}, []);
 
   function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
     const el = cardWrapRef.current;
@@ -203,16 +203,6 @@ export function Hero() {
         priority
         className="object-cover object-center pointer-events-none"
         sizes="100vw"
-      />
-
-      {/* 2. Light overlay — text ke peeche readability, image saaf dikhegi */}
-      <div
-        className="absolute inset-0 z-[1] bg-gradient-to-r from-slate-950/60 via-slate-950/25 to-transparent pointer-events-none"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-0 z-[1] bg-gradient-to-t from-slate-950/30 via-transparent to-transparent pointer-events-none"
-        aria-hidden="true"
       />
 
       {/* Subtle radial accent */}

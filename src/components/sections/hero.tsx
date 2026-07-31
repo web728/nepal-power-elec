@@ -11,7 +11,49 @@ import { siteConfig } from "@/lib/site-config";
 const REG_VISITOR = siteConfig.registration.visitor;
 const REG_EXHIBITOR = siteConfig.registration.exhibitor;
 
-const MAX_TILT = 9; // degrees — subtle, premium feel (not gimmicky)
+/** Central place to manage gallery images — add/remove/reorder freely. Works well with 8–10 images. */
+const GALLERY_IMAGES = [
+   { src: "/uploads/0L1A2654-min-1536x1024.jpg", alt: "Exhibition floor" },
+  { src: "/uploads/0L1A2354-min-1-1024x683.jpg", alt: "Exhibitor stand" },
+  { src: "/uploads/IMG_8276-min-300x200.jpg", alt: "Visitors networking" },
+  { src: "/uploads/np7-1024x681.jpg", alt: "Product demo" },
+  { src: "/uploads/IMG_8240-min-1536x1022.jpg", alt: "Panel discussion" },
+  { src: "/uploads/0L1A2376-min-1-1024x683.jpg", alt: "Award ceremony" },
+  { src: "/uploads/AYU_7443-min-1536x1024.jpg", alt: "Award ceremony" },
+  { src: "/uploads/0L1A2531-min-1-1024x683.jpg", alt: "Award ceremony" },
+  { src: "/uploads/559A5415-min.jpg", alt: "Ribbon cutting" },
+];
+
+const GALLERY_COLUMNS = 3;
+
+/**
+ * Auto-generates non-overlapping grid positions for any image count (works cleanly for 8–10).
+ * Each row alternates a slight vertical offset and each image gets a small alternating
+ * tilt — keeps things aligned but still feels organic instead of a rigid grid.
+ */
+function generateGalleryLayout(count: number) {
+  const rows = Math.ceil(count / GALLERY_COLUMNS);
+  const colWidth = 100 / GALLERY_COLUMNS;
+  const rowHeight = 100 / rows;
+
+  return Array.from({ length: count }, (_, i) => {
+    const col = i % GALLERY_COLUMNS;
+    const row = Math.floor(i / GALLERY_COLUMNS);
+
+    // stagger alternate rows sideways a little so columns don't feel too rigid
+    const rowStagger = row % 2 === 1 ? colWidth * 0.18 : 0;
+    // stagger alternate columns vertically a little for the same reason
+    const colStagger = col % 2 === 1 ? rowHeight * 0.12 : -rowHeight * 0.06;
+
+    const left = `${Math.min(col * colWidth + rowStagger, 100 - colWidth)}%`;
+    const top = `${Math.min(row * rowHeight + colStagger, 100 - rowHeight)}%`;
+
+    const rotate = (i % 2 === 0 ? -1 : 1) * (4 + ((i * 7) % 5)); // small varied tilt, deterministic
+    const size = 120 + ((i * 13) % 30); // 120–150px, varied but deterministic (no layout shift)
+
+    return { top, left, rotate, size };
+  });
+}
 
 type Particle = {
   x: number;
@@ -42,15 +84,14 @@ function HeroParticles() {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     function initParticles() {
-      // Density scales with area so mobile doesn't get overcrowded/laggy
-  const count = Math.max(50, Math.min(120, Math.floor((width * height) / 9000)));
+      const count = Math.max(50, Math.min(120, Math.floor((width * height) / 9000)));
       particlesRef.current = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
         vx: (Math.random() - 0.5) * 0.18,
         vy: (Math.random() - 0.5) * 0.18,
-      size: Math.random() * 2.2 + 1.0,
-opacity: Math.random() * 0.4 + 0.4,
+        size: Math.random() * 2.2 + 1.0,
+        opacity: Math.random() * 0.4 + 0.4,
       }));
     }
 
@@ -86,17 +127,14 @@ opacity: Math.random() * 0.4 + 0.4,
       const mouse = mouseRef.current;
 
       for (const p of particlesRef.current) {
-        // idle drift
         p.x += p.vx;
         p.y += p.vy;
 
-        // wrap around edges
         if (p.x < -10) p.x = width + 10;
         if (p.x > width + 10) p.x = -10;
         if (p.y < -10) p.y = height + 10;
         if (p.y > height + 10) p.y = -10;
 
-        // repel from cursor
         const dx = p.x - mouse.x;
         const dy = p.y - mouse.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -108,7 +146,7 @@ opacity: Math.random() * 0.4 + 0.4,
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-  ctx.fillStyle = `rgba(251, 191, 36, ${p.opacity})`;
+        ctx.fillStyle = `rgba(251, 191, 36, ${p.opacity})`;
         ctx.fill();
       }
 
@@ -119,7 +157,6 @@ opacity: Math.random() * 0.4 + 0.4,
     if (!prefersReducedMotion) {
       animate();
     } else {
-      // Draw a single static frame for reduced-motion users
       animate();
       cancelAnimationFrame(rafRef.current);
     }
@@ -145,54 +182,155 @@ opacity: Math.random() * 0.4 + 0.4,
   );
 }
 
-export function Hero() {
-  const cardWrapRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const glareRef = useRef<HTMLDivElement>(null);
+/**
+ * Desktop: floating image gallery.
+ * Images drift continuously with independent float cycles; hover lifts,
+ * de-rotates, and scales the image above its neighbours.
+ */
+function FloatingImageGallery() {
+  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const rotateX = useRef<((value: number) => void) | null>(null);
-  const rotateY = useRef<((value: number) => void) | null>(null);
+  const layout = generateGalleryLayout(GALLERY_IMAGES.length);
+  const images = GALLERY_IMAGES.map((img, i) => ({ ...img, ...layout[i] }));
+  const rows = Math.ceil(GALLERY_IMAGES.length / GALLERY_COLUMNS);
+  const containerHeight = 190 + rows * 110; // grows automatically as more images/rows are added
 
- useEffect(() => {
-  const card = cardRef.current;
-  if (!card) return;
+  useEffect(() => {
+    const floatTweens: gsap.core.Tween[] = [];
 
-  rotateX.current = gsap.quickTo(card, "rotationX", { duration: 0.5, ease: "power3.out" });
-  rotateY.current = gsap.quickTo(card, "rotationY", { duration: 0.5, ease: "power3.out" });
-}, []);
+    imageRefs.current.forEach((el, i) => {
+      if (!el) return;
 
-  function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
-    const el = cardWrapRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width; // 0..1
-    const py = (e.clientY - rect.top) / rect.height; // 0..1
+      const duration = 3 + Math.random() * 2; // 3s–5s, desynced per image
+      const distance = 12 + Math.random() * 10; // 12px–22px drift
 
-    const tiltY = (px - 0.5) * MAX_TILT * 2;
-    const tiltX = (0.5 - py) * MAX_TILT * 2;
-
-    rotateX.current?.(tiltX);
-    rotateY.current?.(tiltY);
-
-    if (glareRef.current) {
-      gsap.to(glareRef.current, {
-        "--glare-x": `${px * 100}%`,
-        "--glare-y": `${py * 100}%`,
-        opacity: 0.35,
-        duration: 0.4,
-        overwrite: "auto",
+      const tween = gsap.to(el, {
+        y: `+=${distance}`,
+        duration,
+        delay: i * 0.3,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
       });
-    }
+      floatTweens.push(tween);
+    });
+
+    return () => {
+      floatTweens.forEach((t) => t.kill());
+    };
+  }, []);
+
+  function handleEnter(i: number) {
+    const el = imageRefs.current[i];
+    if (!el) return;
+    gsap.to(el, {
+      scale: 2,
+      rotate: 0,
+      zIndex: 20,
+      boxShadow: "0 20px 40px rgba(0,0,0,0.35)",
+      duration: 0.35,
+      ease: "power2.out",
+      overwrite: "auto",
+    });
   }
 
-  function handlePointerLeave() {
-    rotateX.current?.(0);
-    rotateY.current?.(0);
-    if (glareRef.current) {
-      gsap.to(glareRef.current, { opacity: 0, duration: 0.4, overwrite: "auto" });
-    }
+  function handleLeave(i: number, originalRotate: number) {
+    const el = imageRefs.current[i];
+    if (!el) return;
+    gsap.to(el, {
+      scale: 1,
+      rotate: originalRotate,
+      zIndex: 1,
+      boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+      duration: 0.35,
+      ease: "power2.out",
+      overwrite: "auto",
+    });
   }
 
+  return (
+    <div
+      className="relative hidden w-full [perspective:1000px] lg:block"
+      style={{ height: containerHeight }}
+    >
+      {images.map((img, i) => (
+        <div
+          key={img.src}
+          ref={(el) => {
+            imageRefs.current[i] = el;
+          }}
+          onMouseEnter={() => handleEnter(i)}
+          onMouseLeave={() => handleLeave(i, img.rotate)}
+          className="absolute cursor-pointer overflow-hidden rounded-xl border border-white/15 will-change-transform"
+          style={{
+            top: img.top,
+            left: img.left,
+            width: img.size,
+            height: img.size * 0.75,
+            transform: `rotate(${img.rotate}deg)`,
+            boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+          }}
+        >
+          <Image src={img.src} alt={img.alt} fill className="object-cover" sizes="200px" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Mobile: infinite auto-scrolling carousel.
+ * The image track is duplicated once and looped with xPercent -50,
+ * giving a seamless, endless scroll with no visible reset jump.
+ */
+function MobileImageCarousel() {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    // Track holds two copies of the image list back to back.
+    // Animating xPercent from 0 to -50 moves exactly one full copy's width,
+    // so the loop point is invisible.
+    const tween = gsap.to(track, {
+      xPercent: -50,
+      duration: GALLERY_IMAGES.length * 4,
+      ease: "none",
+      repeat: -1,
+    });
+
+    return () => {
+      tween.kill();
+    };
+  }, []);
+
+  const loopedImages = [...GALLERY_IMAGES, ...GALLERY_IMAGES];
+
+  return (
+    <div className="relative w-full overflow-hidden lg:hidden">
+      {/* Fade edges so images don't hard-cut at the container bounds */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-black/40 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-black/40 to-transparent" />
+
+      <div ref={trackRef} className="flex w-max gap-3 py-1">
+        {loopedImages.map((img, i) => (
+          <div
+            key={`${img.src}-${i}`}
+            className="relative h-32 w-44 flex-shrink-0 overflow-hidden rounded-xl border border-white/15 shadow-lg shadow-black/20 sm:h-36 sm:w-52"
+          >
+            <Image src={img.src} alt={img.alt} fill className="object-cover" sizes="220px" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function Hero() {
   return (
     <section className="relative overflow-hidden">
       {/* 1. Background Image */}
@@ -273,43 +411,16 @@ export function Hero() {
               Download Brochure
             </TrackedLink>
           </div>
+
+          {/* Mobile-only infinite scroll carousel sits under the copy on small screens */}
+          <div className="mt-6">
+            <MobileImageCarousel />
+          </div>
         </div>
 
-        {/* 3D tilt image card */}
+        {/* Desktop-only floating gallery */}
         <div className="lg:col-span-5">
-          <div
-            ref={cardWrapRef}
-            onPointerMove={handlePointerMove}
-            onPointerLeave={handlePointerLeave}
-            className="[perspective:1200px]"
-          >
-            <div
-              ref={cardRef}
-              className="relative overflow-hidden rounded-xl border border-white/15 bg-white/5 shadow-2xl shadow-black/20 [transform-style:preserve-3d] will-change-transform"
-            >
-              <div className="relative aspect-[16/10] w-full">
-                <Image
-                  src="/uploads/0L1A2376-min-1-1024x683.jpg"
-                  alt="Grid of photographs showing exhibitor stands, visitors and the exhibition floor at the 2025 edition of the Nepal Electric, Power and Lights Expo"
-                  fill
-                  className="object-cover"
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                  priority
-                />
-              </div>
-
-              {/* Mouse-tracked glare/shine */}
-              <div
-                ref={glareRef}
-                className="pointer-events-none absolute inset-0 opacity-0"
-                style={{
-                  background:
-                    "radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%), rgba(255,255,255,0.35), transparent 60%)",
-                }}
-                aria-hidden="true"
-              />
-            </div>
-          </div>
+          <FloatingImageGallery />
         </div>
       </Container>
     </section>

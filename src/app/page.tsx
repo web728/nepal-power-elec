@@ -42,8 +42,8 @@ export default function HomePage() {
         ctaLabel="Why Visit"
         ctaHref="/why-visit"
         tone="dark"
-        bgImage="/uploads/cloud-service-provider.jpg" 
-        bgOpacity="opacity-60"
+        bgImage="/uploads/nepal-electric-website-banner.jpeg" 
+        bgOpacity="opacity-90"
       />
       <StatsSection />
       <GallerySection />

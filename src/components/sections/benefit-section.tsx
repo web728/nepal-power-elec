@@ -42,7 +42,7 @@ export function BenefitSection({
           h-auto object-contain
           
           /* Mobile: Badi image, top corner positioning */
-          w-[250vw] max-w-none translate-x-[28%] -translate-y-[20%]
+          w-[100vw] max-w-none translate-x-[18%] -translate-y-[10%]
           
           /* Tablet Sizing */
           sm:w-[600px] sm:translate-x-[10%] sm:-translate-y-[15%]

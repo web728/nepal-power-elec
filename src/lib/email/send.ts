@@ -19,6 +19,24 @@ function createTransporter() {
   });
 }
 
+// Cheap HTML → plain-text fallback so clients without HTML rendering (and
+// spam filters that penalize HTML-only mail) still get readable content.
+function htmlToPlainText(html: string): string {
+  return html
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|div|tr|h1|h2|h3)>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 export async function sendEmail({
   to,
   subject,
@@ -32,6 +50,7 @@ export async function sendEmail({
 }) {
   const safeSubject = subject.replace(/[\r\n]+/g, " ").trim();
   const safeReplyTo = replyTo?.replace(/[\r\n]+/g, " ").trim();
+  const text = htmlToPlainText(html);
 
   const transporter = createTransporter();
   const from = process.env.SMTP_FROM_NAME
@@ -55,6 +74,7 @@ export async function sendEmail({
         to,
         subject: safeSubject,
         html,
+        text,
         ...(safeReplyTo ? { replyTo: safeReplyTo } : {}),
       });
       return { sent: true };

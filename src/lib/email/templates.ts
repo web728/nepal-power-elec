@@ -19,7 +19,20 @@ export function sanitizeHeaderValue(value: string): string {
   return value.replace(/[\r\n]+/g, " ").trim();
 }
 
-function baseTemplate(heading: string, body: string, referenceNumber: string) {
+// referenceNumber is optional now — pass null/undefined to skip the
+// reference box entirely (e.g. newsletter confirmations that don't have
+// a real reference number).
+function baseTemplate(heading: string, body: string, referenceNumber?: string | null) {
+  const referenceBlock = referenceNumber
+    ? `<table role="presentation" style="width:100%;background:#f5f8f9;border-radius:8px;border:1px solid #dce4e6;margin-bottom:20px;">
+                  <tr>
+                    <td style="padding:14px 18px;font-size:13px;color:#5b6b74;">
+                      Reference number<br /><strong style="color:#14212b;font-size:15px;">${escapeHtml(referenceNumber)}</strong>
+                    </td>
+                  </tr>
+                </table>`
+    : "";
+
   return `<!doctype html>
 <html>
   <body style="margin:0;padding:0;background:#f5f8f9;font-family:'Segoe UI',Arial,sans-serif;color:#14212b;">
@@ -39,13 +52,7 @@ function baseTemplate(heading: string, body: string, referenceNumber: string) {
               <td style="padding:32px;">
                 <h2 style="margin:0 0 16px;font-size:18px;color:#14212b;">${heading}</h2>
                 <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#14212b;">${body}</p>
-                <table role="presentation" style="width:100%;background:#f5f8f9;border-radius:8px;border:1px solid #dce4e6;margin-bottom:20px;">
-                  <tr>
-                    <td style="padding:14px 18px;font-size:13px;color:#5b6b74;">
-                      Reference number<br /><strong style="color:#14212b;font-size:15px;">${referenceNumber}</strong>
-                    </td>
-                  </tr>
-                </table>
+                ${referenceBlock}
                 <p style="margin:0 0 4px;font-size:13px;color:#5b6b74;">${siteConfig.venue.full}</p>
                 <p style="margin:0;font-size:13px;"><a href="${siteConfig.siteUrl}" style="color:#2688b8;">${siteConfig.siteUrl.replace(/^https?:\/\//, "")}</a></p>
               </td>
@@ -134,15 +141,17 @@ export function organizerNotificationEmail({
   return { subject: `[${enquiryTypeLabel}] ${referenceNumber}`, html };
 }
 
-// Confirmation copy transcribed verbatim from the approved Full Website
-// Content master document's "Form Confirmation and Error Messages" page.
+// Confirmation copy transcribed from the approved Full Website Content
+// master document's "Form Confirmation and Error Messages" page, with
+// subject lines standardized to a single professional convention:
+//   "<Action> — <Event Short Name>"
 
 export function exhibitorEnquiryEmail(referenceNumber: string) {
   return {
-    subject: "Enquiry Received — Book a Stand",
+    subject: `Exhibitor Enquiry Received — ${siteConfig.shortName}`,
     html: baseTemplate(
-      "Enquiry Received",
-      "Thank you for your interest in exhibiting. The organizing team will review the company and product information provided. Submission does not reserve or confirm a stand.",
+      "Your Exhibitor Enquiry Has Been Received",
+      "Thank you for your interest in exhibiting. Our team will review the company and product information you've provided and get back to you shortly. Please note that submitting this form does not reserve or confirm a stand.",
       referenceNumber
     ),
   };
@@ -150,10 +159,10 @@ export function exhibitorEnquiryEmail(referenceNumber: string) {
 
 export function visitorRegistrationEmail(referenceNumber: string) {
   return {
-    subject: "Registration Received — Nepal Electric, Power and Lights Expo 2026",
+    subject: `Registration Confirmed — ${siteConfig.shortName}`,
     html: baseTemplate(
-      "Registration Received",
-      "Thank you for registering your interest in attending the 2026 expo. Keep your confirmation and review the official website before travelling.",
+      "Your Registration Has Been Received",
+      "Thank you for registering your interest in attending. Please keep this confirmation for your records and check the official website closer to the date for updates.",
       referenceNumber
     ),
   };
@@ -161,10 +170,10 @@ export function visitorRegistrationEmail(referenceNumber: string) {
 
 export function mediaEnquiryEmail(referenceNumber: string) {
   return {
-    subject: "Request Received — Media Enquiry",
+    subject: `Media Enquiry Received — ${siteConfig.shortName}`,
     html: baseTemplate(
-      "Request Received",
-      "Your media request has been submitted for review. Submission does not confirm accreditation, interview availability, photography permission or access to restricted areas.",
+      "Your Media Enquiry Has Been Received",
+      "Thank you for reaching out. Your request has been submitted for review. Please note that submission does not confirm accreditation, interview availability, photography permission, or access to restricted areas.",
       referenceNumber
     ),
   };
@@ -172,10 +181,10 @@ export function mediaEnquiryEmail(referenceNumber: string) {
 
 export function contactEnquiryEmail(referenceNumber: string) {
   return {
-    subject: "Thank You — Your Enquiry Has Been Received",
+    subject: `Enquiry Received — ${siteConfig.shortName}`,
     html: baseTemplate(
-      "Thank You",
-      "Your enquiry has been submitted to the organizing team. A representative may contact you using the details provided. Submission does not confirm registration, exhibition space, media accreditation or partnership status.",
+      "Thank You for Reaching Out",
+      "Your enquiry has been received and shared with our team. A representative will get in touch using the details you've provided. Please note that submission does not confirm registration, exhibition space, media accreditation, or partnership status.",
       referenceNumber
     ),
   };
@@ -183,10 +192,10 @@ export function contactEnquiryEmail(referenceNumber: string) {
 
 export function accessibilityFeedbackEmail(referenceNumber: string) {
   return {
-    subject: "Accessibility Feedback Received",
+    subject: `Accessibility Feedback Received — ${siteConfig.shortName}`,
     html: baseTemplate(
-      "Thank You",
-      "Your accessibility feedback has been submitted to the organizing team for review. A representative may contact you using the details provided.",
+      "Thank You for Your Feedback",
+      "Your accessibility feedback has been received and shared with our team for review. A representative will follow up using the details you've provided if needed.",
       referenceNumber
     ),
   };
@@ -194,10 +203,10 @@ export function accessibilityFeedbackEmail(referenceNumber: string) {
 
 export function quickEnquiryEmail(referenceNumber: string) {
   return {
-    subject: "Enquiry Received — Nepal Electric, Power and Lights Expo 2026",
+    subject: `Enquiry Received — ${siteConfig.shortName}`,
     html: baseTemplate(
       "Thank You for Your Interest",
-      "Your enquiry has been received. A member of the organizing team will review your submission and may contact you using the details provided.",
+      "Your enquiry has been received. A member of our team will review your submission and get in touch using the details you've provided.",
       referenceNumber
     ),
   };
@@ -205,11 +214,11 @@ export function quickEnquiryEmail(referenceNumber: string) {
 
 export function newsletterConfirmEmail() {
   return {
-    subject: "Confirm Your Subscription",
+    subject: `Confirm Your Subscription — ${siteConfig.shortName}`,
     html: baseTemplate(
       "Confirm Your Subscription",
-      "You're almost done. Please confirm you'd like to receive verified announcements about registration, documents and previous-edition highlights for the 5th Nepal Electric, Power and Lights International Expo 2026.",
-      "SUBSCRIPTION"
+      "You're almost done. Please confirm your subscription to receive verified announcements about registration, documents, and highlights from previous editions.",
+      null
     ),
   };
 }

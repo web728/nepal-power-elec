@@ -59,7 +59,7 @@ export const siteConfig = {
     phone: "+91 9810855697",
     phoneHref: "+919810855697",
     email: "namit@futurextrade.com",
-    logo: "/logo/futurex.png",
+    logo: "/logo/Futurex.png",
     url: "https://www.futurextrade.com", // Add website URL
   },
   {

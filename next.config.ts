@@ -35,8 +35,8 @@ const securityHeaders = [
       "img-src 'self' data: https://www.google-analytics.com https://www.google.com https://www.gstatic.com https://*.facebook.com https://*.fbcdn.net",
       "font-src 'self' data:",
       "connect-src 'self' https://www.google-analytics.com https://*.supabase.co https://www.google.com",
-      // 👇 Facebook aur Google Maps ki framing allow ki hai yahan
-      "frame-src 'self' https://www.google.com https://recaptcha.google.com https://www.facebook.com https://web.facebook.com https://*.facebook.com",
+      // 👇 Google Maps ke subdomains aur maps.google.com ko frame-src me allow kar diya hai
+      "frame-src 'self' https://www.google.com https://maps.google.com https://*.google.com https://recaptcha.google.com https://www.facebook.com https://web.facebook.com https://*.facebook.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",

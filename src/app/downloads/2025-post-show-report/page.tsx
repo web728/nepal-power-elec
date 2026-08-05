@@ -12,7 +12,7 @@ const headlineFigures = ["150+ exhibitors", "Participation from 5+ countries", "
 export const metadata: Metadata = {
   title: { absolute: "2025 Post-Show Report | Nepal Electric, Power and Lights Expo" },
   description:
-    "Download the organizer-issued 2025 post-show report with statistics, visitor analysis, photographs and media coverage.",
+    "Download the  2025 post-show report with statistics, visitor analysis, photographs and media coverage.",
   alternates: { canonical: "/downloads/2025-post-show-report" },
 };
 

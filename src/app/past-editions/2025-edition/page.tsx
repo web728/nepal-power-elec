@@ -39,29 +39,37 @@ export default function Edition2025Page() {
           energy, lighting, renewable-energy and allied sectors.
         </p>
 
-        <div className="mt-12">
-          <SectionHeading title="Organizer-Reported Results" />
-          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-            <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
-              150+ exhibitors
-            </li>
-            <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
-              Participation from 5+ countries
-            </li>
-            <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
-              15,000+ visitors
-            </li>
-          </ul>
-          <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">
-            The post-show report also presents visitor-role data, industry representation,
-            business intent, company size, survey findings, photographs and media coverage.
-          </p>
-        </div>
+       <div className="mt-12">
+  <SectionHeading title="2025 Edition Results" />
+  
+  <ul className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+    <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+      <strong>5+</strong> Participating Countries
+    </li>
+    <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+      <strong>150+</strong> Exhibitors
+    </li>
+    <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+      <strong>300+</strong> Brands & Solutions
+    </li>
+    <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+      <strong>15,000+</strong> Trade Visitors
+    </li>
+    <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+      <strong>3 Days</strong> of Business Networking
+    </li>
+  </ul>
+
+  <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">
+    The post-show report also presents visitor-role data, industry representation,
+    business intent, company size, survey findings, photographs and media coverage.
+  </p>
+</div>
 
         <div className="mt-12">
           <SectionHeading title="Opening Ceremony" />
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">
-            According to the organizer-issued post-show report: the report records the attendance
+            According to the  post-show report: the report records the attendance
             of Damodar Bhandari, identified in the document as Minister of Industry, Commerce and
             Supplies, at the opening ceremony.
           </p>

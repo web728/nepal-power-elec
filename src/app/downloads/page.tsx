@@ -45,7 +45,7 @@ export default function DownloadsPage() {
           <Card className="flex h-full flex-col">
             <h2 className="text-xl font-semibold text-ink">2025 Post-Show Report</h2>
             <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">
-              Download the organizer-issued report for the fourth edition, including reported
+              Download the  report for the fourth edition, including reported
               participation figures, visitor analysis, survey findings, photographs and media
               coverage.
             </p>

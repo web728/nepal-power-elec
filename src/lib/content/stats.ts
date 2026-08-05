@@ -3,16 +3,18 @@
 // "organizer-reported" qualifier — see dataQualifier in site-config.ts.
 
 export const eventScale = [
-  { label: "Exhibitors", value: "150+" },
   { label: "Participating Countries", value: "5+" },
-  { label: "Visitors", value: "15,000+" },
-];
+  { label: "Exhibitors", value: "150+" },
+  { label: "Brands & Solutions", value: "300+" },
+  { label: "Trade Visitors", value: "15,000+" },
+  { label: "Days of Business Networking", value: "3" },
+];  
 
 export const visitorRoles = [
-  { label: "Business Owners / Directors", value: 28 },
-  { label: "Purchase Managers / Procurement Heads", value: 22 },
+  { label: "Business Owners & Directors", value: 28 },
+  { label: "Purchase Managers & Procurement Heads", value: 22 },
   { label: "Engineers & Technical Experts", value: 18 },
-  { label: "Distributors / Dealers", value: 16 },
+  { label: "Distributors & Dealers", value: 16 },
   { label: "Consultants & Advisors", value: 9 },
   { label: "Others", value: 7 },
 ];

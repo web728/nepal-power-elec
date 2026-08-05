@@ -24,7 +24,7 @@ const sections = [
   },
   {
     heading: "Previous-Edition Data",
-    body: "The 2025 figures and survey findings are taken from the organizer-issued post-show report. The document does not disclose a complete independent audit or detailed survey methodology. Previous results do not guarantee future attendance or outcomes.",
+    body: "The 2025 figures and survey findings are taken from the  post-show report. The document does not disclose a complete independent audit or detailed survey methodology. Previous results do not guarantee future attendance or outcomes.",
   },
   {
     heading: "Third-Party Services",

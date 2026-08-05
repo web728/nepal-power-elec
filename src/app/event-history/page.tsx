@@ -53,7 +53,7 @@ export default function EventHistoryPage() {
 
           {/* 3rd Edition */}
           <Card>
-            <h2 className="text-xl font-semibold text-ink">3rd Edition &mdash; 2024</h2>
+            <h2 className="text-xl font-semibold text-ink">3rd Edition &mdash; September 2024</h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
               The third edition was held from 6&ndash;8 September 2024 at Bhrikuti Mandap,
               Kathmandu, connecting key decision-makers, engineers, and suppliers.
@@ -62,7 +62,7 @@ export default function EventHistoryPage() {
 
           {/* 4th Edition */}
           <Card>
-            <h2 className="text-xl font-semibold text-ink">4th Edition &mdash; 2025</h2>
+            <h2 className="text-xl font-semibold text-ink">4th Edition &mdash; August 2025</h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
               The fourth edition was held from 29&ndash;31 August 2025 at Bhrikuti Mandap Exhibition
               Hall, Kathmandu, featuring 150+ exhibitors and 15,000+ visitors.

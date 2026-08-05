@@ -17,7 +17,7 @@ const initialValues: ContactFormInput = {
   fullName: "",
   email: "",
   phone: "",
-  country: "India",
+  country: "Nepal",
   company: "",
   enquiryType: "",
   subject: "",

@@ -13,7 +13,7 @@ import { FinalCta } from "@/components/sections/final-cta";
 import { whyExhibitBenefits, whyVisitBenefits } from "@/lib/content/home-content";
 
 export const metadata: Metadata = {
-  title: "Nepal Electric, Power and Lights Expo 2026 | Kathmandu",
+  title: "5th Nepal Electric, Power and Lights International Expo 2026 | Kathmandu",
   description:
     "Join the 5th Nepal Electric, Power and Lights International Expo, 4-6 September 2026 at Bhrikuti Mandap Exhibition Hall, Kathmandu.",
   alternates: { canonical: "/" },

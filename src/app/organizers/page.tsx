@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { Phone, Mail } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
 import { Container } from "@/components/ui/container";
@@ -21,37 +22,64 @@ export default function OrganizersPage() {
   return (
     <>
       <BreadcrumbJsonLd items={[{ label: "Organizers", href: "/organizers" }]} />
-      <PageHero title="Jointly Organized by Three Event Companies" breadcrumbs={breadcrumbs}
-        bgImage="/images/hero/0L1A2244-min-scaled.jpg" 
-        bgOpacity="opacity-50"  />
+      <PageHero 
+        title="Meet the Organizers" 
+        breadcrumbs={breadcrumbs}
+        bgImage="/uploads/organi.jpg" 
+        bgOpacity="opacity-50"  
+      />
       <Container as="section" className="py-12 sm:py-16">
         <p className="max-w-3xl text-base leading-relaxed text-ink sm:text-lg">
-          The 5th Nepal Electric, Power and Lights International Expo 2026 is jointly organized
-          by Futurex Trade Fair and Events Pvt. Ltd., Exhibitions &amp; Trade Services India Pvt.
-          Ltd. and Media Space Solutions Pvt. Ltd.
+          The Nepal Electric, Power and Lights International Expo is jointly organized 
+          by Futurex Trade Fair and Events Pvt. Ltd., Exhibitions &amp; Trade Services India Pvt. 
+          Ltd., and Media Space Solutions Pvt. Ltd.
         </p>
 
         <div className="mt-12">
-          <SectionHeading title="Shared Event Responsibilities" />
+          <SectionHeading title="Our Organizing Partners" />
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">
-            The organizing partnership supports exhibitor participation, visitor communication,
-            event promotion, media coordination and operational delivery. Any of the three
-            listed representatives may be contacted for event-related assistance.
+            Together, the organizing partners bring expertise in international trade exhibitions, 
+            exhibitor coordination, visitor outreach, marketing and event operations. 
+            For exhibitor participation, sponsorship opportunities, visitor inquiries or general 
+            event information, please contact the relevant representative listed below.
           </p>
         </div>
 
-          <div className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-xl border border-border bg-white p-6 shadow-sm sm:p-10">
-                 <div className="relative aspect-[2000/270] w-full">
-                   <Image
-                     src={siteConfig.organizersLockupImage}
-                     alt="Logos of the three joint organizers: Futurex Trade Fair and Events Pvt. Ltd., Exhibitions & Trade Services India Pvt. Ltd., and Media Space Solutions Pvt. Ltd."
-                     fill
-                     className="object-contain"
-                     sizes="(min-width: 1024px) 900px, 100vw"
-                   />
-                 </div>
-               </div>
+        {/* Separate Clickable Logos Container styled like the provided image layout */}
+    <div className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-10">
+  {/* CSS Grid layout dynamic alignment ke liye */}
+  <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-3 md:gap-0">
+    {siteConfig.organizers.map((org, index) => (
+      <div 
+        key={org.key} 
+        className="relative flex w-full items-center justify-center"
+      >
+        <Link
+          href={org.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative flex h-24 w-full max-w-[220px] items-center justify-center transition-transform duration-200 hover:scale-105 sm:h-28"
+        >
+          <Image
+            src={org.logo}
+            alt={`${org.name} Logo`}
+            fill
+            className="object-contain"
+            sizes="(min-width: 768px) 400px, 100vw"
+            priority
+          />
+        </Link>
 
+        {/* Vertical Divider - Absolute Positioned between Grid Columns */}
+        {index < siteConfig.organizers.length - 1 && (
+          <div className="hidden h-24 w-[1px] bg-gray-300 md:absolute md:right-0 md:block" />
+        )}
+      </div>
+    ))}
+  </div>
+</div>
+
+        {/* Organizer Contact Cards */}
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {siteConfig.organizers.map((org) => (
             <div

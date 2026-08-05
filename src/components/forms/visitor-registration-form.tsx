@@ -18,7 +18,7 @@ const initialValues: VisitorRegistrationInput = {
   designation: "",
   email: "",
   phone: "",
-  country: "India",
+  country: "Nepal",
   companyName: "",
   companyWebsite: "",
   industry: "",

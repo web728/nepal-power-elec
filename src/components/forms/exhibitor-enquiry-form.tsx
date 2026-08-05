@@ -18,7 +18,7 @@ const initialValues: ExhibitorEnquiryInput = {
   designation: "",
   email: "",
   phone: "",
-  country: "India",
+  country: "Nepal",
   companyName: "",
   companyWebsite: "",
   companyAddress: "",

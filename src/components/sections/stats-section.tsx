@@ -1,7 +1,8 @@
+// @/components/sections/stats-section.tsx
+
 import { Container } from "@/components/ui/container";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { eventScale } from "@/lib/content/stats";
-import { siteConfig } from "@/lib/site-config";
 
 export function StatsSection() {
   return (
@@ -15,13 +16,15 @@ export function StatsSection() {
         aria-hidden="true"
       />
       <Container className="relative">
-        <p className="mb-2 text-center text-sm font-bold uppercase tracking-wide text-yellow">
+        <p className="mb-8 text-center text-sm font-bold uppercase tracking-wide text-yellow">
           2025 Edition Results
         </p>
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+        
+        {/* Updated grid to support 5 items gracefully */}
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-5">
           {eventScale.map((stat) => (
             <div key={stat.label} className="text-center">
-              <p className="text-5xl font-bold text-white sm:text-6xl">
+              <p className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
                 <AnimatedCounter value={stat.value} />
               </p>
               <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-white/90">

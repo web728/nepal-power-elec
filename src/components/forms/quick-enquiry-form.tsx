@@ -25,7 +25,7 @@ const initialValues: QuickEnquiryInput = {
   fullName: "",
   email: "",
   phone: "",
-  country: "India",
+  country: "Nepal",
   interest: "",
   message: "",
   privacyConsent: false,

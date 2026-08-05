@@ -16,7 +16,7 @@ const downloads = [
   },
   {
     title: "2025 Post-Show Report",
-    description: "Organizer-reported results and visitor survey findings from the 2025 (4th) edition.",
+    description: "Highlights, participation insights and visitor findings from the 4th edition held in 2025.",
     href: "/downloads/Nepal-Electric-Power-Lights-Expo-2025-Post-Show-Report.pdf",
     event: AnalyticsEvents.REPORT_DOWNLOAD,
   },
@@ -25,27 +25,7 @@ const downloads = [
 export function DownloadsSection() {
   return (
     <section id="downloads" className="relative overflow-hidden bg-white py-16 sm:py-22 scroll-mt-24">
-      {/* 1. Top Left Graphic - Hidden on Mobile (`hidden sm:block`) */}
- {/* 1. Bottom Left Graphic on Mobile (Seedha) / Top Left on Desktop (Ulta) */}
-<div className="absolute left-0 bottom-0 sm:top-0 sm:bottom-auto pointer-events-none z-0 opacity-100 overflow-hidden block">
-  <Image
-    src="/brandings/wind.png"
-    alt="Background Graphic Left"
-    width={1200}
-    height={1200}
-    className="
-      h-auto object-contain
-      /* Mobile Sizing (Bottom Left & Seedha) */
-      w-[120px] max-w-none -translate-x-[20%] translate-y-[25%] rotate-0
-      /* Tablet Sizing (Ulta / Rotate-180) */
-      sm:w-[300px] sm:-translate-x-[20%] sm:-translate-y-[25%] sm:rotate-180
-      /* Laptop / Desktop Sizing */
-      lg:w-[650px] lg:-translate-x-[15%] lg:-translate-y-[20%]
-      /* Extra Large Screens */
-      xl:w-[350px] xl:-translate-x-[10%] xl:-translate-y-[15%]
-    "
-  />
-</div>
+ 
 
 {/* 2. Top Right Graphic - Mobile par Ulta (rotate-180) */}
 <div className="absolute right-0 top-0 pointer-events-none z-0 opacity-100 overflow-hidden">

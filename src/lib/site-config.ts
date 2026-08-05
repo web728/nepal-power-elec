@@ -4,9 +4,21 @@
 // brochure, the 2025 post-show report, and the verified facts supplied in the
 // build brief — see docs/FILE_INVENTORY.md for the source-to-fact mapping.
 
+export interface Organizer {
+  key: string;
+  name: string;
+  contactName: string;
+  phone: string;
+  phoneHref: string;
+  email: string;
+ logo: string; 
+  url: string;
+}
+
+
 export const siteConfig = {
   eventName: "5th Nepal Electric, Power and Lights International Expo 2026",
-  shortName: "Nepal Electric, Power and Lights Expo",
+  shortName: "Nepal Electric, Power and Lights International Expo",
   edition: "5th",
   tagline:
     "Nepal's trade exhibition for the electrical, power, energy and lighting industries — 4-6 September 2026, Kathmandu.",
@@ -39,35 +51,40 @@ export const siteConfig = {
   // The three joint organizers. All three must always receive equal
   // prominence — do not reorder, resize, or otherwise imply a primary/
   // secondary/lead/supporting relationship anywhere in the UI.
-  organizers: [
-    {
-      key: "futurex",
-      name: "Futurex Trade Fair and Events Pvt. Ltd.",
-      contactName: "Mr. Namit Gupta",
-      phone: "+91 9810855697",
-      phoneHref: "+919810855697",
-      email: "namit@futurextrade.com",
-      logo: "/images/brand/organizers/futurex-trade-fair-events-logo.png",
-    },
-    {
-      key: "etsipl",
-      name: "Exhibitions & Trade Services India Pvt. Ltd.",
-      contactName: "Mr. Vijyanka Brighuvanshi",
-      phone: "+91 9324232529",
-      phoneHref: "+919324232529",
-      email: "vijayanka@etsipl.in",
-      logo: null as string | null,
-    },
-    {
-      key: "mediaspace",
-      name: "Media Space Solutions Pvt. Ltd.",
-      contactName: "Mr. Srijal Bhattarai",
-      phone: "+977 9801171141",
-      phoneHref: "+9779801171141",
-      email: "info@mss.com.np",
-      logo: null as string | null,
-    },
-  ],
+ organizers: [
+  {
+    key: "futurex",
+    name: "Futurex Trade Fair and Events Pvt. Ltd.",
+    contactName: "Mr. Namit Gupta",
+    phone: "+91 9810855697",
+    phoneHref: "+919810855697",
+    email: "namit@futurextrade.com",
+    logo: "/logo/futurex.png",
+    url: "https://www.futurextrade.com", // Add website URL
+  },
+  {
+    key: "etsipl",
+    name: "Exhibitions & Trade Services India Pvt. Ltd.",
+    contactName: "Mr. Vijyanka Brighuvanshi",
+    phone: "+91 9324232529",
+    phoneHref: "+919324232529",
+    email: "vijayanka@etsipl.in",
+    logo: "/logo/ETSIPL.png", // Path update karein
+    url: "https://www.etsipl.in", // Add website URL
+  },
+  {
+    key: "mediaspace",
+    name: "Media Space Solutions Pvt. Ltd.",
+    contactName: "Mr. Srijal Bhattarai",
+    phone: "+977 9801171141",
+    phoneHref: "+9779801171141",
+    email: "info@mss.com.np",
+    logo: "/logo/Media-Space.png", // Path update karein
+    url: "https://www.mediaspace.com.np", // Add website URL
+  },
+] as Organizer[],
+
+
   organizersLockupImage: "/images/brand/organizers/nepal-expo-2026-organizers-lockup.jpg",
   eventLogo: "/images/brand/event/nepal-electric-power-lights-expo-2026-primary-logo.png",
   registration: {

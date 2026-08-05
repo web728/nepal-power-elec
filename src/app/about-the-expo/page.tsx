@@ -27,7 +27,7 @@ export default function AboutTheExpoPage() {
       />
       <Container as="section" className="py-12 sm:py-16">
         <p className="max-w-3xl text-base leading-relaxed text-ink sm:text-lg">
-          The Nepal Electric, Power and Lights International Expo is a business exhibition for
+          5th Nepal Electric, Power and Lights International Expo is a business exhibition for
           manufacturers, suppliers, importers, distributors, dealers, engineers, consultants,
           project developers, utilities, contractors, institutions and buyers operating across
           the electrical and energy sectors.

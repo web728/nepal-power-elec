@@ -23,7 +23,7 @@ const initialValues: MediaEnquiryInput = {
   mediaWebsite: "",
   email: "",
   phone: "",
-  country: "",
+  country: "Nepal",
   mediaType: "",
   language: "",
   enquiryType: "",

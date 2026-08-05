@@ -46,7 +46,7 @@ export function GallerySection() {
       <Container>
         <SectionHeading
           eyebrow="Past Edition"
-          title="2025 Edition Evidence"
+          title="2025 Edition Glimpses"
           align="center"
           className="mx-auto"
         />
@@ -66,23 +66,6 @@ export function GallerySection() {
                   className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 />
-
-                {/* Subtle Hover Overlay */}
-                <div className="absolute inset-0 bg-teal-dark/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                {/* Top Badge */}
-                <span className="absolute top-2.5 left-2.5 rounded-md bg-white/90 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-teal-dark shadow-sm backdrop-blur-sm border border-border/50">
-                  Glimpse #{index + 1}
-                </span>
-              </div>
-
-              <div className="px-2 pt-3 pb-1">
-                <h3 className="text-sm font-bold text-teal-dark">
-                  {image.title}
-                </h3>
-                <figcaption className="mt-1 text-xs leading-relaxed text-muted">
-                  {galleryImageCaption}
-                </figcaption>
               </div>
             </figure>
           ))}

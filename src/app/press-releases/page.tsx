@@ -48,7 +48,7 @@ export default function PressReleasesPage() {
               electronics, automation, appliances, consumer electronics and related services.
             </p>
             <p>
-              The fifth edition follows the 2025 event, for which the organizer-issued post-show
+              The fifth edition follows the 2025 event, for which the  post-show
               report recorded 150+ exhibitors, participation from 5+ countries and 15,000+
               visitors. These figures are organizer-reported.
             </p>

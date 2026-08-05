@@ -19,7 +19,7 @@ const supportedByLogos = [
   {
     id: 2,
     name: "Nepal Electricity Authority",
-    src: "/logo/NEA Official Logo.png",
+    src: "/logo/nepal-logo.png",
     url: "https://www.neanepal.org.np/",
   },
   {
@@ -33,6 +33,17 @@ const supportedByLogos = [
     name: "IPPAN",
     src: "/logo/IPPAN-New-Logo.png",
     url: "https://www.ippan.org.np/",
+  }, 
+  {
+    id: 5,
+    name: "SEEN",
+    src: "/logo/60.png",
+  },
+  {
+    id: 6,
+    name: "SOPPAN",
+    src: "/logo/70.png",
+    url: "https://soppan.org.np/",
   },
 ];
 
@@ -50,27 +61,37 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
               className="mx-auto"
             />
 
-            <div className="mx-auto mt-8 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
-              {supportedByLogos.map((logo) => (
-                <a
-                  key={logo.id}
-                  href={logo.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={`Visit ${logo.name}`}
-                  className="group flex items-center justify-center rounded-xl border border-border bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-teal hover:shadow-md"
-                >
-                  <div className="relative aspect-[3/2] w-full">
-                    <Image
-                      src={logo.src}
-                      alt={logo.name}
-                      fill
-                      className="object-contain transition-transform duration-200 group-hover:scale-105"
-                      sizes="(min-width: 640px) 200px, 50vw"
-                    />
-                  </div>
-                </a>
-              ))}
+            {/* 6 Logos Alignment: 2 Columns (Mobile), 3 Columns (Tablet), 6 Columns (Desktop) */}
+            <div className="mx-auto mt-8 grid max-w-5xl grid-cols-2 items-center justify-center gap-4 sm:grid-cols-3 lg:grid-cols-6 sm:gap-6">
+              {supportedByLogos.map((logo) => {
+                const CardWrapper = logo.url ? "a" : "div";
+                const wrapperProps = logo.url
+                  ? {
+                      href: logo.url,
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                      title: `Visit ${logo.name}`,
+                    }
+                  : {};
+
+                return (
+                  <CardWrapper
+                    key={logo.id}
+                    {...wrapperProps}
+                    className="group flex h-28 w-full items-center justify-center rounded-xl border border-border bg-white p-3 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-teal hover:shadow-md"
+                  >
+                    <div className="relative flex h-full w-full items-center justify-center">
+                      <Image
+                        src={logo.src}
+                        alt={logo.name}
+                        fill
+                        className="object-contain p-1 transition-transform duration-200 group-hover:scale-105"
+                        sizes="(min-width: 1024px) 160px, (min-width: 640px) 200px, 50vw"
+                      />
+                    </div>
+                  </CardWrapper>
+                );
+              })}
             </div>
           </div>
         )}

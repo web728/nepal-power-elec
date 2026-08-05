@@ -39,40 +39,44 @@ export default function Edition2025Page() {
           energy, lighting, renewable-energy and allied sectors.
         </p>
 
-       <div className="mt-12">
-  <SectionHeading title="2025 Edition Results" />
-  
-  <ul className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-    <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
-      <strong>5+</strong> Participating Countries
-    </li>
-    <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
-      <strong>150+</strong> Exhibitors
-    </li>
-    <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
-      <strong>300+</strong> Brands & Solutions
-    </li>
-    <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
-      <strong>15,000+</strong> Trade Visitors
-    </li>
-    <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
-      <strong>3 Days</strong> of Business Networking
-    </li>
-  </ul>
+        <div className="mt-12">
+          <SectionHeading title="2025 Edition Results" />
+          
+          <ul className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+            <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+              <strong>5+</strong> Participating Countries
+            </li>
+            <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+              <strong>150+</strong> Exhibitors
+            </li>
+            <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+              <strong>300+</strong> Brands & Solutions
+            </li>
+            <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+              <strong>15,000+</strong> Trade Visitors
+            </li>
+            <li className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-ink">
+              <strong>3 Days</strong> of Business Networking
+            </li>
+          </ul>
 
-  <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">
-    The post-show report also presents visitor-role data, industry representation,
-    business intent, company size, survey findings, photographs and media coverage.
-  </p>
-</div>
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">
+            The post-show report also presents visitor-role data, industry representation,
+            business intent, company size, survey findings, photographs and media coverage.
+          </p>
+        </div>
 
+        {/* ================= OPENING CEREMONY SECTION ================= */}
         <div className="mt-12">
           <SectionHeading title="Opening Ceremony" />
-          <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">
-            According to the  post-show report: the report records the attendance
-            of Damodar Bhandari, identified in the document as Minister of Industry, Commerce and
-            Supplies, at the opening ceremony.
-          </p>
+          <div className="mt-4 max-w-3xl space-y-4 text-base leading-relaxed text-ink">
+            <p>
+              The 4th edition of the Nepal Electric, Power & Lights International Expo 2025 commenced with a prestigious inaugural ceremony graced by <strong>Hon. Damodar Bhandari</strong>, Minister of Industry, Commerce & Supplies, Government of Nepal.
+            </p>
+            <p className="text-muted">
+              The ceremony began with a welcome address by the organizing team, followed by the traditional ribbon-cutting. The Honourable Minister highlighted the importance of such international platforms in connecting Nepal’s growing market with global innovations.
+            </p>
+          </div>
         </div>
 
         <figure className="mt-12 overflow-hidden rounded-xl border border-border">

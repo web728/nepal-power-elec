@@ -48,7 +48,6 @@ export const mainNav: NavItem[] = [
     children: [
       { label: "2025 Edition", href: "/past-editions/2025-edition" },
       { label: "Post-Show Statistics", href: "/past-editions/post-show-statistics" },
-      { label: "Photo Gallery", href: "/past-editions/photo-gallery" },
       { label: "Media Coverage", href: "/past-editions/media-coverage" },
     ],
   },

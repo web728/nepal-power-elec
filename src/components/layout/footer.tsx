@@ -40,6 +40,36 @@ function LinkedinIcon({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
+const SOCIAL_LINKS = [
+  {
+    key: "facebook",
+    href: "https://www.facebook.com/100940879513531",
+    label: "Facebook",
+    title: "Follow Nepal Power Elec on Facebook",
+    Icon: FacebookIcon,
+    iconClass: "text-[#1877F2]",
+    hoverClass: "hover:border-[#1877F2]/40 hover:bg-[#1877F2]/10",
+  },
+  {
+    key: "twitter",
+    href: "https://x.com/nepalpowerelec",
+    label: "Twitter",
+    title: "Follow @nepalpowerelec on X",
+    Icon: TwitterIcon,
+    iconClass: "text-white",
+    hoverClass: "hover:border-white/30 hover:bg-black",
+  },
+  {
+    key: "linkedin",
+    href: "https://www.linkedin.com/company/nepalpowerelec/",
+    label: "LinkedIn",
+    title: "Follow Nepal Power Elec on LinkedIn",
+    Icon: LinkedinIcon,
+    iconClass: "text-[#0A66C2]",
+    hoverClass: "hover:border-[#0A66C2]/40 hover:bg-[#0A66C2]/10",
+  },
+] as const;
+
 export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-teal-dark text-white">
@@ -62,20 +92,20 @@ export function Footer() {
       <Container className="relative z-10 py-12 sm:py-16">
         {/* Main Grid Section */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          
+
           {/* Column 1: Logo & Info */}
           <div className="flex flex-col items-start justify-start">
-            <div className="inline-block rounded-xl bg-white p-3 shadow-sm mb-5">
+            <div className="mb-5 inline-flex h-20 w-44 items-center justify-center rounded-xl bg-white p-3 shadow-sm">
               <Link
                 href="/"
-                className="flex shrink-0 items-center rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky"
+                className="relative flex h-full w-full items-center justify-center rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky"
               >
                 <Image
                   src={siteConfig.eventLogo}
                   alt={siteConfig.eventName}
-                  width={200}
-                  height={60}
-                  className="h-16 w-auto max-w-full object-contain"
+                  fill
+                  className="object-contain"
+                  sizes="176px"
                 />
               </Link>
             </div>
@@ -105,7 +135,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Jointly Organised By (Logo size increased here) */}
+          {/* Column 3: Jointly Organised By */}
           <div>
             <h3 className="mb-5 text-sm font-bold uppercase tracking-wider text-white/90">
               Jointly Organised By
@@ -118,23 +148,23 @@ export function Footer() {
                   target={org.url ? "_blank" : "_self"}
                   rel={org.url ? "noopener noreferrer" : undefined}
                   title={org.name || "Organizer"}
-                  className="group flex h-20 w-full items-center justify-center rounded-xl bg-white p-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                  className="group flex h-20 w-full items-center justify-center rounded-xl bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
                 >
-                  <div className="relative flex h-full w-full items-center justify-center">
-                    {org.logo ? (
+                  {org.logo ? (
+                    <div className="relative h-full w-full">
                       <Image
                         src={org.logo}
                         alt={org.name || "Organizer Logo"}
                         fill
-                        className="object-contain p-0.5 transition-transform duration-200 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 300px"
+                        className="object-contain transition-transform duration-200 group-hover:scale-105"
+                        sizes="(max-width: 1024px) 280px, 300px"
                       />
-                    ) : (
-                      <span className="text-center text-xs font-bold text-slate-800 px-2 line-clamp-2">
-                        {org?.name || "Organizer"}
-                      </span>
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <span className="line-clamp-2 text-center text-xs font-bold text-slate-800">
+                      {org?.name || "Organizer"}
+                    </span>
+                  )}
                 </a>
               ))}
             </div>
@@ -155,7 +185,7 @@ export function Footer() {
                 allowFullScreen={false}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="opacity-90 hover:opacity-100 transition-opacity"
+                className="opacity-90 transition-opacity hover:opacity-100"
               />
             </div>
             <a
@@ -170,79 +200,51 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Section 2: Newsletter & Social Media (Rearranged and Icons Minimized) */}
+        {/* Section 2: Newsletter & Social Media */}
         <div className="mt-12 border-t border-white/10 pt-10">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 items-center">
-            
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
+
             {/* Newsletter Column */}
             <div className="lg:col-span-6 xl:col-span-7">
               <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-white">
                 Stay Updated
               </h3>
-              <p className="mb-5 text-sm text-white/80 max-w-2xl">
-                Receive verified announcements about registration, documents and previous-edition highlights straight to your inbox.
+              <p className="mb-5 max-w-2xl text-sm text-white/80">
+                Receive verified announcements about registration, documents and previous-edition
+                highlights straight to your inbox.
               </p>
               <div className="max-w-md">
                 <NewsletterForm compact />
               </div>
             </div>
 
-            {/* Social Media Column (Perfectly Arranged & Smaller Icons) */}
-            <div className="lg:col-span-6 xl:col-span-5 w-full">
+            {/* Social Media Column */}
+            <div className="w-full lg:col-span-6 xl:col-span-5">
               <div className="rounded-2xl border border-white/10 bg-black/20 p-6">
                 <h3 className="mb-5 text-center text-sm font-bold uppercase tracking-wider text-white/90">
                   Connect With Us
                 </h3>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                  {/* Facebook - Compact */}
-                  <a
-                    href="https://www.facebook.com/100940879513531"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Follow Nepal Power Elec on Facebook"
-                    className="group flex w-full sm:w-auto items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-all duration-200 hover:border-[#1877F2]/40 hover:bg-[#1877F2]/10"
-                  >
-                    <FacebookIcon className="h-4 w-4 text-[#1877F2] transition-transform group-hover:scale-110" />
-                    <span className="text-sm font-medium text-white/90 transition-colors group-hover:text-white">
-                      Facebook
-                    </span>
-                    <ExternalLink className="h-3 w-3 ml-0.5 text-white/30 group-hover:text-white/60" />
-                  </a>
-
-                  {/* X / Twitter - Compact */}
-                  <a
-                    href="https://x.com/nepalpowerelec"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Follow @nepalpowerelec on X"
-                    className="group flex w-full sm:w-auto items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-all duration-200 hover:border-white/30 hover:bg-black"
-                  >
-                    <TwitterIcon className="h-4 w-4 text-white transition-transform group-hover:scale-110" />
-                    <span className="text-sm font-medium text-white/90 transition-colors group-hover:text-white">
-                      Twitter
-                    </span>
-                    <ExternalLink className="h-3 w-3 ml-0.5 text-white/30 group-hover:text-white/60" />
-                  </a>
-
-                  {/* LinkedIn - Compact */}
-                  <a
-                    href="https://www.linkedin.com/company/nepalpowerelec/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Follow Nepal Power Elec on LinkedIn"
-                    className="group flex w-full sm:w-auto items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-all duration-200 hover:border-[#0A66C2]/40 hover:bg-[#0A66C2]/10"
-                  >
-                    <LinkedinIcon className="h-4 w-4 text-[#0A66C2] transition-transform group-hover:scale-110" />
-                    <span className="text-sm font-medium text-white/90 transition-colors group-hover:text-white">
-                      LinkedIn
-                    </span>
-                    <ExternalLink className="h-3 w-3 ml-0.5 text-white/30 group-hover:text-white/60" />
-                  </a>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  {SOCIAL_LINKS.map(({ key, href, label, title, Icon, iconClass, hoverClass }) => (
+                    <a
+                      key={key}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={title}
+                      className={`group flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 transition-all duration-200 ${hoverClass}`}
+                    >
+                      <Icon className={`h-4 w-4 shrink-0 transition-transform group-hover:scale-110 ${iconClass}`} />
+                      <span className="text-sm font-medium text-white/90 transition-colors group-hover:text-white">
+                        {label}
+                      </span>
+                      <ExternalLink className="ml-0.5 h-3 w-3 shrink-0 text-white/30 group-hover:text-white/60" />
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </Container>

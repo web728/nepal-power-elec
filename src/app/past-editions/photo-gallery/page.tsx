@@ -256,13 +256,6 @@ export default function PhotoGalleryPage() {
         {/* Categories */}
         <div className="mt-10">
           <SectionHeading title="Gallery Categories" />
-          <div className="mt-4 flex flex-wrap gap-2">
-            {galleryCategories.map((category) => (
-              <Badge key={category} tone="teal">
-                {category}
-              </Badge>
-            ))}
-          </div>
         </div>
 
         {/* Performance-Optimized Grid Layout */}
@@ -284,19 +277,7 @@ export default function PhotoGalleryPage() {
                   className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                 />
                 
-                {/* Subtle Hover Gradient */}
-                <div className="absolute inset-0 bg-teal-dark/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                {/* Photo Badge */}
-                <span className="absolute top-2.5 left-2.5 rounded-md bg-white/90 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-teal-dark shadow-sm backdrop-blur-sm border border-border/50">
-                  #{image.id}
-                </span>
-              </div>
-
-              <div className="px-2 pt-3 pb-1">
-                <figcaption className="text-xs leading-relaxed text-muted">
-                  {galleryImageCaption}
-                </figcaption>
+               
               </div>
             </figure>
           ))}
@@ -305,15 +286,12 @@ export default function PhotoGalleryPage() {
         {/* Load More Trigger */}
         {hasMoreImages && (
           <div className="mt-12 flex flex-col items-center justify-center gap-2">
-            <p className="text-xs text-muted">
-              Showing {visibleImages.length} of {ALL_GALLERY_IMAGES.length} photos
-            </p>
             <Button
               onClick={handleLoadMore}
               variant="outline"
               className="border-teal text-teal hover:bg-teal hover:text-white"
             >
-              Load More Photos ({ALL_GALLERY_IMAGES.length - visibleCount} remaining)
+              Load More Photos
             </Button>
           </div>
         )}

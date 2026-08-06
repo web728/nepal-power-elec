@@ -80,7 +80,7 @@ export function GallerySection() {
           <TrackedLink
             event={AnalyticsEvents.REPORT_DOWNLOAD}
             params={{ source: "gallery_section" }}
-            href="/downloads/Nepal-Electric-Power-Lights-Expo-2025-Post-Show-Report.pdf"
+            href="/downloads/2025-post-show-report"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-h-[48px] items-center justify-center gap-1.5 text-base font-semibold text-teal underline underline-offset-4 transition-colors hover:text-teal-dark"

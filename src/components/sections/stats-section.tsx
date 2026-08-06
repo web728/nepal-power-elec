@@ -20,8 +20,8 @@ export function StatsSection() {
           2025 Edition Results
         </p>
         
-        {/* Updated grid to support 5 items gracefully */}
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-5">
+        {/* Updated grid for 4 items: Mobile (2 cols) -> Tablet/Desktop (4 cols) */}
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {eventScale.map((stat) => (
             <div key={stat.label} className="text-center">
               <p className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl">

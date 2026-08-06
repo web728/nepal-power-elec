@@ -37,7 +37,7 @@ export const mainNav: NavItem[] = [
     children: [
       { label: "Why Visit", href: "/why-visit" },
       { label: "Visitor Profile", href: "/visitor-profile" },
-      { label: "Register to Visit", href: "/register-to-visit" },
+      { label: "Register to Visit", href: "https://exporegistration.in/nepalpowerelec-visitor.aspx" },
       { label: "Plan Your Visit", href: "/plan-your-visit" },
       { label: "Visitor FAQ", href: "/visitor-faq" },
     ],
@@ -75,7 +75,7 @@ export const mainNav: NavItem[] = [
 export const footerQuickLinks = [
   { label: "About the Expo", href: "/about-the-expo" },
   { label: "Why Exhibit", href: "/why-exhibit" },
-  { label: "Register to Visit", href: "/register-to-visit" },
+  { label: "Register to Visit", href: "https://exporegistration.in/nepalpowerelec-visitor.aspx" },
   { label: "Downloads", href: "/downloads" },
   { label: "Contact Us", href: "/contact" },
 ];

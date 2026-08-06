@@ -199,26 +199,16 @@ const ALL_GALLERY_IMAGES = [
   },
   {
     id: 37,
-    src: "/uploads/IMG_8557-min-1536x1022.jpg",
-    alt: "Electrical equipment demonstration on floor",
-  },
-  {
-    id: 38,
     src: "/uploads/np3-1024x681.jpg",
     alt: "Electrical equipment demonstration on floor",
   },
   {
-    id: 39,
-    src: "/uploads/np7-1024x681.jpg",
-    alt: "Electrical equipment demonstration on floor",
-  },
-  {
-    id: 40,
+    id: 38,
     src: "/uploads/np12-1024x681.jpg",
     alt: "Electrical equipment demonstration on floor",
   },
   {
-    id: 41,
+    id: 39,
     src: "/uploads/np18-1024x681.jpg",
     alt: "Exhibitors group photo at the closing event",
   },

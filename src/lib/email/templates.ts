@@ -222,3 +222,55 @@ export function newsletterConfirmEmail() {
     ),
   };
 }
+
+
+// Post-Show Report Email Confirmation (includes PDF download link in email body)
+export function postShowReportAckEmail(referenceNumber: string, downloadUrl: string) {
+  const fullDownloadUrl = `${siteConfig.siteUrl}${downloadUrl}`;
+
+  const bodyContent = `
+    Thank you for your interest in the ${escapeHtml(siteConfig.eventName)}. Your request to access the official Post-Show Report has been recorded.
+    <br /><br />
+    <a href="${escapeHtml(fullDownloadUrl)}" target="_blank" style="display:inline-block;background:#044f47;color:#ffffff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;">
+      Download Post-Show Report (PDF)
+    </a>
+    <br /><br />
+    <span style="font-size:12px;color:#5b6b74;">If the button above does not work, copy and paste this link into your browser:</span><br />
+    <a href="${escapeHtml(fullDownloadUrl)}" style="color:#2688b8;font-size:12px;word-break:break-all;">${escapeHtml(fullDownloadUrl)}</a>
+  `;
+
+  return {
+    subject: `Post-Show Report Download — ${siteConfig.shortName}`,
+    html: baseTemplate(
+      "Your Post-Show Report Request Has Been Received",
+      bodyContent,
+      referenceNumber
+    ),
+  };
+}
+
+
+
+export function brochureDownloadAckEmail(referenceNumber: string, downloadUrl: string) {
+  const fullDownloadUrl = `${siteConfig.siteUrl}${downloadUrl}`;
+
+  const bodyContent = `
+    Thank you for your interest in the ${escapeHtml(siteConfig.eventName)}. Your request to download the official 2026 Event Brochure has been recorded.
+    <br /><br />
+    <a href="${escapeHtml(fullDownloadUrl)}" target="_blank" style="display:inline-block;background:#044f47;color:#ffffff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;">
+      Download 2026 Event Brochure (PDF)
+    </a>
+    <br /><br />
+    <span style="font-size:12px;color:#5b6b74;">If the button above does not work, copy and paste this link into your browser:</span><br />
+    <a href="${escapeHtml(fullDownloadUrl)}" style="color:#2688b8;font-size:12px;word-break:break-all;">${escapeHtml(fullDownloadUrl)}</a>
+  `;
+
+  return {
+    subject: `Event Brochure Download — ${siteConfig.shortName}`,
+    html: baseTemplate(
+      "Your Brochure Request Has Been Received",
+      bodyContent,
+      referenceNumber
+    ),
+  };
+}

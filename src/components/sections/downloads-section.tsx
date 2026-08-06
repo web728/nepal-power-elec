@@ -11,13 +11,13 @@ const downloads = [
   {
     title: "2026 Event Brochure",
     description: `Full details on the ${siteConfig.dates.display} edition, including sectors, venue and participation information.`,
-    href: "/downloads/Nepal-Electric-Power-Lights-Expo-2026-Brochure.pdf",
+    href: "/downloads/2026-event-brochure",
     event: AnalyticsEvents.BROCHURE_DOWNLOAD,
   },
   {
     title: "2025 Post-Show Report",
     description: "Highlights, participation insights and visitor findings from the 4th edition held in 2025.",
-    href: "/downloads/Nepal-Electric-Power-Lights-Expo-2025-Post-Show-Report.pdf",
+    href: "/downloads/2025-post-show-report",
     event: AnalyticsEvents.REPORT_DOWNLOAD,
   },
 ];

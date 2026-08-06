@@ -34,6 +34,7 @@ export default function HomePage() {
         ctaLabel="Why Exhibit"
         ctaHref="/why-exhibit"
         tone="light"
+        showTopGraphic={true}
       />
       <BenefitSection
         eyebrow="For Visitors"

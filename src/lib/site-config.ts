@@ -86,7 +86,8 @@ export const siteConfig = {
 
 
   organizersLockupImage: "/images/brand/organizers/nepal-expo-2026-organizers-lockup.jpg",
-  eventLogo: "/logo/nepal-electric-power-and-light.png",
+  eventLogo: "/logo/nepal-electric-power-and-light.png", 
+  eventLogoFoot: "/logo/20.png",
   registration: {
     visitor: "https://exporegistration.in/nepalpowerelec-visitor.aspx",
     exhibitor: "https://nepalpowerelec.com/book-a-stand/",

@@ -43,7 +43,7 @@ function LinkedinIcon({ className = "h-4 w-4" }: { className?: string }) {
 const SOCIAL_LINKS = [
   {
     key: "facebook",
-    href: "https://www.facebook.com/100940879513531",
+    href: "https://www.facebook.com/nepalpowerelec/#",
     label: "Facebook",
     title: "Follow Nepal Power Elec on Facebook",
     Icon: FacebookIcon,
@@ -95,13 +95,13 @@ export function Footer() {
 
           {/* Column 1: Logo & Info */}
           <div className="flex flex-col items-start justify-start">
-            <div className="mb-5 inline-flex h-20 w-44 items-center justify-center rounded-xl bg-white p-3 shadow-sm">
+            <div className="mb-5 inline-flex h-24 w-48 items-center justify-center shadow-sm">
               <Link
                 href="/"
                 className="relative flex h-full w-full items-center justify-center rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky"
               >
                 <Image
-                  src={siteConfig.eventLogo}
+                  src={siteConfig.eventLogoFoot}
                   alt={siteConfig.eventName}
                   fill
                   className="object-contain"
@@ -140,34 +140,42 @@ export function Footer() {
             <h3 className="mb-5 text-sm font-bold uppercase tracking-wider text-white/90">
               Jointly Organised By
             </h3>
-            <div className="flex flex-col gap-3.5">
-              {siteConfig.organizers.map((org: any) => (
-                <a
-                  key={org.key}
-                  href={org.url || "#"}
-                  target={org.url ? "_blank" : "_self"}
-                  rel={org.url ? "noopener noreferrer" : undefined}
-                  title={org.name || "Organizer"}
-                  className="group flex h-20 w-full items-center justify-center rounded-xl bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-                >
-                  {org.logo ? (
-                    <div className="relative h-full w-full">
-                      <Image
-                        src={org.logo}
-                        alt={org.name || "Organizer Logo"}
-                        fill
-                        className="object-contain transition-transform duration-200 group-hover:scale-105"
-                        sizes="(max-width: 1024px) 280px, 300px"
-                      />
-                    </div>
-                  ) : (
-                    <span className="line-clamp-2 text-center text-xs font-bold text-slate-800">
-                      {org?.name || "Organizer"}
-                    </span>
-                  )}
-                </a>
-              ))}
-            </div>
+       <div className="flex flex-col gap-3.5">
+  {siteConfig.organizers.map((org: any, index: number) => {
+    // 3rd item is index 2.
+    const isThirdLogo = index === 2;
+
+    return (
+      <a
+        key={org.key}
+        href={org.url || "#"}
+        target={org.url ? "_blank" : "_self"}
+        rel={org.url ? "noopener noreferrer" : undefined}
+        title={org.name || "Organizer"}
+        // CHANGE 1: `bg-white` -> `bg-slate-50` (subtle light gray)
+        className={`group flex h-20 w-full items-center justify-center rounded-xl bg-slate-100 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md`}
+      >
+        {org.logo ? (
+          // CHANGE 2: 3rd logo size adjusted to perfectly blend
+          <div className={`relative ${isThirdLogo ? 'h-[75%] w-[75%]' : 'h-full w-full'}`}>
+            <Image
+              src={org.logo}
+              alt={org.name || "Organizer Logo"}
+              fill
+              // CHANGE 3: `object-contain` ensures logo shape is preserved
+              className="object-contain transition-transform duration-200 group-hover:scale-105"
+              sizes="(max-width: 1024px) 280px, 300px"
+            />
+          </div>
+        ) : (
+          <span className="line-clamp-2 text-center text-xs font-bold text-slate-800">
+            {org?.name || "Organizer"}
+          </span>
+        )}
+      </a>
+    );
+  })}
+</div>
           </div>
 
           {/* Column 4: Location Map */}

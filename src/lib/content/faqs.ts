@@ -104,7 +104,7 @@ export const visitorFaqs: Faq[] = [
   },
   {
     question: "How can I register as a visitor?",
-    answer: "You can pre-register for free entry by filling out the form on our <a href='https://nepalpowerelec.com/register-to-visit'>Register to Visit</a> page. Advance registration is recommended for faster entry at the venue."
+    answer: "You can pre-register for free entry by filling out the form on our <a href='https://exporegistration.in/nepalpowerelec-visitor.aspx'>Register to Visit</a> page. Advance registration is recommended for faster entry at the venue."
   },
   {
     question: "Does pre-registration or visitor registration guarantee entry?",
@@ -120,7 +120,7 @@ export const visitorFaqs: Faq[] = [
   },
   {
     question: "Can I register multiple colleagues or group delegations?",
-    answer: "Yes, each colleague or trade delegate should individually complete the form on our <a href='https://nepalpowerelec.com/register-to-visit'>Register to Visit</a> page."
+    answer: "Yes, each colleague or trade delegate should individually complete the form on our <a href='https://exporegistration.in/nepalpowerelec-visitor.aspx'>Register to Visit</a> page."
   },
   {
     question: "Can visitors arrange meetings with exhibitors before the event?",

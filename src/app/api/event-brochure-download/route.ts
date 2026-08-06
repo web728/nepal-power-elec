@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
-import { exhibitorEnquirySchema } from "@/lib/validations/forms";
+import { brochureDownloadSchema } from "@/lib/validations/forms";
 import { checkRateLimit, getClientKey } from "@/lib/rate-limit";
 import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
 import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
-import { exhibitorEnquiryEmail, organizerNotificationEmail } from "@/lib/email/templates";
+import { brochureDownloadAckEmail, organizerNotificationEmail } from "@/lib/email/templates";
 
-// Google reCAPTCHA v2 Token Verifier
 async function verifyRecaptcha(token: string) {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
   if (!secretKey) {
@@ -31,60 +30,72 @@ async function verifyRecaptcha(token: string) {
 
 export async function POST(request: Request) {
   const clientKey = getClientKey(request);
-  const rate = checkRateLimit(`exhibitor-enquiry:${clientKey}`);
+  const rate = checkRateLimit(`event-brochure:${clientKey}`);
   if (!rate.allowed) {
-    return NextResponse.json({ error: "Too many requests. Please try again shortly." }, { status: 429 });
+    return NextResponse.json(
+      { error: "Too many requests. Please try again shortly." },
+      { status: 429 }
+    );
   }
 
   const body = await request.json();
   if (isHoneypotFilled(body)) return honeypotResponse();
 
-  // 1. Extract & Verify reCAPTCHA Token
   const { recaptchaToken, ...formData } = body;
   if (!recaptchaToken) {
-    return NextResponse.json({ error: "Please complete the reCAPTCHA verification." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Please complete the reCAPTCHA verification." },
+      { status: 400 }
+    );
   }
 
   const isHuman = await verifyRecaptcha(recaptchaToken);
   if (!isHuman) {
-    return NextResponse.json({ error: "reCAPTCHA verification failed. Please try again." }, { status: 400 });
+    return NextResponse.json(
+      { error: "reCAPTCHA verification failed. Please try again." },
+      { status: 400 }
+    );
   }
 
-  // 2. Validate Form Data with Zod
-  const parsed = exhibitorEnquirySchema.safeParse(formData);
+  const parsed = brochureDownloadSchema.safeParse(formData);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid submission.", details: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid submission.", details: parsed.error.flatten() },
+      { status: 400 }
+    );
   }
 
   try {
-    const { referenceNumber } = await submitLead("exhibitor_enquiries", parsed.data, "EXH");
+    const { referenceNumber } = await submitLead("brochure_downloads", parsed.data, "BRO");
+    const downloadUrl = "/downloads/Nepal-Electric-Power-Lights-Expo-2026-Brochure.pdf";
 
-    const ack = exhibitorEnquiryEmail(referenceNumber);
-    await sendEmail({ to: parsed.data.email, subject: ack.subject, html: ack.html });
+    const ack = brochureDownloadAckEmail(referenceNumber, downloadUrl);
+    await sendEmail({
+      to: parsed.data.email,
+      subject: ack.subject,
+      html: ack.html,
+    });
 
     const notification = organizerNotificationEmail({
-      enquiryTypeLabel: "Exhibitor Enquiry",
+      enquiryTypeLabel: "Event Brochure Download Request",
       referenceNumber,
       submittedAt: new Date(),
       fields: [
         { label: "Full Name", value: parsed.data.fullName },
-        { label: "Designation", value: parsed.data.designation },
         { label: "Email", value: parsed.data.email },
-        { label: "Phone", value: parsed.data.phone },
+        { label: "Phone", value: parsed.data.phone ?? "" },
         { label: "Country", value: parsed.data.country },
-        { label: "Company Name", value: parsed.data.companyName },
-        { label: "Company Website", value: parsed.data.companyWebsite ?? "" },
-        { label: "Company Address", value: parsed.data.companyAddress },
-        { label: "Company Type", value: parsed.data.companyType },
-        { label: "Primary Product Category", value: parsed.data.productCategory },
-        { label: "Products or Services", value: parsed.data.productsOrServices },
-        { label: "Preferred Stand Requirement", value: parsed.data.standRequirement },
-        { label: "Message", value: parsed.data.message ?? "" },
+        { label: "Company Name", value: parsed.data.company ?? "" },
       ],
     });
-    await sendNotificationEmails({ subject: notification.subject, html: notification.html, replyTo: parsed.data.email });
 
-    return NextResponse.json({ referenceNumber });
+    await sendNotificationEmails({
+      subject: notification.subject,
+      html: notification.html,
+      replyTo: parsed.data.email,
+    });
+
+    return NextResponse.json({ referenceNumber, downloadUrl });
   } catch (err) {
     if (err instanceof DuplicateSubmissionError) {
       return NextResponse.json(
@@ -92,7 +103,7 @@ export async function POST(request: Request) {
         { status: 409 }
       );
     }
-    console.error("exhibitor-enquiry submission failed", err);
+    console.error("event-brochure-download submission failed", err);
     return NextResponse.json({ error: "Unable to process submission." }, { status: 500 });
   }
 }

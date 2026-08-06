@@ -7,7 +7,6 @@ export const eventScale = [
   { label: "Exhibitors", value: "150+" },
   { label: "Brands & Solutions", value: "300+" },
   { label: "Trade Visitors", value: "15,000+" },
-  { label: "Days of Business Networking", value: "3" },
 ];  
 
 export const visitorRoles = [

@@ -16,26 +16,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/press-releases" },
 };
 
-const organizersList = [
-  {
-    name: "Media Space Solutions Pvt. Ltd.",
-    description:
-      "Media Space Solutions Pvt. Ltd. is a leading exhibition and event management company based in Nepal, dedicated to organizing high-quality B2B trade exhibitions, conferences and business networking platforms across diverse industries. With extensive experience in planning and delivering successful industry events, the company brings together manufacturers, suppliers, buyers, distributors, industry professionals and decision-makers under one roof to promote business growth, technology exchange and strategic partnerships. Through its strong market presence, professional expertise and commitment to excellence, Media Space Solutions continues to contribute to the development of Nepal's trade exhibition industry by creating platforms that connect businesses, foster innovation and support commercial opportunities across domestic and international markets.",
-    website: "https://mss.com.np/",
-  },
-  {
-    name: "Futurex Trade Fair and Events Pvt. Ltd.",
-    description:
-      "Futurex Trade Fair and Events Pvt. Ltd. is an international exhibition and event management company headquartered in New Delhi, India, specializing in industry-focused B2B trade exhibitions, conferences and business networking platforms. With operations and event experience across India, Nepal, Bangladesh, Bhutan, Sri Lanka, Oman, Kenya and Uganda, the company creates professional platforms that connect manufacturers, suppliers, technology providers and service companies with buyers, distributors, contractors, project developers and industry decision-makers. Its portfolio spans power and electricals, construction, building and infrastructure, mining, heavy equipment, electric vehicles, batteries, solar energy, agriculture, wood and woodworking, garments, education, printing, packaging and plastics. Through strategic market development, international exhibitor outreach, targeted visitor promotion and professional event execution, Futurex supports product showcasing, knowledge exchange, commercial partnerships and business expansion across regional and international markets.",
-    website: "https://futurextrade.com/",
-  },
-  {
-    name: "Exhibitions & Trade Services India Pvt. Ltd. (ETSIPL)",
-    description:
-      "Exhibitions & Trade Services India Pvt. Ltd. (ETSIPL) is an ISO 9001:2015-certified exhibition organizing and trade-promotion company headquartered in Navi Mumbai, with a branch office in New Delhi, India. With more than 12 years of industry experience, ETSIPL has been associated with over 150 international trade fairs across more than 35 countries in Asia, Africa, Europe, the Americas and Oceania. The company organizes and promotes B2B exhibitions, buyer–seller meets and business networking platforms across sectors including power and electricals, construction, wood, pharmaceuticals, healthcare, medical technology and allied industries. Supported by a global network of local and international partners, ETSIPL provides end-to-end exhibition services covering event planning, international exhibitor promotion, buyer outreach, booth construction, branding, conferences, webinars, travel and visa assistance, and on-ground event execution. Through its market-focused approach and cross-border industry connections, ETSIPL creates professional platforms that help businesses showcase products, identify new partners, access emerging markets and develop sustainable international trade opportunities.",
-    website: "https://www.etsipl.in/",
-  },
-];
 
 export default function PressReleasesPage() {
   return (
@@ -140,33 +120,6 @@ export default function PressReleasesPage() {
             </p>
           </div>
 
-          {/* About Organisers Section */}
-          <div>
-            <SectionHeading
-              title="About the Joint Organisers"
-              description="Learn more about the experienced trade fair and exhibition partners behind the Nepal Electric, Power and Lights Expo."
-            />
-
-            <div className="mt-6 flex flex-col gap-6">
-              {organizersList.map((org) => (
-                <Card key={org.name} className="p-6 sm:p-8">
-                  <h3 className="text-lg font-bold text-ink">{org.name}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
-                    {org.description}
-                  </p>
-                  <a
-                    href={org.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-teal hover:underline"
-                  >
-                    <span>Visit Official Website</span>
-                    <ExternalLink className="h-4 w-4" aria-hidden="true" />
-                  </a>
-                </Card>
-              ))}
-            </div>
-          </div>
 
           {/* Media Contact Section */}
           <div>

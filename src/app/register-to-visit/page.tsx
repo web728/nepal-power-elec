@@ -19,7 +19,7 @@ export default function RegisterToVisitPage() {
       <BreadcrumbJsonLd
         items={[
           { label: "Visit", href: "/why-visit" },
-          { label: "Register to Visit", href: "/register-to-visit" },
+          { label: "Register to Visit", href: "https://exporegistration.in/nepalpowerelec-visitor.aspx" },
         ]}
       />
       <PageHero title="Register Your Interest in Attending" breadcrumbs={breadcrumbs}

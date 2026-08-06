@@ -272,7 +272,7 @@ export function Hero() {
             <TrackedLink
               event={AnalyticsEvents.BROCHURE_DOWNLOAD}
               params={{ source: "hero" }}
-              href="/downloads/Nepal-Electric-Power-Lights-Expo-2026-Brochure.pdf"
+              href="/downloads/2026-event-brochure"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-[42px] items-center justify-center gap-1.5 text-sm font-semibold text-white underline decoration-white/50 underline-offset-4 hover:text-yellow hover:decoration-yellow drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"

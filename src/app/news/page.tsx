@@ -11,7 +11,7 @@ const breadcrumbs = [{ label: "Media", href: "/news" }, { label: "News" }];
 const headlines: { title: string; href?: string }[] = [
   { title: "Dates Announced for the 5th Edition" },
   { title: "Exhibitor Enquiries Open for 2026", href: "/book-a-stand" },
-  { title: "Visitor Registration for the 2026 Expo", href: "/register-to-visit" },
+  { title: "Visitor Registration for the 2026 Expo", href: "https://exporegistration.in/nepalpowerelec-visitor.aspx" },
   { title: "Official 2026 Event Brochure Available", href: "/downloads/2026-event-brochure" },
   { title: "Looking Back at the 4th Edition in 2025", href: "/past-editions/2025-edition" },
   { title: "2025 Post-Show Report Available Online", href: "/downloads/2025-post-show-report" },

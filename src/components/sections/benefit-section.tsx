@@ -13,6 +13,7 @@ export function BenefitSection({
   tone = "light",
   bgImage,
   bgOpacity = "opacity-40",
+  showTopGraphic = false, // <-- Naya prop default false ke saath
 }: {
   eyebrow?: string;
   title: string;
@@ -22,39 +23,35 @@ export function BenefitSection({
   tone?: "light" | "dark";
   bgImage?: string;
   bgOpacity?: string;
+  showTopGraphic?: boolean; // <-- Type definition update
 }) {
   const isDark = tone === "dark";
 
   return (
-   <section
-    className={`relative overflow-hidden py-16 sm:py-22 ${
-      isDark ? "bg-teal-dark" : "bg-white"
-    }`}
-  >
-    {/* Background Graphic - Top Right Corner */}
-    <div className="absolute right-0 top-0 pointer-events-none z-0 opacity-100 overflow-hidden">
-      <Image
-        src="/brandings/ulb.png"
-        alt="Background Graphic Top Right"
-        width={1200}
-        height={1200}
-        className="
-          h-auto object-contain
-          
-          /* Mobile: Badi image, top corner positioning */
-          w-[100vw] max-w-none translate-x-[18%] -translate-y-[10%]
-          
-          /* Tablet Sizing */
-          sm:w-[600px] sm:translate-x-[10%] sm:-translate-y-[15%]
-          
-          /* Laptop / Desktop Sizing - Isse image pure top par chali jayegi */
-          lg:w-[850px] lg:translate-x-[15%] lg:-translate-y-[30%]
-          
-          /* Extra Large Screens */
-          xl:w-[700px] xl:translate-x-[2%] xl:-translate-y-[20%]
-        "
-      />
-    </div>
+    <section
+      className={`relative overflow-hidden py-16 sm:py-22 ${
+        isDark ? "bg-teal-dark" : "bg-white"
+      }`}
+    >
+      {/* Background Graphic - Sirf tabhi dikhega jab showTopGraphic true ho */}
+      {showTopGraphic && (
+        <div className="absolute right-0 top-0 pointer-events-none z-0 opacity-100 overflow-hidden">
+          <Image
+            src="/brandings/ulb.png"
+            alt="Background Graphic Top Right"
+            width={1200}
+            height={1200}
+            className="
+              h-auto object-contain
+              w-[100vw] max-w-none translate-x-[18%] -translate-y-[10%]
+              sm:w-[600px] sm:translate-x-[10%] sm:-translate-y-[15%]
+              lg:w-[850px] lg:translate-x-[15%] lg:-translate-y-[30%]
+              xl:w-[700px] xl:translate-x-[2%] xl:-translate-y-[20%]
+            "
+          />
+        </div>
+      )}
+
 
       {/* 1. Background Image (Jab bgImage prop pass ho tabhi dikhega) */}
       {bgImage && (

@@ -60,9 +60,6 @@ export default function OrganizersPage() {
           rel="noopener noreferrer"
           className="relative flex h-24 w-full max-w-[220px] items-center justify-center transition-transform duration-200 hover:scale-105 sm:h-28"
         >
-          
-          
-<p>{org.logo}</p>
           <Image
           
             src={org.logo}

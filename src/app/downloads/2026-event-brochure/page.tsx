@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import { siteConfig } from "@/lib/site-config";
+import { BrochureDownloadForm } from "@/components/forms/BrochureDownloadForm";
 
 const breadcrumbs = [{ label: "Downloads", href: "/downloads" }, { label: "2026 Event Brochure" }];
 
@@ -35,51 +36,53 @@ export default function BrochureDownloadPage() {
       />
       <PageHero title="Download the Official Brochure for the 5th Edition" breadcrumbs={breadcrumbs} />
       <Container as="section" className="py-12 sm:py-16">
-        <div className="max-w-3xl">
-          <div className="rounded-lg border border-border bg-bg px-5 py-4 text-sm font-medium text-ink">
-            5th Nepal Electric, Power and Lights International Expo 2026 — Event Brochure | PDF | English
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-start">
+          
+          {/* Left Column: Brochure Info */}
+          <div className="lg:col-span-7">
+            <div className="rounded-lg border border-border bg-bg px-5 py-4 text-sm font-medium text-ink">
+              5th Nepal Electric, Power and Lights International Expo 2026 — Event Brochure | PDF | English
+            </div>
+
+            <p className="mt-6 text-base leading-relaxed text-muted sm:text-lg">
+              The brochure introduces the event, its principal industry sectors, reasons to exhibit and
+              visit, exhibitor profile, visitor profile, dates and venue.
+            </p>
+
+            <div className="mt-10">
+              <SectionHeading title="Main Sectors in the Brochure" />
+              <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                {brochureSectors.map((sector) => (
+                  <li
+                    key={sector}
+                    className="rounded-lg border border-border bg-white px-4 py-3 text-sm leading-relaxed text-ink shadow-sm"
+                  >
+                    {sector}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <p className="mt-8 text-base leading-relaxed text-muted">
+              The brochure is an introductory document. Current website information and official
+              participation documentation govern where details have been updated.
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Button href={siteConfig.registration.exhibitor} target="_blank" rel="noopener noreferrer" variant="cta-exhibitor">
+                Book a Stand
+              </Button>
+              <Button href={siteConfig.registration.visitor} target="_blank" rel="noopener noreferrer" variant="cta-visitor">
+                Register to Visit
+              </Button>
+            </div>
           </div>
 
-          <p className="mt-6 text-base leading-relaxed text-muted sm:text-lg">
-            The brochure introduces the event, its principal industry sectors, reasons to exhibit and
-            visit, exhibitor profile, visitor profile, dates and venue.
-          </p>
-
-          <div className="mt-10">
-            <SectionHeading title="Main Sectors in the Brochure" />
-            <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-              {brochureSectors.map((sector) => (
-                <li
-                  key={sector}
-                  className="rounded-lg border border-border bg-white px-4 py-3 text-sm leading-relaxed text-ink"
-                >
-                  {sector}
-                </li>
-              ))}
-            </ul>
+          {/* Right Column: Lead Form */}
+          <div className="lg:col-span-5">
+            <BrochureDownloadForm />
           </div>
 
-          <p className="mt-8 text-base leading-relaxed text-muted">
-            The brochure is an introductory document. Current website information and official
-            participation documentation govern where details have been updated.
-          </p>
-
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Button
-              href="/downloads/Nepal-Electric-Power-Lights-Expo-2026-Brochure.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="primary"
-            >
-              Download Brochure
-            </Button>
-            <Button href={siteConfig.registration.exhibitor} target="_blank" rel="noopener noreferrer" variant="cta-exhibitor">
-              Book a Stand
-            </Button>
-            <Button href={siteConfig.registration.visitor} target="_blank" rel="noopener noreferrer" variant="cta-visitor">
-              Register to Visit
-            </Button>
-          </div>
         </div>
       </Container>
     </>

@@ -8,8 +8,16 @@ interface OrganizersSectionProps {
   showSupportedBy?: boolean;
 }
 
-// Supported By Partners with Exact Image Paths and Official Links
-const supportedByLogos = [
+// Supported By Partners Interface
+interface SupportedLogo {
+  id: number;
+  name: string;
+  src: string;
+  url?: string;
+}
+
+// Supported By Partners with Exact Image Paths and Official Links (5 Active Logos)
+const supportedByLogos: SupportedLogo[] = [
   {
     id: 1,
     name: "Nepal Chamber of Commerce",
@@ -33,17 +41,11 @@ const supportedByLogos = [
     name: "IPPAN",
     src: "/logo/IPPAN-New-Logo.png",
     url: "https://www.ippan.org.np/",
-  }, 
+  },
   {
     id: 5,
     name: "SEEN",
     src: "/logo/60.png",
-  },
-  {
-    id: 6,
-    name: "SOPPAN",
-    src: "/logo/70.png",
-    url: "https://soppan.org.np/",
   },
 ];
 
@@ -61,8 +63,8 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
               className="mx-auto"
             />
 
-            {/* 6 Logos Alignment: 2 Columns (Mobile), 3 Columns (Tablet), 6 Columns (Desktop) */}
-            <div className="mx-auto mt-8 grid max-w-5xl grid-cols-2 items-center justify-center gap-4 sm:grid-cols-3 lg:grid-cols-6 sm:gap-6">
+            {/* Flex Wrap Center - Ensures 5 logos stay nicely centered on all screens */}
+            <div className="mx-auto mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
               {supportedByLogos.map((logo) => {
                 const CardWrapper = logo.url ? "a" : "div";
                 const wrapperProps = logo.url
@@ -78,7 +80,7 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
                   <CardWrapper
                     key={logo.id}
                     {...wrapperProps}
-                    className="group flex h-28 w-full items-center justify-center rounded-xl border border-border bg-white p-3 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-teal hover:shadow-md"
+                    className="group flex h-28 w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-1rem)] lg:w-44 shrink-0 items-center justify-center rounded-xl border border-border bg-white p-3 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-teal hover:shadow-md"
                   >
                     <div className="relative flex h-full w-full items-center justify-center">
                       <Image
@@ -86,7 +88,7 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
                         alt={logo.name}
                         fill
                         className="object-contain p-1 transition-transform duration-200 group-hover:scale-105"
-                        sizes="(min-width: 1024px) 160px, (min-width: 640px) 200px, 50vw"
+                        sizes="(min-width: 1024px) 176px, (min-width: 640px) 33vw, 50vw"
                       />
                     </div>
                   </CardWrapper>

@@ -63,38 +63,42 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
               className="mx-auto"
             />
 
-            {/* Flex Wrap Center - Ensures 5 logos stay nicely centered on all screens */}
-            <div className="mx-auto mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-              {supportedByLogos.map((logo) => {
-                const CardWrapper = logo.url ? "a" : "div";
-                const wrapperProps = logo.url
-                  ? {
-                      href: logo.url,
-                      target: "_blank",
-                      rel: "noopener noreferrer",
-                      title: `Visit ${logo.name}`,
-                    }
-                  : {};
+        {/* Flex Wrap Center - Ensures 5 logos stay nicely centered on all screens */}
+<div className="mx-auto mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+  {supportedByLogos.map((logo, index) => {
+    const CardWrapper = logo.url ? "a" : "div";
+    const wrapperProps = logo.url
+      ? {
+          href: logo.url,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          title: `Visit ${logo.name}`,
+        }
+      : {};
 
-                return (
-                  <CardWrapper
-                    key={logo.id}
-                    {...wrapperProps}
-                    className="group flex h-28 w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-1rem)] lg:w-44 shrink-0 items-center justify-center rounded-xl border border-border bg-white p-3 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-teal hover:shadow-md"
-                  >
-                    <div className="relative flex h-full w-full items-center justify-center">
-                      <Image
-                        src={logo.src}
-                        alt={logo.name}
-                        fill
-                        className="object-contain p-1 transition-transform duration-200 group-hover:scale-105"
-                        sizes="(min-width: 1024px) 176px, (min-width: 640px) 33vw, 50vw"
-                      />
-                    </div>
-                  </CardWrapper>
-                );
-              })}
-            </div>
+    const isFirstTwo = index < 2;
+
+    return (
+      <CardWrapper
+        key={logo.id}
+        {...wrapperProps}
+        className="group flex h-28 w-full max-w-[176px] shrink-0 items-center justify-center rounded-xl border border-border bg-white p-2 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-teal hover:shadow-md"
+      >
+        <div className="relative h-full w-full flex items-center justify-center">
+          <Image
+            src={logo.src}
+            alt={logo.name}
+            fill
+            className={`object-contain transition-transform duration-200 group-hover:scale-105 ${
+              isFirstTwo ? "scale-125 p-1" : "scale-100 p-1.5"
+            }`}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 176px"
+          />
+        </div>
+      </CardWrapper>
+    );
+  })}
+</div>
           </div>
         )}
 
@@ -107,39 +111,47 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
           className="mx-auto"
         />
 
-        {/* --- Individual Organizer Logos Grid --- */}
-        <div className="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
-          {siteConfig.organizers.map((org) => {
-            const hasLogo = org.logo && org.logo.trim().length > 0;
+      {/* --- Individual Organizer Logos Grid --- */}
+<div className="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
+  {siteConfig.organizers.map((org, index) => {
+    const hasLogo = org.logo && org.logo.trim().length > 0;
 
-            return (
-              <a
-                key={org.key}
-                href={org.url || "#"}
-                target={org.url ? "_blank" : "_self"}
-                rel={org.url ? "noopener noreferrer" : undefined}
-                title={`Visit ${org.name}`}
-                className="group flex flex-col items-center justify-center rounded-xl border border-border bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-teal hover:shadow-md"
-              >
-                <div className="relative flex h-20 w-full items-center justify-center">
-                  {hasLogo ? (
-                    <Image
-                      src={org.logo!}
-                      alt={org.name}
-                      fill
-                      className="object-contain transition-transform duration-200 group-hover:scale-105"
-                      sizes="(min-width: 640px) 250px, 100vw"
-                    />
-                  ) : (
-                    <span className="text-center font-bold text-ink">
-                      {org.name}
-                    </span>
-                  )}
-                </div>
-              </a>
-            );
-          })}
-        </div>
+    // Direct size adjustments based on index if needed:
+    // Pehli 2 images ko thoda bada padding dene aur 3rd ko clean max-height dene ke liye
+    const isLastItem = index === siteConfig.organizers.length - 1;
+
+    return (
+  <a
+  key={org.key}
+  href={org.url || "#"}
+  target={org.url ? "_blank" : "_self"}
+  rel={org.url ? "noopener noreferrer" : undefined}
+  title={`Visit ${org.name}`}
+  className="group flex flex-col items-center justify-center rounded-xl border border-border bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-teal hover:shadow-md"
+>
+  <div className="relative flex h-20 w-full items-center justify-center">
+    {hasLogo ? (
+      <Image
+        src={org.logo!}
+        alt={org.name}
+        fill
+        className={`object-contain transition-transform duration-200 group-hover:scale-105 ${
+          // Last image ki size choti karne ke liye: zyada padding (p-4) aur chotay scaling (scale-90)
+          // Start ke images ke liye: 0 padding aur scale-110 (size bada)
+          isLastItem ? "p-4 scale-90" : "p-0.5 scale-110"
+        }`}
+        sizes="(min-width: 680px) 250px, 100vw"
+      />
+    ) : (
+      <span className="text-center font-bold text-ink">
+        {org.name}
+      </span>
+    )}
+  </div>
+</a>
+    );
+  })}
+</div>
 
         {/* ================= CONTACT CARDS ================= */}
         <div className="mx-auto mt-12 max-w-4xl">

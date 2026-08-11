@@ -90,9 +90,9 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
             alt={logo.name}
             fill
             className={`object-contain transition-transform duration-200 group-hover:scale-105 ${
-              isFirstTwo ? "scale-125 p-1" : "scale-100 p-1.5"
+              isFirstTwo ? "scale-125 p-1.5" : "scale-100 p-1.5"
             }`}
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 176px"
+            sizes="(max-width: 640px) 40vw, (max-width: 1024px) 33vw, 176px"
           />
         </div>
       </CardWrapper>

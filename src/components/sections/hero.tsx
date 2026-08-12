@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { Container } from "@/components/ui/container";
@@ -200,16 +200,29 @@ function MobileImageCarousel() {
 }
 
 export function Hero() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
-    <section className="relative overflow-hidden">
+    /* Solid background addition fixes white screen flash on slow load */
+    <section className="relative overflow-hidden bg-slate-950 text-white min-h-[550px]">
       {/* 1. Background Image */}
       <Image
         src="/uploads/nepal-electric-home-page-banner.jpeg"
         alt="Hero Background"
         fill
         priority
-        className="object-cover object-center pointer-events-none"
+        className="object-cover object-center pointer-events-none opacity-90 transition-opacity duration-700 ease-out"
         sizes="100vw"
+      />
+
+      {/* Dark overlay to guarantee contrast during load & render */}
+      <div 
+        className="pointer-events-none absolute inset-0 z-[1] bg-black/40" 
+        aria-hidden="true" 
       />
 
       {/* Subtle radial accent */}
@@ -217,7 +230,7 @@ export function Hero() {
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(ellipse 50% 60% at 80% 50%, rgba(53, 168, 224, 0.09) 0%, transparent 90%)",
+            "radial-gradient(ellipse 50% 60% at 80% 50%, rgba(53, 168, 224, 0.15) 0%, transparent 90%)",
         }}
         aria-hidden="true"
       />
@@ -225,20 +238,42 @@ export function Hero() {
       {/* Ambient particles */}
       <HeroParticles />
 
-      <Container className="relative z-[2] py-8 sm:py-12 lg:py-16">
+      <Container className="relative z-[2] py-10 sm:py-16 lg:py-20">
         <div className="max-w-3xl">
-          <p className="text-xs font-bold uppercase tracking-widest text-yellow drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">
+          {/* Tagline Animation */}
+          <p 
+            className={`text-xs font-bold uppercase tracking-widest text-yellow drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] transition-all duration-700 ease-out ${
+              isMounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
+          >
             5TH NEPAL ELECTRIC, POWER AND LIGHTS INTERNATIONAL EXPO 2026
           </p>
-          <h1 className="mt-2 max-w-2xl text-[28px] leading-[1.15] text-white sm:text-[38px] lg:text-[48px] drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
+
+          {/* Heading Animation */}
+          <h1 
+            className={`mt-2.5 max-w-2xl text-[26px] leading-[1.2] text-white sm:text-[38px] lg:text-[48px] font-extrabold drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] transition-all duration-700 delay-100 ease-out ${
+              isMounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
+          >
             {siteConfig.marketingLine}
           </h1>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/90 sm:text-base drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
+
+          {/* Subtitle Animation */}
+          <p 
+            className={`mt-3 max-w-xl text-sm leading-relaxed text-white/90 sm:text-base drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] transition-all duration-700 delay-200 ease-out ${
+              isMounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
+          >
             Meet manufacturers, suppliers, buyers, engineers, distributors and project professionals across
             Nepal&apos;s electrical, power, lighting, renewable-energy and allied industries.
           </p>
 
-          <div className="mt-4 inline-flex items-center gap-3 rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 backdrop-blur-sm">
+          {/* Event Details Badge Animation */}
+          <div 
+            className={`mt-5 inline-flex items-center gap-3 rounded-lg border border-white/20 bg-black/30 backdrop-blur-md px-4 py-2.5 shadow-lg transition-all duration-700 delay-300 ease-out ${
+              isMounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
+          >
             <div className="h-8 w-1 rounded-full bg-yellow" aria-hidden="true" />
             <p className="text-xs font-semibold text-white sm:text-sm">
               {siteConfig.dates.display} · {siteConfig.venue.name} · {siteConfig.venue.city},{" "}
@@ -246,14 +281,19 @@ export function Hero() {
             </p>
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center gap-3 sm:gap-4">
+          {/* Buttons Animation */}
+          <div 
+            className={`mt-6 flex flex-wrap items-center gap-3 sm:gap-4 transition-all duration-700 delay-400 ease-out ${
+              isMounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
+          >
             <TrackedLink
               event={AnalyticsEvents.BOOK_STAND_START}
               params={{ source: "hero" }}
               href={REG_EXHIBITOR}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-lg bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-teal-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+              className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-teal-700 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white shadow-md"
             >
               Book a Stand
             </TrackedLink>
@@ -264,7 +304,7 @@ export function Hero() {
               href={REG_VISITOR}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-lg bg-amber-400 px-5 py-2.5 text-sm font-semibold text-slate-900 transition-colors duration-150 hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+              className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg bg-amber-400 px-5 py-2.5 text-sm font-semibold text-slate-900 transition-all duration-200 hover:bg-amber-500 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white shadow-md"
             >
               Register to Visit
             </TrackedLink>
@@ -275,16 +315,20 @@ export function Hero() {
               href="/downloads/2026-event-brochure"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[42px] items-center justify-center gap-1.5 text-sm font-semibold text-white underline decoration-white/50 underline-offset-4 hover:text-yellow hover:decoration-yellow drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
+              className="inline-flex min-h-[44px] items-center justify-center gap-1.5 text-sm font-semibold text-white underline decoration-white/50 underline-offset-4 transition-all hover:text-yellow hover:decoration-yellow drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
             >
               Download Brochure
             </TrackedLink>
           </div>
 
-          {/* Mobile-only infinite scroll carousel */}
-          <div className="mt-8 lg:hidden">
-            <MobileImageCarousel />
-          </div>
+          {/* Mobile-only Carousel Animation */}
+         <div 
+      className={`mt-8 lg:hidden transition-all duration-700 delay-500 ease-out ${
+        isMounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+      }`}
+    >
+      <MobileImageCarousel />
+    </div>
         </div>
       </Container>
     </section>

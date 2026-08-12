@@ -3,6 +3,7 @@
 import { useState, useRef, type FormEvent } from "react";
 import Link from "next/link";
 import ReCAPTCHA from "react-google-recaptcha";
+import { User, Building2, Store, ShieldCheck, AlertCircle, CheckCircle2, Loader2, Send } from "lucide-react";
 import { exhibitorEnquirySchema, type ExhibitorEnquiryInput } from "@/lib/validations/forms";
 import { productCategoryOptions, companyTypeOptions } from "@/lib/content/form-options";
 import { TextField, TextAreaField, SelectField, CheckboxField } from "@/components/ui/form-fields";
@@ -46,6 +47,9 @@ export function ExhibitorEnquiryForm() {
 
   function update<K extends keyof ExhibitorEnquiryInput>(key: K, value: ExhibitorEnquiryInput[K]) {
     setValues((prev) => ({ ...prev, [key]: value }));
+    if (errors[key]) {
+      setErrors((prev) => ({ ...prev, [key]: undefined }));
+    }
   }
 
   function formatUrl(url: string) {
@@ -81,7 +85,7 @@ export function ExhibitorEnquiryForm() {
       }
     }
 
-    if (!captchaToken) {
+    if (!captchaToken && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
       nextErrors.recaptcha = "Please complete the reCAPTCHA verification.";
     }
 
@@ -136,266 +140,273 @@ export function ExhibitorEnquiryForm() {
 
   if (referenceNumber) {
     return (
-      <div className="mx-auto max-w-2xl rounded-2xl border border-emerald-300 bg-white p-8 text-center shadow-lg">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
+      <div className="rounded-2xl border border-emerald-200 bg-gradient-to-b from-emerald-50/50 to-white p-8 text-center shadow-sm">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 ring-8 ring-emerald-50">
+          <CheckCircle2 className="h-8 w-8" />
         </div>
-        <p className="text-sm font-bold uppercase tracking-wider text-emerald-600">Enquiry Received</p>
-        <p className="mt-3 text-base leading-relaxed text-slate-800 sm:text-lg">
-          Thank you for your interest in exhibiting. The organizing team will review the company and product
-          information provided. Submission does not reserve or confirm a stand.
+        <span className="inline-block rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-800">
+          Enquiry Received
+        </span>
+        <h4 className="mt-3 text-xl font-bold text-slate-900 sm:text-2xl">Thank You for Your Interest</h4>
+        <p className="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-slate-600 sm:text-base">
+          The organizing team will review your submitted company and product profile. Please note that this submission serves as an application and does not immediately reserve or confirm a stand.
         </p>
-        <div className="mt-6 inline-block rounded-lg bg-slate-100 px-4 py-2 border border-slate-200">
-          <p className="text-sm text-slate-600">
-            Reference number: <span className="font-bold text-slate-900">{referenceNumber}</span>
-          </p>
+        <div className="mt-6 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 shadow-xs">
+          <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Reference Code:</span>
+          <span className="font-mono text-base font-bold text-teal">{referenceNumber}</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-4xl rounded-2xl border border-slate-200 bg-white p-6 sm:p-10 shadow-xl">
-      <form onSubmit={handleSubmit} noValidate className="relative flex flex-col gap-8">
-        <HoneypotField />
+    <form onSubmit={handleSubmit} noValidate className="space-y-8">
+      <HoneypotField />
 
-        {submitError && (
-          <div role="alert" className="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-medium text-red-700 shadow-sm">
-            <svg className="h-5 w-5 shrink-0 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
-            </svg>
-            <span>The form could not be submitted. Review the highlighted fields and try again.</span>
-          </div>
-        )}
+      {submitError && (
+        <div role="alert" className="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-xs font-medium text-red-700 shadow-xs sm:text-sm">
+          <AlertCircle className="h-5 w-5 shrink-0 text-red-500" />
+          <span>The form could not be submitted. Review the highlighted fields below and try again.</span>
+        </div>
+      )}
 
-        {/* Section 1: Contact Details */}
-        <section className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
-          <div className="mb-5 flex items-center gap-3 border-b border-slate-100 pb-3">
-            <div className="h-6 w-1 rounded-full bg-blue-600"></div>
-            <h3 className="text-lg font-bold tracking-tight text-slate-900">Contact Details</h3>
+      {/* Step 1: Contact Information */}
+      <fieldset className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 sm:p-6">
+        <legend className="flex items-center gap-2.5 text-base font-bold text-ink">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal/10 text-teal">
+            <User className="h-4 w-4" />
           </div>
-          <div className="grid gap-5 sm:grid-cols-2">
+          1. Personal Contact Details
+        </legend>
+        
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <TextField
+            id="fullName"
+            label="Full Name"
+            required
+            placeholder="e.g. Rahul Sharma"
+            value={values.fullName}
+            onChange={(e) => update("fullName", e.target.value)}
+            error={errors.fullName}
+          />
+          <TextField
+            id="designation"
+            label="Designation"
+            required
+            placeholder="e.g. Marketing Director"
+            value={values.designation}
+            onChange={(e) => update("designation", e.target.value)}
+            error={errors.designation}
+          />
+          <TextField
+            id="email"
+            type="email"
+            label="Official Email Address"
+            required
+            placeholder="rahul@company.com"
+            value={values.email}
+            onChange={(e) => update("email", e.target.value)}
+            error={errors.email}
+          />
+          <TextField
+            id="phone"
+            type="tel"
+            label="Phone / Mobile Number"
+            required
+            placeholder="+91 98765 43210"
+            value={values.phone}
+            onChange={(e) => update("phone", e.target.value)}
+            error={errors.phone}
+          />
+          <div className="sm:col-span-2">
             <TextField
-              id="fullName"
-              label="Full Name"
+              id="country"
+              label="Country"
               required
-              placeholder="e.g. John Doe"
-              value={values.fullName}
-              onChange={(e) => update("fullName", e.target.value)}
-              error={errors.fullName}
+              placeholder="e.g. India"
+              value={values.country}
+              onChange={(e) => update("country", e.target.value)}
+              error={errors.country}
             />
-            <TextField
-              id="designation"
-              label="Designation"
-              required
-              placeholder="e.g. Sales Director"
-              value={values.designation}
-              onChange={(e) => update("designation", e.target.value)}
-              error={errors.designation}
-            />
-            <TextField
-              id="email"
-              type="email"
-              label="Email"
-              required
-              placeholder="john@company.com"
-              value={values.email}
-              onChange={(e) => update("email", e.target.value)}
-              error={errors.email}
-            />
-            <TextField
-              id="phone"
-              type="tel"
-              label="Phone"
-              required
-              placeholder="+1 234 567 890"
-              value={values.phone}
-              onChange={(e) => update("phone", e.target.value)}
-              error={errors.phone}
-            />
-            <div className="sm:col-span-2">
-              <TextField
-                id="country"
-                label="Country"
-                required
-                placeholder="Enter your country"
-                value={values.country}
-                onChange={(e) => update("country", e.target.value)}
-                error={errors.country}
-              />
-            </div>
           </div>
-        </section>
+        </div>
+      </fieldset>
 
-        {/* Section 2: Company Details */}
-        <section className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
-          <div className="mb-5 flex items-center gap-3 border-b border-slate-100 pb-3">
-            <div className="h-6 w-1 rounded-full bg-blue-600"></div>
-            <h3 className="text-lg font-bold tracking-tight text-slate-900">Company Details</h3>
+      {/* Step 2: Company Details */}
+      <fieldset className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 sm:p-6">
+        <legend className="flex items-center gap-2.5 text-base font-bold text-ink">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal/10 text-teal">
+            <Building2 className="h-4 w-4" />
           </div>
-          <div className="grid gap-5 sm:grid-cols-2">
-            <TextField
-              id="companyName"
-              label="Company Name"
-              required
-              placeholder="e.g. Acme Corp"
-              value={values.companyName}
-              onChange={(e) => update("companyName", e.target.value)}
-              error={errors.companyName}
-            />
-            <TextField
-              id="companyWebsite"
-              type="text"
-              label="Company Website"
-              placeholder="example.com"
-              value={values.companyWebsite}
-              onChange={(e) => update("companyWebsite", e.target.value)}
-              error={errors.companyWebsite}
-            />
+          2. Organization & Business Info
+        </legend>
+        
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <TextField
+            id="companyName"
+            label="Company Name"
+            required
+            placeholder="e.g. Acme Industries Ltd"
+            value={values.companyName}
+            onChange={(e) => update("companyName", e.target.value)}
+            error={errors.companyName}
+          />
+          <TextField
+            id="companyWebsite"
+            type="text"
+            label="Company Website"
+            placeholder="www.company.com"
+            value={values.companyWebsite}
+            onChange={(e) => update("companyWebsite", e.target.value)}
+            error={errors.companyWebsite}
+          />
+          <div className="sm:col-span-2">
             <TextField
               id="companyAddress"
-              label="Company Address"
+              label="Company Registered Address"
               required
-              placeholder="Street address, City, Zip Code"
-              className="sm:col-span-2"
+              placeholder="Street address, City, State, Postal Code"
               value={values.companyAddress}
               onChange={(e) => update("companyAddress", e.target.value)}
               error={errors.companyAddress}
             />
-            <div className="sm:col-span-2">
-              <SelectField
-                id="companyType"
-                label="Company Type"
-                required
-                placeholder="Select company type"
-                options={companyTypeOptions}
-                value={values.companyType}
-                onChange={(e) => update("companyType", e.target.value)}
-                error={errors.companyType}
-              />
-            </div>
           </div>
-        </section>
-
-        {/* Section 3: Exhibit Details */}
-        <section className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
-          <div className="mb-5 flex items-center gap-3 border-b border-slate-100 pb-3">
-            <div className="h-6 w-1 rounded-full bg-blue-600"></div>
-            <h3 className="text-lg font-bold tracking-tight text-slate-900">Exhibit Details</h3>
-          </div>
-          <div className="grid gap-5">
+          <div className="sm:col-span-2">
             <SelectField
-              id="productCategory"
-              label="Primary Product Category"
+              id="companyType"
+              label="Company Type / Business Model"
               required
-              placeholder="Select product category"
-              options={productCategoryOptions}
-              value={values.productCategory}
-              onChange={(e) => update("productCategory", e.target.value)}
-              error={errors.productCategory}
-            />
-            <TextAreaField
-              id="productsOrServices"
-              label="Products or Services"
-              required
-              placeholder="Briefly describe what you will display or showcase..."
-              value={values.productsOrServices}
-              onChange={(e) => update("productsOrServices", e.target.value)}
-              error={errors.productsOrServices}
-            />
-            <TextField
-              id="standRequirement"
-              label="Preferred Stand Requirement"
-              required
-              placeholder="e.g. 9 sqm shell scheme, 18 sqm raw space"
-              hint="Preference only, not a final booking"
-              value={values.standRequirement}
-              onChange={(e) => update("standRequirement", e.target.value)}
-              error={errors.standRequirement}
-            />
-            <TextAreaField
-              id="message"
-              label="Message (Optional)"
-              placeholder="Any additional questions or specific instructions..."
-              value={values.message}
-              onChange={(e) => update("message", e.target.value)}
-              error={errors.message}
+              placeholder="Select company type"
+              options={companyTypeOptions}
+              value={values.companyType}
+              onChange={(e) => update("companyType", e.target.value)}
+              error={errors.companyType}
             />
           </div>
-        </section>
+        </div>
+      </fieldset>
 
-        {/* Consent & Captcha Section */}
-        <div className="flex flex-col gap-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <CheckboxField
-            id="privacyConsent"
+      {/* Step 3: Stand & Exhibit Details */}
+      <fieldset className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 sm:p-6">
+        <legend className="flex items-center gap-2.5 text-base font-bold text-ink">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal/10 text-teal">
+            <Store className="h-4 w-4" />
+          </div>
+          3. Exhibit Requirements
+        </legend>
+
+        <div className="mt-4 grid gap-4">
+          <SelectField
+            id="productCategory"
+            label="Primary Product Category"
             required
-            checked={values.privacyConsent}
-            onChange={(e) => update("privacyConsent", e.target.checked)}
-            error={errors.privacyConsent}
-            label={
-              <span className="text-sm text-slate-700">
-                I agree to the{" "}
-                <Link href="/privacy-policy" className="font-semibold text-blue-600 underline hover:text-blue-700">
-                  Privacy Policy
-                </Link>{" "}
-                and{" "}
-                <Link href="/terms-and-conditions" className="font-semibold text-blue-600 underline hover:text-blue-700">
-                  Terms and Conditions
-                </Link>
-                .
-              </span>
-            }
+            placeholder="Select product category"
+            options={productCategoryOptions}
+            value={values.productCategory}
+            onChange={(e) => update("productCategory", e.target.value)}
+            error={errors.productCategory}
           />
 
-          <div className="flex flex-col items-start gap-2 pt-2">
-            {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
-              <div className="overflow-hidden rounded-lg border border-slate-200 p-1 bg-white shadow-sm">
-                <ReCAPTCHA
-                  ref={recaptchaRef}
-                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                  onChange={(token) => {
-                    setCaptchaToken(token);
-                    if (token) setErrors((prev) => ({ ...prev, recaptcha: undefined }));
-                  }}
-                  onExpired={() => setCaptchaToken(null)}
-                />
-              </div>
-            ) : (
-              <p className="text-xs font-mono text-red-500 bg-red-50 p-2 rounded">
-                [reCAPTCHA Error: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is missing in .env.local]
-              </p>
-            )}
-            {errors.recaptcha && (
-              <p className="text-xs font-semibold text-red-500">{errors.recaptcha}</p>
-            )}
-          </div>
-        </div>
+          <TextAreaField
+            id="productsOrServices"
+            label="Products / Technologies to Display"
+            required
+            placeholder="Briefly detail what products, services, or equipment you plan to demonstrate..."
+            value={values.productsOrServices}
+            onChange={(e) => update("productsOrServices", e.target.value)}
+            error={errors.productsOrServices}
+          />
 
-        {/* Submit Button */}
-        <div className="pt-2">
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            size="lg"
-            className="w-full sm:w-auto min-w-[200px] justify-center text-base font-semibold shadow-md transition-all hover:shadow-lg"
-            variant="cta-submit"
-          >
-            {isSubmitting ? (
-              <span className="flex items-center gap-2">
-                <svg className="h-4 w-4 animate-spin text-current" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                Submitting…
-              </span>
-            ) : (
-              "Submit Enquiry"
-            )}
-          </Button>
+          <TextField
+            id="standRequirement"
+            label="Preferred Stand Size / Configuration"
+            required
+            placeholder="e.g. 12 sqm Built-up Shell Scheme or 36 sqm Bare Space"
+            hint="Indicate preferred area in sqm. Final allotment subject to availability."
+            value={values.standRequirement}
+            onChange={(e) => update("standRequirement", e.target.value)}
+            error={errors.standRequirement}
+          />
+
+          <TextAreaField
+            id="message"
+            label="Additional Notes / Custom Requests (Optional)"
+            placeholder="Any special power, rigging, or stall location requirements..."
+            value={values.message}
+            onChange={(e) => update("message", e.target.value)}
+            error={errors.message}
+          />
         </div>
-      </form>
-    </div>
+      </fieldset>
+
+      {/* Step 4: Consent & Recaptcha */}
+      <div className="space-y-4 rounded-xl border border-slate-200/80 bg-white p-5">
+        <CheckboxField
+          id="privacyConsent"
+          required
+          checked={values.privacyConsent}
+          onChange={(e) => update("privacyConsent", e.target.checked)}
+          error={errors.privacyConsent}
+          label={
+            <span className="text-xs text-slate-600 sm:text-sm">
+              I consent to the collection and processing of my details according to the{" "}
+              <Link href="/privacy-policy" className="font-semibold text-teal underline hover:text-teal/80">
+                Privacy Policy
+              </Link>{" "}
+              and accept the exhibition{" "}
+              <Link href="/terms-and-conditions" className="font-semibold text-teal underline hover:text-teal/80">
+                Terms and Conditions
+              </Link>
+              .
+            </span>
+          }
+        />
+
+        <div className="pt-2">
+          {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
+            <div className="inline-block overflow-hidden rounded-lg border border-slate-200 bg-white p-1">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                onChange={(token) => {
+                  setCaptchaToken(token);
+                  if (token) setErrors((prev) => ({ ...prev, recaptcha: undefined }));
+                }}
+                onExpired={() => setCaptchaToken(null)}
+              />
+            </div>
+          ) : (
+            <p className="rounded bg-amber-50 p-2 font-mono text-xs text-amber-700 border border-amber-200">
+              [Development Mode: reCAPTCHA site key missing]
+            </p>
+          )}
+          {errors.recaptcha && (
+            <p className="mt-1 text-xs font-semibold text-red-500">{errors.recaptcha}</p>
+          )}
+        </div>
+      </div>
+
+      {/* Action CTA */}
+      <div className="pt-2">
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          size="lg"
+          className="w-full sm:w-auto min-w-[220px] justify-center gap-2 bg-teal text-white hover:bg-teal/90 shadow-md font-bold transition-all"
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>Processing Application...</span>
+            </>
+          ) : (
+            <>
+              <span>Submit Space Application</span>
+              <Send className="h-4 w-4" />
+            </>
+          )}
+        </Button>
+      </div>
+    </form>
   );
 }

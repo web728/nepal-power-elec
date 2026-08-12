@@ -5,47 +5,122 @@ import { OrganizersSection } from "@/components/sections/organizers-section";
 import { ContactForm } from "@/components/forms/contact-form";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import { Mail, Phone, MapPin, Clock, HelpCircle, Sparkles } from "lucide-react";
 
 const breadcrumbs = [{ label: "Contact" }];
 
 export const metadata: Metadata = {
   title: { absolute: "Contact | Nepal Electric, Power and Lights Expo 2026" },
-  description: "Contact the joint organizers for exhibitor, visitor, media, sponsorship and general enquiries.",
+  description:
+    "Contact the joint organizers for exhibitor, visitor, media, sponsorship and general enquiries.",
   alternates: { canonical: "/contact" },
 };
+
+const quickContactCards = [
+  {
+    icon: Mail,
+    title: "Email Us",
+    detail: "info@nepalelectricexpo.com",
+    subDetail: "For general & exhibition enquiries",
+    href: "mailto:info@nepalelectricexpo.com",
+  },
+  {
+    icon: Phone,
+    title: "Call Direct",
+    detail: "+977 1-4000000 / +91 98765 43210",
+    subDetail: "Mon - Fri, 9:00 AM - 6:00 PM IST/NPT",
+    href: "tel:+97714000000",
+  },
+  {
+    icon: MapPin,
+    title: "Event Venue",
+    detail: "Bhrikuti Mandap Exhibition Hall",
+    subDetail: "Kathmandu, Nepal",
+    href: "https://maps.google.com",
+  },
+];
 
 export default function ContactPage() {
   return (
     <>
       <BreadcrumbJsonLd items={[{ label: "Contact", href: "/contact" }]} />
-      
-      <PageHero 
-        title="Get in Touch" 
-        breadcrumbs={breadcrumbs} 
-        bgImage="/images/hero/excellent-business-opportunities-for-upvc-dealers-and-upvc-profile-distributors.jpg" 
+
+      <PageHero
+        title="Get in Touch"
+        breadcrumbs={breadcrumbs}
+        bgImage="/images/hero/excellent-business-opportunities-for-upvc-dealers-and-upvc-profile-distributors.jpg"
         bgOpacity="opacity-50"
       />
 
-      {/* Intro & Contact Form Section */}
-      <Container as="section" className="py-12 sm:py-16">
-        <div className="max-w-3xl">
-          <SectionHeading title="Send Us a Message" />
-          <p className="mt-4 text-base leading-relaxed text-muted sm:text-lg">
-            For exhibitor participation, visitor registration, sponsorship opportunities, media enquiries, 
-            partnerships or general event assistance, please contact the appropriate representative below or 
-            fill out our enquiry form.
-          </p>
-        </div>
+      {/* Main Content Section */}
+      <Container as="section" className="py-12 sm:py-20">
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-start">
+          
+          {/* Left Column: Context & Quick Info */}
+          <div className="lg:col-span-5 flex flex-col justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-teal/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-teal">
+                <Sparkles className="h-3.5 w-3.5" />
+                <span>We're Here to Help</span>
+              </div>
 
-        <div className="mt-10 max-w-3xl">
-          <div className="rounded-xl border border-border bg-bg p-6 shadow-sm sm:p-8">
-            <ContactForm />
+              <SectionHeading title="Connect with the Organizing Team" className="mt-4" />
+
+              <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+                For exhibitor participation, visitor registration, sponsorship opportunities, media enquiries, 
+                partnerships or general event assistance, reach out directly or submit your query.
+              </p>
+
+              {/* Quick Contact Info Stack */}
+              <div className="mt-8 flex flex-col gap-4">
+                {quickContactCards.map((card, idx) => {
+                  const Icon = card.icon;
+                  return (
+                    <a
+                      key={idx}
+                      href={card.href}
+                      target={card.href.startsWith("http") ? "_blank" : undefined}
+                      rel="noreferrer"
+                      className="group flex items-start gap-4 rounded-xl border border-border bg-card p-4 transition-all duration-200 hover:border-teal/50 hover:shadow-sm"
+                    >
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-teal transition-colors group-hover:bg-teal group-hover:text-white">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-foreground">{card.title}</h4>
+                        <p className="mt-0.5 text-sm font-semibold text-teal">{card.detail}</p>
+                        <p className="text-xs text-muted-foreground">{card.subDetail}</p>
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Quick Response Notice */}
+            <div className="mt-8 rounded-xl bg-slate-50 p-5 border border-slate-200/80">
+              <div className="flex items-center gap-2 text-sm font-bold text-slate-800">
+                <Clock className="h-4 w-4 text-teal" />
+                <span>Response Time</span>
+              </div>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                Our desk responds to all formal enquiries within 24 business hours.
+              </p>
+            </div>
           </div>
+
+          {/* Right Column: Contact Form */}
+          <div className="lg:col-span-7">
+            <div className="rounded-2xl border border-border bg-card p-2 shadow-xs sm:p-4">
+              <ContactForm />
+            </div>
+          </div>
+
         </div>
       </Container>
 
-      {/* Organizers Section (Positioned Below Contact Form without 'Supported By' logos) */}
-      <section className="border-t border-border bg-muted/5 py-12 sm:py-16">
+      {/* Organizers Section */}
+      <section className="border-t border-border bg-muted/10 py-12 sm:py-16">
         <Container>
           <OrganizersSection showSupportedBy={false} />
         </Container>

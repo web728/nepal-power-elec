@@ -56,7 +56,7 @@ const supportedByLogos: SupportedLogo[] = [
     name: "IPPAN",
     src: "/logo/IPPAN-New-Logo.png",
     url: "https://www.ippan.org.np/",
-    scale: 0.7,
+    scale: 0.6,
   },
   {
     id: 5,

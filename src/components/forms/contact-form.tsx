@@ -3,6 +3,7 @@
 import { useState, useRef, type FormEvent } from "react";
 import Link from "next/link";
 import ReCAPTCHA from "react-google-recaptcha";
+import { motion, AnimatePresence } from "framer-motion";
 import { contactFormSchema, type ContactFormInput } from "@/lib/validations/forms";
 import { enquiryTypeOptions } from "@/lib/content/form-options";
 import { TextField, TextAreaField, SelectField, CheckboxField } from "@/components/ui/form-fields";
@@ -11,6 +12,7 @@ import { useToast } from "@/components/ui/toast";
 import { AnalyticsEvents, trackEvent } from "@/lib/analytics";
 import { HoneypotField } from "@/components/ui/honeypot-field";
 import { HONEYPOT_FIELD } from "@/lib/honeypot";
+import { CheckCircle2, AlertCircle, Send, Sparkles, ShieldCheck } from "lucide-react";
 
 const initialValues: ContactFormInput = {
   fullName: "",
@@ -119,46 +121,77 @@ export function ContactForm() {
 
   if (referenceNumber) {
     return (
-      <div className="mx-auto max-w-2xl rounded-2xl border border-emerald-300 bg-white p-8 text-center shadow-lg">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <p className="text-sm font-bold uppercase tracking-wider text-emerald-600">Thank You</p>
-        <p className="mt-3 text-base leading-relaxed text-slate-800 sm:text-lg">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="mx-auto max-w-2xl rounded-2xl border border-emerald-200/80 bg-white p-8 sm:p-10 text-center shadow-md"
+      >
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 200, damping: 12, delay: 0.1 }}
+          className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100/80 text-emerald-600 shadow-xs"
+        >
+          <CheckCircle2 className="h-8 w-8" />
+        </motion.div>
+
+        <span className="inline-block rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-600">
+          Submission Successful
+        </span>
+
+        <h3 className="mt-3 text-2xl font-black text-slate-900">Thank You!</h3>
+
+        <p className="mt-3 text-sm font-medium leading-relaxed text-slate-600 sm:text-base">
           Your enquiry has been submitted to the organizing team. A representative may contact you using the
           details provided. Submission does not confirm registration, exhibition space, media accreditation or
           partnership status.
         </p>
-        <div className="mt-6 inline-block rounded-lg bg-slate-100 px-4 py-2 border border-slate-200">
-          <p className="text-sm text-slate-600">
-            Reference number: <span className="font-bold text-slate-900">{referenceNumber}</span>
-          </p>
-        </div>
-      </div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mt-6 inline-flex items-center gap-2 rounded-xl bg-slate-50 px-5 py-3 border border-slate-200/80 shadow-2xs"
+        >
+          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Reference Number:</span>
+          <span className="font-mono text-base font-extrabold text-teal">{referenceNumber}</span>
+        </motion.div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-4xl rounded-2xl border border-slate-200 bg-white p-6 sm:p-10 shadow-xl">
+    <div className="mx-auto max-w-4xl">
       <form onSubmit={handleSubmit} noValidate className="relative flex flex-col gap-8">
         <HoneypotField />
 
-        {submitError && (
-          <div role="alert" className="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-medium text-red-700 shadow-sm">
-            <svg className="h-5 w-5 shrink-0 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
-            </svg>
-            <span>The form could not be submitted. Review the highlighted fields and try again.</span>
-          </div>
-        )}
+        <AnimatePresence>
+          {submitError && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              role="alert"
+              className="flex items-center gap-3 rounded-xl border border-rose-200/80 bg-rose-50/80 px-5 py-4 text-sm font-medium text-rose-800 shadow-2xs"
+            >
+              <AlertCircle className="h-5 w-5 shrink-0 text-rose-600" />
+              <span>The form could not be submitted. Review the highlighted fields and try again.</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Form Fields Section */}
-        <section className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
-          <div className="mb-5 flex items-center gap-3 border-b border-slate-100 pb-3">
-            <div className="h-6 w-1 rounded-full bg-blue-600"></div>
-            <h3 className="text-lg font-bold tracking-tight text-slate-900">Enquiry Information</h3>
+        <section className="rounded-2xl border border-slate-200/80 bg-white p-5 sm:p-8 shadow-xs">
+          <div className="mb-6 flex items-center justify-between border-b border-slate-100 pb-4">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal/10 text-teal">
+                <Sparkles className="h-4 w-4" />
+              </div>
+              <h3 className="text-lg font-bold tracking-tight text-slate-900">Enquiry Information</h3>
+            </div>
+            <span className="text-xs font-medium text-slate-400">* Required fields</span>
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2">
@@ -243,7 +276,12 @@ export function ContactForm() {
         </section>
 
         {/* Consent & reCAPTCHA Section */}
-        <div className="flex flex-col gap-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="flex flex-col gap-6 rounded-2xl border border-slate-200/80 bg-white p-5 sm:p-6 shadow-xs">
+          <div className="flex items-center gap-2 border-b border-slate-100 pb-3 text-xs font-bold uppercase tracking-wider text-slate-500">
+            <ShieldCheck className="h-4 w-4 text-teal" />
+            <span>Verification & Privacy</span>
+          </div>
+
           <CheckboxField
             id="privacyConsent"
             required
@@ -251,13 +289,13 @@ export function ContactForm() {
             onChange={(e) => update("privacyConsent", e.target.checked)}
             error={errors.privacyConsent}
             label={
-              <span className="text-sm text-slate-700">
+              <span className="text-sm font-medium text-slate-700">
                 I agree to the{" "}
-                <Link href="/privacy-policy" className="font-semibold text-blue-600 underline hover:text-blue-700">
+                <Link href="/privacy-policy" className="font-semibold text-teal underline decoration-teal/30 hover:decoration-teal transition-all">
                   Privacy Policy
                 </Link>{" "}
                 and{" "}
-                <Link href="/terms-and-conditions" className="font-semibold text-blue-600 underline hover:text-blue-700">
+                <Link href="/terms-and-conditions" className="font-semibold text-teal underline decoration-teal/30 hover:decoration-teal transition-all">
                   Terms and Conditions
                 </Link>
                 .
@@ -265,9 +303,9 @@ export function ContactForm() {
             }
           />
 
-          <div className="flex flex-col items-start gap-2 pt-2">
+          <div className="flex flex-col items-start gap-2 pt-1">
             {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
-              <div className="overflow-hidden rounded-lg border border-slate-200 p-1 bg-white shadow-sm">
+              <div className="overflow-hidden rounded-xl border border-slate-200/80 p-1 bg-white shadow-2xs transition-all hover:border-slate-300">
                 <ReCAPTCHA
                   ref={recaptchaRef}
                   sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
@@ -279,37 +317,48 @@ export function ContactForm() {
                 />
               </div>
             ) : (
-              <p className="text-xs font-mono text-red-500 bg-red-50 p-2 rounded">
+              <p className="text-xs font-mono text-rose-600 bg-rose-50 p-2.5 rounded-lg border border-rose-200">
                 [reCAPTCHA Error: NEXT_PUBLIC_RECAPTCHA_SITE_KEY is missing in .env.local]
               </p>
             )}
             {errors.recaptcha && (
-              <p className="text-xs font-semibold text-red-500">{errors.recaptcha}</p>
+              <motion.p 
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-xs font-semibold text-rose-600"
+              >
+                {errors.recaptcha}
+              </motion.p>
             )}
           </div>
         </div>
 
         {/* Submit Button */}
         <div className="pt-2">
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            size="lg"
-            className="w-full sm:w-auto min-w-[200px] justify-center text-base font-semibold shadow-md transition-all hover:shadow-lg"
-            variant="cta-submit"
-          >
-            {isSubmitting ? (
-              <span className="flex items-center gap-2">
-                <svg className="h-4 w-4 animate-spin text-current" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                Submitting…
-              </span>
-            ) : (
-              "Send Enquiry"
-            )}
-          </Button>
+          <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              size="lg"
+              className="w-full sm:w-auto min-w-[220px] justify-center gap-2 text-base font-bold shadow-sm transition-all hover:shadow-md"
+              variant="cta-submit"
+            >
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <svg className="h-4 w-4 animate-spin text-current" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Submitting…
+                </span>
+              ) : (
+                <>
+                  <span>Send Enquiry</span>
+                  <Send className="h-4 w-4" />
+                </>
+              )}
+            </Button>
+          </motion.div>
         </div>
       </form>
     </div>

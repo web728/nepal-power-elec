@@ -11,9 +11,6 @@ import { OrganizationJsonLd, EventJsonLd } from "@/components/seo/json-ld";
 import { AnalyticsScripts } from "@/components/seo/analytics-scripts";
 import { siteConfig } from "@/lib/site-config";
 
-// Poppins is the branding guide's only approved typeface (Regular/Medium/
-// Bold) — see docs/FILE_INVENTORY.md, conflict #2, for why this overrides
-// the design spec's "Inter" recommendation.
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
@@ -67,8 +64,46 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  // Google Sitelinks Navigation Schema (Only Important Core Pages)
+  const sitelinksSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${siteConfig.siteUrl}/#website`,
+        "url": siteConfig.siteUrl,
+        "name": siteConfig.eventName,
+        "description": siteConfig.tagline,
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "@id": `${siteConfig.siteUrl}/#navigation`,
+        "name": [
+          "About Expo",
+          "Exhibitors Profile",
+          "Visitors Profile",
+          "Venue & Contact",
+          "Organizers"
+        ],
+        "url": [
+          `${siteConfig.siteUrl}/about`,
+          `${siteConfig.siteUrl}/exhibitors`,
+          `${siteConfig.siteUrl}/visitors`,
+          `${siteConfig.siteUrl}/contact`,
+          `${siteConfig.siteUrl}/organizers`
+        ]
+      }
+    ]
+  };
+
   return (
     <html lang="en" className={`${poppins.variable} h-full antialiased`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(sitelinksSchema) }}
+        />
+      </head>
       <body className="flex min-h-full flex-col bg-white text-ink" suppressHydrationWarning>
         <AnalyticsScripts />
         <OrganizationJsonLd />

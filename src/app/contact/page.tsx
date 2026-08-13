@@ -5,7 +5,7 @@ import { OrganizersSection } from "@/components/sections/organizers-section";
 import { ContactForm } from "@/components/forms/contact-form";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
-import { Mail, Phone, MapPin, Clock, HelpCircle, Sparkles } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, HelpCircle, Sparkles, Calendar } from "lucide-react";
 
 const breadcrumbs = [{ label: "Contact" }];
 
@@ -18,28 +18,20 @@ export const metadata: Metadata = {
 
 const quickContactCards = [
   {
-    icon: Mail,
-    title: "Email Us",
-    detail: "info@nepalelectricexpo.com",
-    subDetail: "For general & exhibition enquiries",
-    href: "mailto:info@nepalelectricexpo.com",
-  },
-  {
-    icon: Phone,
-    title: "Call Direct",
-    detail: "+977 1-4000000 / +91 98765 43210",
-    subDetail: "Mon - Fri, 9:00 AM - 6:00 PM IST/NPT",
-    href: "tel:+97714000000",
+    icon: Calendar,
+    title: "Event Dates",
+    detail: "September 04 - 06, 2026", // Apni actual dates yaha dalein
+    subDetail: "Friday - Sunday | 10:00 AM - 6:00 PM NPT",
+    href: "#", // Ya calendar add event link
   },
   {
     icon: MapPin,
     title: "Event Venue",
     detail: "Bhrikuti Mandap Exhibition Hall",
     subDetail: "Kathmandu, Nepal",
-    href: "https://maps.google.com",
+    href: "https://maps.google.com/?q=Bhrikuti+Mandap+Exhibition+Hall+Kathmandu",
   },
 ];
-
 export default function ContactPage() {
   return (
     <>
@@ -71,30 +63,32 @@ export default function ContactPage() {
                 partnerships or general event assistance, reach out directly or submit your query.
               </p>
 
-              {/* Quick Contact Info Stack */}
-              <div className="mt-8 flex flex-col gap-4">
-                {quickContactCards.map((card, idx) => {
-                  const Icon = card.icon;
-                  return (
-                    <a
-                      key={idx}
-                      href={card.href}
-                      target={card.href.startsWith("http") ? "_blank" : undefined}
-                      rel="noreferrer"
-                      className="group flex items-start gap-4 rounded-xl border border-border bg-card p-4 transition-all duration-200 hover:border-teal/50 hover:shadow-sm"
-                    >
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-teal transition-colors group-hover:bg-teal group-hover:text-white">
-                        <Icon className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-foreground">{card.title}</h4>
-                        <p className="mt-0.5 text-sm font-semibold text-teal">{card.detail}</p>
-                        <p className="text-xs text-muted-foreground">{card.subDetail}</p>
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
+              {/* Quick Event Info Stack */}
+<div className="mt-8 flex flex-col gap-4">
+  {quickContactCards.map((card, idx) => {
+    const Icon = card.icon;
+    const isExternal = card.href.startsWith("http");
+
+    return (
+      <a
+        key={idx}
+        href={card.href}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+        className="group flex items-start gap-4 rounded-xl border border-border bg-card p-4 transition-all duration-200 hover:border-teal/50 hover:shadow-sm"
+      >
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-teal/10 text-teal transition-colors group-hover:bg-teal group-hover:text-white">
+          <Icon className="h-5 w-5" />
+        </div>
+        <div>
+          <h4 className="text-sm font-bold text-foreground">{card.title}</h4>
+          <p className="mt-0.5 text-sm font-semibold text-teal">{card.detail}</p>
+          <p className="text-xs text-muted-foreground">{card.subDetail}</p>
+        </div>
+      </a>
+    );
+  })}
+</div>
             </div>
 
             {/* Quick Response Notice */}
@@ -122,7 +116,9 @@ export default function ContactPage() {
       {/* Organizers Section */}
       <section className="border-t border-border bg-muted/10 py-12 sm:py-16">
         <Container>
-          <OrganizersSection showSupportedBy={false} />
+          <OrganizersSection 
+          showSupportedBy={false}
+          showMediaPartners = {true} />
         </Container>
       </section>
     </>

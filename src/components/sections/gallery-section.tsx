@@ -143,11 +143,7 @@ export function GallerySection() {
 
                 {/* Subtle Gradient Overlay & Title Badge */}
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-80 sm:opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 transition-transform duration-300 sm:translate-y-2 group-hover:translate-y-0">
-                  <span className="inline-block rounded-md bg-white/90 px-3 py-1 text-xs sm:text-sm font-semibold text-slate-900 shadow-sm backdrop-blur-md">
-                    {image.title}
-                  </span>
-                </div>
+              
               </div>
             </figure>
           ))}

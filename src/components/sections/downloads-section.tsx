@@ -82,23 +82,23 @@ export function DownloadsSection() {
       id="downloads"
       className="relative overflow-hidden bg-white py-12 sm:py-16 lg:py-24 scroll-mt-24"
     >
-      {/* Background Graphic */}
-      <div className="pointer-events-none absolute right-0 top-0 z-0 overflow-hidden opacity-30 sm:opacity-60 lg:opacity-100">
-        <Image
-          src="/brandings/wind.png"
-          alt="Background Graphic Right"
-          width={1200}
-          height={1200}
-          priority
-          className="
-            h-auto object-contain
-            w-[240px] translate-x-[20%] -translate-y-[10%] rotate-180 sm:rotate-0
-            sm:w-[450px] sm:translate-x-[20%] sm:-translate-y-[20%]
-            lg:w-[600px] lg:translate-x-[15%] lg:-translate-y-[10%]
-            xl:w-[350px] xl:translate-x-[5%] xl:translate-y-[20%]
-          "
-        />
-      </div>
+    {/* Background Graphic */}
+<div className="pointer-events-none absolute right-0 top-0 z-0 overflow-hidden opacity-30 sm:opacity-60 lg:opacity-100">
+  <Image
+    src="/brandings/wind.png"
+    alt="Background Graphic Right"
+    width={1200}
+    height={1200}
+    priority
+    className="
+      h-auto object-contain
+      w-[240px] translate-x-[20%] -translate-y-[10%]
+      sm:w-[450px] sm:translate-x-[20%] sm:-translate-y-[20%]
+      lg:w-[600px] lg:translate-x-[15%] lg:-translate-y-[10%]
+      xl:w-[350px] xl:translate-x-[5%] xl:translate-y-[20%]
+    "
+  />
+</div>
 
       {/* Main Content */}
       <Container className="relative z-10 px-4 sm:px-6 lg:px-8">

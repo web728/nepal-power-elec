@@ -70,10 +70,10 @@ export function Header() {
           <Image
             src={siteConfig.eventLogo}
             alt={siteConfig.eventName}
-            width={260}
-            height={70}
+            width={280}
+            height={90}
             priority
-            className="h-15 w-auto sm:h-15 md:h-15 lg:h-15 object-contain transition-transform hover:scale-[1.01]"
+            className="h-15 w-auto sm:h-15 md:h-15 lg:h-18 object-contain transition-transform hover:scale-[1.01]"
           />
         </Link>
 

@@ -69,7 +69,7 @@ export default function PrivacyPolicyPage() {
       <BreadcrumbJsonLd items={[{ label: "Privacy Policy", href: "/privacy-policy" }]} />
       <LegalPage
         title="Privacy Policy"
-        effectiveNote="Effective upon publication on the official website."
+        effectiveNote=""
         sections={sections}
       />
     </>

@@ -43,7 +43,7 @@ export default function CookiePolicyPage() {
       <BreadcrumbJsonLd items={[{ label: "Cookie Policy", href: "/cookie-policy" }]} />
       <LegalPage
         title="Cookie Policy"
-        effectiveNote="Effective upon publication on the official website."
+        effectiveNote=""
         sections={sections}
       />
     </>

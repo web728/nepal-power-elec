@@ -10,7 +10,12 @@ import { MapPin, ExternalLink } from "lucide-react";
 // Inline SVG Social Icons (CurrentColor use kar rahe hain taaki parent se color le sakein)
 function FacebookIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <svg
+      className={className}
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
       <path
         fillRule="evenodd"
         d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
@@ -22,7 +27,12 @@ function FacebookIcon({ className = "h-4 w-4" }: { className?: string }) {
 
 function TwitterIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <svg
+      className={className}
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
   );
@@ -30,7 +40,12 @@ function TwitterIcon({ className = "h-4 w-4" }: { className?: string }) {
 
 function LinkedinIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <svg
+      className={className}
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
       <path
         fillRule="evenodd"
         d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.762-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
@@ -70,6 +85,18 @@ const SOCIAL_LINKS = [
   },
 ] as const;
 
+
+// Config object jisse aap teeno logos ka size aur alignment alag-alag control kar sakte ho
+const footerOrganizerScales: Record<
+  string,
+  { scale: number; offsetX?: number; offsetY?: number }
+> = {
+  // Key must match org.key (jaise siteConfig me di gayi hai)
+  futurex: { scale: 1.5, offsetX: 0, offsetY: 0 },
+  etss: { scale: 1.5, offsetX: 0, offsetY: 0 },
+  mediaspace: { scale: 0.85, offsetX: 0, offsetY: 0 },
+};
+
 export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-teal-dark text-white">
@@ -92,7 +119,6 @@ export function Footer() {
       <Container className="relative z-10 py-12 sm:py-16">
         {/* Main Grid Section */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
-
           {/* Column 1: Logo & Info */}
           <div className="flex flex-col items-start justify-start">
             <div className="mb-5 inline-flex h-24 w-48 items-center justify-center shadow-sm">
@@ -112,8 +138,12 @@ export function Footer() {
             <p className="text-sm font-semibold leading-relaxed text-white">
               {siteConfig.eventName}
             </p>
-            <p className="mt-1.5 text-sm text-white/80">{siteConfig.dates.display}</p>
-            <p className="mt-1.5 text-sm text-white/70">{siteConfig.venue.full}</p>
+            <p className="mt-1.5 text-sm text-white/80">
+              {siteConfig.dates.display}
+            </p>
+            <p className="mt-1.5 text-sm text-white/70">
+              {siteConfig.venue.full}
+            </p>
           </div>
 
           {/* Column 2: Quick Links */}
@@ -135,48 +165,50 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Jointly Organised By */}
-          <div>
-            <h3 className="mb-5 text-sm font-bold uppercase tracking-wider text-white/90">
-              Jointly Organised By
-            </h3>
-       <div className="flex flex-col gap-3.5">
-  {siteConfig.organizers.map((org: any, index: number) => {
-    // 3rd item is index 2.
-    const isThirdLogo = index === 2;
+      {/* Column 3: Jointly Organised By */}
+<div>
+  <h3 className="mb-5 text-sm font-bold uppercase tracking-wider text-white/90">
+    Jointly Organised By
+  </h3>
 
-    return (
-      <a
-        key={org.key}
-        href={org.url || "#"}
-        target={org.url ? "_blank" : "_self"}
-        rel={org.url ? "noopener noreferrer" : undefined}
-        title={org.name || "Organizer"}
-        // CHANGE 1: `bg-white` -> `bg-slate-50` (subtle light gray)
-        className={`group flex h-20 w-full items-center justify-center rounded-xl bg-slate-100 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md`}
-      >
-        {org.logo ? (
-          // CHANGE 2: 3rd logo size adjusted to perfectly blend
-          <div className={`relative ${isThirdLogo ? 'h-[75%] w-[75%]' : 'h-full w-full'}`}>
-            <Image
-              src={org.logo}
-              alt={org.name || "Organizer Logo"}
-              fill
-              // CHANGE 3: `object-contain` ensures logo shape is preserved
-              className="object-contain transition-transform duration-200 group-hover:scale-105"
-              sizes="(max-width: 1024px) 280px, 300px"
-            />
-          </div>
-        ) : (
-          <span className="line-clamp-2 text-center text-xs font-bold text-slate-800">
-            {org?.name || "Organizer"}
-          </span>
-        )}
-      </a>
-    );
-  })}
+  <div className="flex flex-col gap-3.5">
+    {siteConfig.organizers.map((org: any) => {
+      // Config se logo ke liye custom scale aur offsets nikalein (default 1 hai)
+      const logoConfig = footerOrganizerScales[org.key] || { scale: 1.4, offsetX: 0, offsetY: 0 };
+
+      return (
+        <a
+          key={org.key}
+          href={org.url || "#"}
+          target={org.url ? "_blank" : "_self"}
+          rel={org.url ? "noopener noreferrer" : undefined}
+          title={org.name || "Organizer"}
+          className="group flex h-20 w-full items-center justify-center rounded-xl bg-white p-3 shadow-xs border border-slate-200/60 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-teal-500/30 overflow-hidden"
+        >
+          {org.logo ? (
+            <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
+              <Image
+                src={org.logo}
+                alt={org.name || "Organizer Logo"}
+                fill
+                className="object-contain transition-transform duration-300 group-hover:scale-105"
+                style={{
+                  transform: `translate(${logoConfig.offsetX || 0}px, ${logoConfig.offsetY || 0}px) scale(${logoConfig.scale})`,
+                  objectPosition: "center",
+                }}
+                sizes="(max-width: 1024px) 280px, 300px"
+              />
+            </div>
+          ) : (
+            <span className="line-clamp-2 text-center text-xs font-bold text-slate-800">
+              {org?.name || "Organizer"}
+            </span>
+          )}
+        </a>
+      );
+    })}
+  </div>
 </div>
-          </div>
 
           {/* Column 4: Location Map */}
           <div>
@@ -211,15 +243,14 @@ export function Footer() {
         {/* Section 2: Newsletter & Social Media */}
         <div className="mt-12 border-t border-white/10 pt-10">
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
-
             {/* Newsletter Column */}
             <div className="lg:col-span-6 xl:col-span-7">
               <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-white">
                 Stay Updated
               </h3>
               <p className="mb-5 max-w-2xl text-sm text-white/80">
-                Receive verified announcements about registration, documents and previous-edition
-                highlights straight to your inbox.
+                Receive verified announcements about registration, documents and
+                previous-edition highlights straight to your inbox.
               </p>
               <div className="max-w-md">
                 <NewsletterForm compact />
@@ -234,22 +265,34 @@ export function Footer() {
                 </h3>
 
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  {SOCIAL_LINKS.map(({ key, href, label, title, Icon, iconClass, hoverClass }) => (
-                    <a
-                      key={key}
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title={title}
-                      className={`group flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 transition-all duration-200 ${hoverClass}`}
-                    >
-                      <Icon className={`h-4 w-4 shrink-0 transition-transform group-hover:scale-110 ${iconClass}`} />
-                      <span className="text-sm font-medium text-white/90 transition-colors group-hover:text-white">
-                        {label}
-                      </span>
-                      <ExternalLink className="ml-0.5 h-3 w-3 shrink-0 text-white/30 group-hover:text-white/60" />
-                    </a>
-                  ))}
+                  {SOCIAL_LINKS.map(
+                    ({
+                      key,
+                      href,
+                      label,
+                      title,
+                      Icon,
+                      iconClass,
+                      hoverClass,
+                    }) => (
+                      <a
+                        key={key}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={title}
+                        className={`group flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 transition-all duration-200 ${hoverClass}`}
+                      >
+                        <Icon
+                          className={`h-4 w-4 shrink-0 transition-transform group-hover:scale-110 ${iconClass}`}
+                        />
+                        <span className="text-sm font-medium text-white/90 transition-colors group-hover:text-white">
+                          {label}
+                        </span>
+                        <ExternalLink className="ml-0.5 h-3 w-3 shrink-0 text-white/30 group-hover:text-white/60" />
+                      </a>
+                    ),
+                  )}
                 </div>
               </div>
             </div>
@@ -261,12 +304,16 @@ export function Footer() {
       <div className="relative z-10 border-t border-white/10 bg-black/30">
         <Container className="flex flex-col items-center justify-between gap-4 py-5 text-xs text-white/60 sm:flex-row">
           <p className="text-center sm:text-left">
-            © {new Date().getFullYear()} {siteConfig.eventName}. All rights reserved.
+            © {new Date().getFullYear()} {siteConfig.eventName}. All rights
+            reserved.
           </p>
           <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             {footerLegalLinks.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="transition-colors hover:text-yellow">
+                <Link
+                  href={link.href}
+                  className="transition-colors hover:text-yellow"
+                >
                   {link.label}
                 </Link>
               </li>

@@ -100,7 +100,7 @@ export default function ExhibitorProfilePage() {
               <span>Target Sectors & Categories</span>
             </div>
             <span className="text-xs font-semibold text-muted">
-              Showing {filteredSectors.length} of {sectors.length} Industry Sectors
+              Showing Industry Sectors
             </span>
           </div>
 
@@ -181,11 +181,7 @@ export default function ExhibitorProfilePage() {
                   </ul>
                 </div>
 
-                <div className="mt-8 pt-4 border-t border-slate-50">
-                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                    {sector.items.length} Product Categories Listed
-                  </span>
-                </div>
+              
               </Card>
             ))
           ) : (

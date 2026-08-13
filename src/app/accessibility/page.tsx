@@ -57,7 +57,7 @@ export default function AccessibilityPage() {
       <PageHero title="Accessibility Statement" breadcrumbs={[{ label: "Accessibility Statement" }]} />
       <Container as="section" className="py-12 sm:py-16">
         <article className="mx-auto max-w-prose">
-          <p className="italic text-muted">Effective upon publication on the official website.</p>
+      
           {sections.map((section) => (
             <div key={section.heading} className="mt-8">
               <h2 className="text-xl font-semibold text-ink sm:text-2xl">{section.heading}</h2>

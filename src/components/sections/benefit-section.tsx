@@ -116,9 +116,9 @@ export function BenefitSection({
             priority
             className="
               h-auto object-contain
-              w-[220px] translate-x-[20%] -translate-y-[15%]
+              w-[220px] translate-x-[20%] -translate-y-[25%]
               sm:w-[450px] sm:translate-x-[15%] sm:-translate-y-[20%]
-              lg:w-[650px] lg:translate-x-[10%] lg:-translate-y-[25%]
+              lg:w-[650px] lg:translate-x-[10%] lg:-translate-y-[20%]
             "
           />
         </div>

@@ -66,7 +66,7 @@ export default function TermsAndConditionsPage() {
       <BreadcrumbJsonLd items={[{ label: "Terms and Conditions", href: "/terms-and-conditions" }]} />
       <LegalPage
         title="Terms and Conditions"
-        effectiveNote="Effective upon publication on the official website."
+        effectiveNote=""
         sections={sections}
       />
     </>

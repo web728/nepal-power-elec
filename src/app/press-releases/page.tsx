@@ -180,46 +180,54 @@ export default function PressReleasesPage() {
               description="Media representatives may contact the organizing team for official event information, interview requests, press materials, exhibition updates, media registration and coverage-related enquiries."
             />
 
-            <motion.div 
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-3"
-            >
-              {siteConfig.organizers.map((org) => (
-                <motion.div key={org.key} variants={itemVariants} whileHover={{ y: -4 }}>
-                  <Card className="flex h-full flex-col justify-between border border-slate-200/80 bg-white p-6 transition-all duration-300 hover:border-teal/50 hover:shadow-lg">
-                    <div>
-                      <h3 className="text-base font-bold text-slate-900">{org.name}</h3>
-                      <p className="mt-1 text-xs font-medium text-slate-500">{org.contactName}</p>
-                    </div>
+           <motion.div 
+  variants={containerVariants}
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true }}
+  className="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-3"
+>
+  {/* Array ko reverse karke 1st waale card ko sabse pehle laaya gaya hai */}
+ {/* Array items ko rotate karke 1st -> 2nd, 2nd -> 3rd, aur 3rd -> 1st banaya gaya hai */}
+{(() => {
+  const orgs = siteConfig.organizers;
+  // Last element ko sabse aage shift kar rahe hain
+  const reorderedOrgs = orgs.length > 0 ? [orgs[orgs.length - 1], ...orgs.slice(0, -1)] : orgs;
 
-                    <div className="mt-6 flex flex-col gap-3 text-sm font-medium">
-                      <a
-                        href={`tel:${org.phoneHref}`}
-                        className="group flex items-center gap-2.5 text-slate-700 transition-colors hover:text-teal"
-                      >
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal/10 text-teal transition-colors group-hover:bg-teal group-hover:text-white">
-                          <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
-                        </div>
-                        <span className="text-xs sm:text-sm">{org.phone}</span>
-                      </a>
+  return reorderedOrgs.map((org) => (
+    <motion.div key={org.key} variants={itemVariants} whileHover={{ y: -4 }}>
+      <Card className="flex h-full flex-col justify-between border border-slate-200/80 bg-white p-6 transition-all duration-300 hover:border-teal/50 hover:shadow-lg">
+        <div>
+          <h3 className="text-base font-bold text-slate-900">{org.name}</h3>
+          <p className="mt-1 text-xs font-medium text-slate-500">{org.contactName}</p>
+        </div>
 
-                      <a
-                        href={`mailto:${org.email}`}
-                        className="group flex items-center gap-2.5 text-slate-700 transition-colors hover:text-teal"
-                      >
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal/10 text-teal transition-colors group-hover:bg-teal group-hover:text-white">
-                          <Mail className="h-4 w-4 shrink-0" aria-hidden="true" />
-                        </div>
-                        <span className="break-all text-xs sm:text-sm">{org.email}</span>
-                      </a>
-                    </div>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
+        <div className="mt-6 flex flex-col gap-3 text-sm font-medium">
+          <a
+            href={`tel:${org.phoneHref}`}
+            className="group flex items-center gap-2.5 text-slate-700 transition-colors hover:text-teal"
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal/10 text-teal transition-colors group-hover:bg-teal group-hover:text-white">
+              <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
+            </div>
+            <span className="text-xs sm:text-sm">{org.phone}</span>
+          </a>
+
+          <a
+            href={`mailto:${org.email}`}
+            className="group flex items-center gap-2.5 text-slate-700 transition-colors hover:text-teal"
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal/10 text-teal transition-colors group-hover:bg-teal group-hover:text-white">
+              <Mail className="h-4 w-4 shrink-0" aria-hidden="true" />
+            </div>
+            <span className="break-all text-xs sm:text-sm">{org.email}</span>
+          </a>
+        </div>
+      </Card>
+    </motion.div>
+  ));
+})()}
+</motion.div>
           </motion.div>
 
         </div>

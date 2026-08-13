@@ -1,10 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function Accordion({ items }: { items: { question: string; answer: string }[] }) {
+// TypeScript Interface with ReactNode answer
+export interface AccordionItem {
+  question: string;
+  answer: ReactNode;
+  plainText?: string;
+}
+
+export function Accordion({ items }: { items: AccordionItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
@@ -31,8 +38,17 @@ export function Accordion({ items }: { items: { question: string; answer: string
                 />
               </button>
             </h3>
-            <div id={panelId} role="region" aria-labelledby={buttonId} hidden={!open} className="px-5 pb-4">
-              <p className="text-sm leading-relaxed text-muted">{item.answer}</p>
+            <div 
+              id={panelId} 
+              role="region" 
+              aria-labelledby={buttonId} 
+              hidden={!open} 
+              className="px-5 pb-4"
+            >
+              {/* <p> ki jagah <div> use kiya hai taaki JSX elements/links smooth render hon */}
+              <div className="text-sm leading-relaxed text-muted">
+                {item.answer}
+              </div>
             </div>
           </div>
         );

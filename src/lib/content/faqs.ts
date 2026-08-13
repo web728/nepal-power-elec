@@ -1,12 +1,15 @@
-// FAQ updated for 5th Nepal Electric, Power and Lights International Expo 2026
-// Optimized for SEO and internal linking across nepalpowerelec.com
-
-export type Faq = { question: string; answer: string };
+export type Faq = {
+  question: string;
+  answer: string;
+  plainText?: string;
+  linkHref?: string;
+  linkLabel?: string;
+};
 
 export const generalFaqs: Faq[] = [
-  { 
-    question: "When and where will the Nepal Electric, Power and Lights Expo 2026 take place?", 
-    answer: "The 5th Nepal Electric, Power and Lights International Expo 2026 will take place from 4–6 September 2026 at the <a href='https://nepalpowerelec.com/venue'>Bhrikuti Mandap Exhibition Hall</a> in Kathmandu, Nepal." 
+  {
+    question: "When and where will the Nepal Electric, Power and Lights Expo 2026 take place?",
+    answer: "The 5th Nepal Electric, Power and Lights International Expo 2026 will take place from 4-6 September 2026 at Bhrikuti Mandap Exhibition Hall in Kathmandu, Nepal.",
   },
   {
     question: "What are the exhibition timings?",
@@ -14,15 +17,15 @@ export const generalFaqs: Faq[] = [
   },
   {
     question: "What industries and product categories does the 5th Nepal Power Expo cover?",
-    answer: "The exhibition covers electrical equipment, power generation, transmission and distribution, renewable energy, solar technology, lighting, wires and cables, transformers, switchgear, batteries, inverters, UPS systems, automation, electrical components, electro-mobility, home appliances, and allied technologies. Learn more on our <a href='https://nepalpowerelec.com/about-the-expo'>About The Expo</a> page."
+    answer: "The exhibition covers electrical equipment, power generation, transmission and distribution, renewable energy, solar technology, lighting, wires and cables, transformers, switchgear, batteries, inverters, UPS systems, automation, electrical components, electro-mobility, home appliances, and allied technologies."
   },
   {
     question: "Who organizes the Nepal Electric, Power and Lights Expo?",
-    answer: "The expo is jointly organized by Futurex Trade Fair and Events Pvt. Ltd., Exhibitions & Trade Services India Pvt. Ltd. (ETSIPL), and Media Space Solutions Pvt. Ltd. Find out more on our <a href='https://nepalpowerelec.com/organizers'>Organizers</a> page."
+    answer: "The expo is jointly organized by Futurex Trade Fair and Events Pvt. Ltd., Exhibitions & Trade Services India Pvt. Ltd. (ETSIPL), and Media Space Solutions Pvt. Ltd."
   },
   {
     question: "Where can I download the event brochure and post-show report?",
-    answer: "You can download the official 2026 Event Brochure and the 2025 Post-Show Report directly from our Event Documents section or request it via our <a href='https://nepalpowerelec.com/about-the-expo'>About The Expo</a> section."
+    answer: "You can download the official 2026 Event Brochure and the 2025 Post-Show Report directly from our Event Documents section or request it via our About The Expo section."
   },
   {
     question: "What were the results and statistics of the 2025 edition?",
@@ -30,34 +33,34 @@ export const generalFaqs: Faq[] = [
   },
   {
     question: "How can media representatives get accreditation or details?",
-    answer: "Media representatives can request official press passes, interviews, photos, and press materials by getting in touch through our <a href='https://nepalpowerelec.com/contact'>Contact Us</a> page."
+    answer: "Media representatives can request official press passes, interviews, photos, and press materials by getting in touch through our Contact Us page."
   },
   {
     question: "Who should I contact for more information?",
-    answer: "For exhibitor participation, visitor registration, sponsorship, or general assistance, please reach out via our official <a href='https://nepalpowerelec.com/contact'>Contact Us</a> page."
+    answer: "For exhibitor participation, visitor registration, sponsorship, or general assistance, please reach out via our official Contact Us page."
   }
 ];
 
 export const exhibitorFaqs: Faq[] = [
   {
     question: "Who is eligible to exhibit at the 5th Nepal Power & Electric Expo 2026?",
-    answer: "Manufacturers, suppliers, exporters, technology providers, and solution partners across electrical, energy, lighting, and automation sectors are eligible. Check our <a href='https://nepalpowerelec.com/exhibitor-profile'>Exhibitor Profile</a> for a full list of eligible product categories."
+    answer: "Manufacturers, suppliers, exporters, technology providers, and solution partners across electrical, energy, lighting, and automation sectors are eligible."
   },
   {
     question: "Why should my company exhibit at this trade fair in Nepal?",
-    answer: "Exhibiting gives you direct access to key decision-makers, government officials, contractors, and distributors in Nepal's rapidly growing energy market. Discover all benefits on our <a href='https://nepalpowerelec.com/why-exhibit'>Why Exhibit</a> page."
+    answer: "Exhibiting gives you direct access to key decision-makers, government officials, contractors, and distributors in Nepal's rapidly growing energy market."
   },
   {
     question: "How can my company book a stand or participate as an exhibitor?",
-    answer: "Companies can submit a stand enquiry through our <a href='https://nepalpowerelec.com/book-a-stand'>Book a Stand</a> page or reach out directly via the <a href='https://nepalpowerelec.com/contact'>Contact Us</a> page. Stand allocation is subject to availability, technical requirements, and organizer approval."
+    answer: "Companies can submit a stand enquiry through our Book a Stand page or reach out directly via the Contact Us page. Stand allocation is subject to availability, technical requirements, and organizer approval."
   },
   {
     question: "Does submitting the enquiry form guarantee stall allocation?",
-    answer: "No, submitting a request via the <a href='https://nepalpowerelec.com/book-a-stand'>Book a Stand</a> form is an initial enquiry. Space allocation is confirmed only after formal documentation, approval, and completion of the booking process."
+    answer: "No, submitting a request via the Book a Stand form is an initial enquiry. Space allocation is confirmed only after formal documentation, approval, and completion of the booking process."
   },
   {
     question: "Can I choose or request a specific stall location in the exhibition hall?",
-    answer: "Yes, stall location preferences can be submitted during booking. However, final stall allocation at <a href='https://nepalpowerelec.com/venue'>Bhrikuti Mandap Hall</a> depends on availability, hall layouts, booth size, and organizer approval."
+    answer: "Yes, stall location preferences can be submitted during booking. However, final stall allocation at Bhrikuti Mandap Hall depends on availability, hall layouts, booth size, and organizer approval."
   },
   {
     question: "Can international companies exhibit at the expo?",
@@ -69,7 +72,7 @@ export const exhibitorFaqs: Faq[] = [
   },
   {
     question: "Are live machinery or powered equipment demonstrations allowed at the booth?",
-    answer: "Yes. Exhibitors planning live, moving, heated, noisy, high-load, or technically complex demonstrations must disclose requirements during booking and obtain written permission from the <a href='https://nepalpowerelec.com/organizers'>Organizers</a> for safety compliance."
+    answer: "Yes. Exhibitors planning live, moving, heated, noisy, high-load, or technically complex demonstrations must disclose requirements during booking and obtain written permission from the Organizers for safety compliance."
   },
   {
     question: "Can exhibitors sell products directly during the exhibition?",
@@ -85,18 +88,18 @@ export const exhibitorFaqs: Faq[] = [
   },
   {
     question: "Who is responsible for freight, customs clearance, and travel logistics?",
-    answer: "Exhibitors are responsible for managing their shipping, customs clearance, travel visas, and accommodations. Detailed logistical guidance can be obtained through our <a href='https://nepalpowerelec.com/contact'>Contact Us</a> team."
+    answer: "Exhibitors are responsible for managing their shipping, customs clearance, travel visas, and accommodations. Detailed logistical guidance can be obtained through our Contact Us team."
   },
   {
     question: "How do I make payments for stand booking?",
-    answer: "All payments must be made strictly according to the official invoices and banking instructions issued during the <a href='https://nepalpowerelec.com/book-a-stand'>Stand Booking</a> process."
+    answer: "All payments must be made strictly according to the official invoices and banking instructions issued during the Stand Booking process."
   }
 ];
 
 export const visitorFaqs: Faq[] = [
   {
     question: "Who should visit the 5th Nepal Electric & Power Expo 2026?",
-    answer: "The expo is designed for trade and professional visitors including electricians, engineers, consultants, EPC contractors, project developers, utility professionals, importers, distributors, architects, government representatives, and institutional buyers. See the overview on our <a href='https://nepalpowerelec.com/why-visit'>Why Visit</a> page."
+    answer: "The expo is designed for trade and professional visitors including electricians, engineers, consultants, EPC contractors, project developers, utility professionals, importers, distributors, architects, government representatives, and institutional buyers."
   },
   {
     question: "Is entry to the exhibition free?",
@@ -104,7 +107,7 @@ export const visitorFaqs: Faq[] = [
   },
   {
     question: "How can I register as a visitor?",
-    answer: "You can pre-register for free entry by filling out the form on our <a href='https://exporegistration.in/nepalpowerelec-visitor.aspx'>Register to Visit</a> page. Advance registration is recommended for faster entry at the venue."
+    answer: "You can pre-register for free entry by filling out the form on our Register to Visit page. Advance registration is recommended for faster entry at the venue."
   },
   {
     question: "Does pre-registration or visitor registration guarantee entry?",
@@ -120,7 +123,7 @@ export const visitorFaqs: Faq[] = [
   },
   {
     question: "Can I register multiple colleagues or group delegations?",
-    answer: "Yes, each colleague or trade delegate should individually complete the form on our <a href='https://exporegistration.in/nepalpowerelec-visitor.aspx'>Register to Visit</a> page."
+    answer: "Yes, each colleague or trade delegate should individually complete the registration form."
   },
   {
     question: "Can visitors arrange meetings with exhibitors before the event?",
@@ -136,7 +139,7 @@ export const visitorFaqs: Faq[] = [
   },
   {
     question: "Does the organizer provide visa assistance or arrange travel/hotels?",
-    answer: "Visitors and exhibitors are responsible for their own travel, hotel stays, and Nepal visa arrangements. The organizer can provide event-related participation documents where applicable. Venue details are available on our <a href='https://nepalpowerelec.com/venue'>Venue</a> page."
+    answer: "Visitors and exhibitors are responsible for their own travel, hotel stays, and Nepal visa arrangements. The organizer can provide event-related participation documents where applicable."
   },
   {
     question: "Is parking available at the venue?",
@@ -144,6 +147,6 @@ export const visitorFaqs: Faq[] = [
   },
   {
     question: "How can I request special accessibility or assistance at the venue?",
-    answer: "If you require special assistance at the venue, please reach out to us prior to your arrival via our <a href='https://nepalpowerelec.com/contact'>Contact Us</a> page."
+    answer: "If you require special assistance at the venue, please reach out to us prior to your arrival via our Contact Us page."
   }
 ];

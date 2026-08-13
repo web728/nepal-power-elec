@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Metadata } from "next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { HelpCircle, Search, MessageSquare, ArrowRight, Sparkles } from "lucide-react";
+import { HelpCircle, Search, MessageSquare, ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
 import { Container } from "@/components/ui/container";
 import { Accordion } from "@/components/ui/accordion";
@@ -22,12 +21,28 @@ export default function FaqPage() {
   const pageRef = useRef<HTMLDivElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Search Filtered FAQs
-  const filteredFaqs = generalFaqs.filter(
-    (faq) =>
-      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Search Filtered FAQs (Safe for ReactNode answers)
+const filteredFaqs = generalFaqs.filter((faq) => {
+  const query = searchQuery.toLowerCase();
+  const matchesQuestion = faq.question.toLowerCase().includes(query);
+    
+    // Check if optional plainText exists for deep search
+  const faqWithPlainText = faq as { plainText?: string };
+  const matchesAnswerText = faqWithPlainText.plainText 
+    ? faqWithPlainText.plainText.toLowerCase().includes(query) 
+    : false;
+
+  return matchesQuestion || matchesAnswerText;
+});
+
+// Prepare clean JSON-LD items for SEO
+const jsonLdItems = generalFaqs.map((faq) => {
+  const faqWithPlainText = faq as { plainText?: string };
+  return {
+    question: faq.question,
+    answer: faqWithPlainText.plainText || faq.question,
+  };
+});
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -70,7 +85,7 @@ export default function FaqPage() {
   return (
     <div ref={pageRef} className="relative overflow-hidden bg-bg">
       <BreadcrumbJsonLd items={[{ label: "FAQ", href: "/faq" }]} />
-      <FaqJsonLd items={generalFaqs} />
+      <FaqJsonLd items={jsonLdItems} />
 
       <PageHero
         title="Frequently Asked Questions"
@@ -117,7 +132,7 @@ export default function FaqPage() {
               </p>
               <button
                 onClick={() => setSearchQuery("")}
-                className="mt-3 text-xs font-bold text-teal underline"
+                className="mt-3 text-xs font-bold text-teal underline cursor-pointer"
               >
                 Clear Search
               </button>

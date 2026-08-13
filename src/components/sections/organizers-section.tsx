@@ -15,21 +15,24 @@ if (typeof window !== "undefined") {
 
 interface OrganizersSectionProps {
   showSupportedBy?: boolean;
+  showMediaPartners?: boolean;
 }
 
-interface SupportedLogo {
+interface PartnerLogo {
   id: number;
   name: string;
   src: string;
   url?: string;
-  scale?: number;
-  maxHeight?: string;
+  scale?: number;       // desktop/tablet scale
+  mobileScale?: number; // optional override for mobile only
+  offsetX?: number;
+  offsetY?: number;
 }
 
 // ========================================================
 // 1. SUPPORTED BY LOGOS (PATRONS) INDIVIDUAL SCALES
 // ========================================================
-const supportedByLogos: SupportedLogo[] = [
+const supportedByLogos: PartnerLogo[] = [
   {
     id: 1,
     name: "Nepal Chamber of Commerce",
@@ -67,17 +70,84 @@ const supportedByLogos: SupportedLogo[] = [
 ];
 
 // ========================================================
-// 2. ORGANIZERS LOGOS INDIVIDUAL SCALES (HAR LOGO KI SIZE ALAG)
-// Yahan se aap teeno organizers ke logo ki size alag-alag control kar sakte ho:
-// 1 = Normal Size | 1.2, 1.3 = Bada Logo | 0.8, 0.9 = Chhota Logo
+// 2. MEDIA PARTNER LOGOS (8 LOGOS -> 5 top row, 3 bottom row)
+// ========================================================
+const mediaPartnerLogos: PartnerLogo[] = [
+  {
+    id: 1,
+    name: "Media Partner 1",
+    src: "/logo/lighting_world.jpeg",
+    url: "https://example.com",
+    scale: 1,
+    mobileScale: 0.8, // 0.2 kam mobile pe
+  },
+  {
+    id: 2,
+    name: "Media Partner 2",
+    src: "/logo/electrical.jpeg",
+    url: "https://example.com",
+    scale: 1,
+    mobileScale: 0.8, // 0.2 kam mobile pe
+  },
+  {
+    id: 3,
+    name: "Media Partner 3",
+    src: "/logo/11.png",
+    url: "https://example.com",
+    scale: 2,
+    offsetX: 0,
+    offsetY: -5,
+  },
+  {
+    id: 4,
+    name: "Media Partner 4",
+    src: "/logo/22.png",
+    url: "https://example.com",
+    scale: 2,
+  },
+  {
+    id: 5,
+    name: "Media Partner 5",
+    src: "/logo/10.png",
+    url: "https://example.com",
+    scale: 2,
+  },
+  {
+    id: 6,
+    name: "Media Partner 6",
+    src: "/logo/30.png",
+    url: "https://example.com",
+    scale: 2,
+  },
+  {
+    id: 7,
+    name: "Media Partner 7",
+    src: "/logo/40.png",
+    url: "https://example.com",
+    scale: 2,
+  },
+  {
+    id: 8,
+    name: "Media Partner 8",
+    src: "/logo/66.png",
+    url: "https://example.com",
+    scale: 2,
+  },
+];
+
+// ========================================================
+// 3. ORGANIZERS LOGOS INDIVIDUAL SCALES
 // ========================================================
 const organizerScales: Record<string, number> = {
-  futurex: 1.2,    // Futurex Trade Fair logo size
-  etss: 1.0,       // Exhibitions & Trade Services logo size
-  mediaspace: 0.9, // Media Space Solutions logo size
+  futurex: 1.2,
+  etss: 1.0,
+  mediaspace: 0.9,
 };
 
-export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionProps) {
+export function OrganizersSection({
+  showSupportedBy = true,
+  showMediaPartners = true,
+}: OrganizersSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -118,6 +188,42 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
         );
       }
 
+      if (showMediaPartners) {
+        gsap.fromTo(
+          ".anim-media-head",
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: ".anim-media-head",
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+
+        gsap.fromTo(
+          ".anim-media-card",
+          { opacity: 0, y: 15, scale: 0.98 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.4,
+            stagger: 0.05,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: ".anim-media-card",
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
       gsap.fromTo(
         ".anim-org-head",
         { opacity: 0, y: 20 },
@@ -127,29 +233,65 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
           duration: 0.5,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: showSupportedBy ? ".anim-org-head" : sectionRef.current,
+            trigger: ".anim-org-head",
             start: "top 85%",
             toggleActions: "play none none reverse",
           },
         }
       );
 
-      gsap.fromTo(
-        ".anim-org-card",
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.4,
-          stagger: 0.08,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".anim-org-card",
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
+    // Organizers Section Title
+gsap.fromTo(
+  ".anim-org-head",
+  { opacity: 0, y: 20 },
+  {
+    opacity: 1,
+    y: 0,
+    duration: 0.5,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".anim-org-head",
+      start: "top 90%", // Jaldi trigger hoga
+      toggleActions: "play none none none", // Ek baar play hone ke baad gayab nahi hoga
+    },
+  }
+);
+
+// Organizers Cards Grid
+gsap.fromTo(
+  ".anim-org-card",
+  { opacity: 0, y: 20 },
+  {
+    opacity: 1,
+    y: 0,
+    duration: 0.4,
+    stagger: 0.08,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".anim-org-head", // Trigger parent/heading ko banaya taaki saare cards ek sath time par aayein
+      start: "top 80%",
+      toggleActions: "play none none none", // Up/Down scroll par disappear nahi hoga
+    },
+  }
+);
+
+// Contact Cards Grid
+gsap.fromTo(
+  ".anim-contact-card",
+  { opacity: 0, y: 20 },
+  {
+    opacity: 1,
+    y: 0,
+    duration: 0.4,
+    stagger: 0.08,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".anim-contact-card",
+      start: "top 20%",
+      toggleActions: "play none none none",
+    },
+  }
+);
 
       gsap.fromTo(
         ".anim-contact-card",
@@ -170,7 +312,7 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [showSupportedBy]);
+  }, [showSupportedBy, showMediaPartners]);
 
   return (
     <section
@@ -212,7 +354,9 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
                     key={logo.id}
                     {...wrapperProps}
                     className={`anim-patron-card group flex items-center justify-center rounded-xl border border-slate-200/80 bg-white p-3 sm:p-4 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-md ${
-                      isLastOddItem ? "col-span-2 sm:col-span-1" : "col-span-1"
+                      isLastOddItem
+                        ? "col-span-2 mx-auto w-full max-w-[calc(50%-0.375rem)] sm:col-span-1 sm:mx-0 sm:w-auto sm:max-w-none"
+                        : "col-span-1"
                     }`}
                   >
                     <div className="relative flex h-16 sm:h-20 w-full items-center justify-center p-1">
@@ -225,6 +369,65 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
                           transform: `scale(${logo.scale ?? 1})`,
                         }}
                         sizes="(max-width: 640px) 40vw, (max-width: 1024px) 30vw, 200px"
+                      />
+                    </div>
+                  </CardWrapper>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ================= MEDIA PARTNERS SECTION ================= */}
+        {showMediaPartners && (
+          <div className="mb-10 sm:mb-20">
+            <div className="anim-media-head text-center">
+              <SectionHeading
+                eyebrow="Partners"
+                title="Media Partners"
+                align="center"
+                className="mx-auto"
+              />
+            </div>
+
+            {/* Flex layout -> auto centers incomplete rows (5 top, 3 bottom on lg) */}
+            <div className="mx-auto mt-6 sm:mt-10 flex flex-wrap justify-center items-stretch gap-3 sm:gap-4 lg:gap-5">
+              {mediaPartnerLogos.map((logo) => {
+                const isLink = Boolean(logo.url);
+                const CardWrapper = isLink ? "a" : "div";
+                const wrapperProps = isLink
+                  ? {
+                      href: logo.url,
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                      title: `Visit ${logo.name}`,
+                    }
+                  : {};
+
+                const mobileScale = logo.mobileScale ?? logo.scale ?? 1;
+                const desktopScale = logo.scale ?? 1;
+
+                return (
+                  <CardWrapper
+                    key={logo.id}
+                    {...wrapperProps}
+                    className="anim-media-card group flex shrink-0 grow-0 basis-[47%] sm:basis-[22%] lg:basis-[18%] items-center justify-center rounded-xl border border-slate-200/80 bg-white p-3 sm:p-4 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-md"
+                  >
+                    <div className="relative flex h-16 sm:h-20 w-full items-center justify-center p-1 overflow-hidden">
+                      <Image
+                        src={logo.src}
+                        alt={logo.name}
+                        fill
+                        style={
+                          {
+                            "--tx": `${logo.offsetX ?? 0}px`,
+                            "--ty": `${logo.offsetY ?? 0}px`,
+                            "--s-mobile": mobileScale,
+                            "--s-desktop": desktopScale,
+                          } as React.CSSProperties
+                        }
+                        className="object-contain transition-transform duration-300 group-hover:scale-105 [transform:translate(var(--tx),var(--ty))_scale(var(--s-mobile))] sm:[transform:translate(var(--tx),var(--ty))_scale(var(--s-desktop))]"
+                        sizes="(max-width: 640px) 40vw, (max-width: 1024px) 22vw, 150px"
                       />
                     </div>
                   </CardWrapper>
@@ -249,8 +452,6 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
         <div className="mx-auto mt-6 sm:mt-12 grid max-w-4xl grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-6">
           {siteConfig.organizers.map((org) => {
             const hasLogo = Boolean(org.logo && org.logo.trim().length > 0);
-            
-            // Individual scale fetch kar rahe hain `organizerScales` se
             const customScale = organizerScales[org.key] ?? 1;
 
             return (
@@ -271,6 +472,7 @@ export function OrganizersSection({ showSupportedBy = true }: OrganizersSectionP
                       className="object-contain transition-transform duration-300 group-hover:scale-105"
                       style={{
                         transform: `scale(${customScale})`,
+                        objectPosition: "center",
                       }}
                       sizes="(max-width: 640px) 60vw, (min-width: 640px) 250px"
                     />

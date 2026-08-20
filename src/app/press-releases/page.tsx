@@ -178,6 +178,14 @@ export default function PressReleasesPage() {
                   <Download className="h-4 w-4" />
                   Download Image
                 </a>
+                <a
+                  href="/press-release/Nepal-Electronics-and-Electrical-Expo-2026-Press-Release.docx"
+                  download
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-teal/50 hover:text-teal"
+                >
+                  <FileText className="h-4 w-4" />
+                  Download Word File
+                </a>
               </div>
             </Card>
           </motion.div>

@@ -47,26 +47,28 @@ const supportedByLogos: PartnerLogo[] = [
     url: "https://www.neanepal.org.np/",
     scale: 1,
   },
-  {
+   {
     id: 3,
-    name: "SCAEF Nepal",
-    src: "/logo/scaff.png",
-    url: "https://scaef.org.np/",
-    scale: 0.9,
-  },
-  {
-    id: 4,
     name: "IPPAN",
     src: "/logo/IPPAN-New-Logo.png",
     url: "https://www.ippan.org.np/",
     scale: 0.6,
   },
-  {
-    id: 5,
+   {
+    id: 4,
     name: "SEEN",
     src: "/logo/60.png",
     scale: 1,
   },
+  {
+    id: 5,
+    name: "SCAEF Nepal",
+    src: "/logo/scaff.png",
+    url: "https://scaef.org.np/",
+    scale: 0.9,
+  },
+ 
+ 
 ];
 
 // ========================================================
@@ -434,7 +436,7 @@ gsap.fromTo(
                     </div>
                   </CardWrapper>
                 );
-              })}
+              })} 
             </div>
           </div>
         )}

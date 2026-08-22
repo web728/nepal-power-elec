@@ -55,19 +55,19 @@ type PressAsset = {
 const pressAssets: PressAsset[] = [
   {
     id: "pdf-1",
-    title: "Official Press Release 2026",
+    title: "NewsPaper Coverage",
     size: "2.4 MB PDF",
     href: "/media/press-release-official-2026.pdf",
     type: "pdf",
-    description: "Official press release regarding the 5th Nepal Electric & Consumer Electronics Expo.",
+    description: "Official news regarding the 5th Nepal Electric & Consumer Electronics Expo.",
   },
   {
     id: "pdf-2",
-    title: "Exhibitor Guidebook & Floor Plan",
+    title: "News Release in Nepali",
     size: "4.8 MB PDF",
     href: "/media/expo-guidebook-2026.pdf",
     type: "pdf",
-    description: "Complete layout schedule and participant manual for attendees.",
+    description: "News paper coverage regarding the 5th Nepal Electric, Power, Light & Consumer Electronics International Expo 2026.",
   },
   {
     id: "img-1",
@@ -186,12 +186,12 @@ export default function NewsPage() {
         >
           Stay updated with verified press announcements, press release downloads, and news coverage of the{" "}
           <strong className="font-semibold text-[#14212b]">
-            5th Nepal Electric, Power, Light & Consumer Electronics International Expo 2026
+            5th Nepal Electric, Power & Lights International Expo 2026
           </strong>
           .
         </motion.p>
 
-        {/* 🌟 HERO MASTHEAD */}
+       {/* 🌟 HERO MASTHEAD */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -226,18 +226,27 @@ export default function NewsPage() {
             </div>
           </div>
 
-          <div className="relative mt-8 pt-6 border-t border-white/15 overflow-hidden">
-            <div className="flex space-x-6 animate-marquee-slow whitespace-nowrap">
-              {uniqueSources.concat(uniqueSources).map((source, index) => (
+        {/* 🎡 SLOW & SMOOTH MARQUEE SCROLL */}
+          <div className="relative mt-8 pt-6 border-t border-white/15 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <motion.div
+              className="flex gap-4 w-max"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{
+                duration: 80, // Duration badha di hai for slow & smooth movement
+                ease: "linear",
+                repeat: Infinity,
+              }}
+            >
+              {[...uniqueSources, ...uniqueSources, ...uniqueSources].map((source, index) => (
                 <span
                   key={`${source}-${index}`}
-                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-wide text-white bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full border border-white/15 transition-colors cursor-default"
+                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-wide text-white bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full border border-white/15 transition-colors cursor-default shrink-0"
                 >
                   <CheckCircle2 className="h-3.5 w-3.5 text-[#ebbc17]" />
                   {source}
                 </span>
               ))}
-            </div>
+            </motion.div>
           </div>
         </motion.div>
 
@@ -245,7 +254,7 @@ export default function NewsPage() {
         <div className="mt-16">
           <SectionHeading
             title="Press Kit & Downloadable Media"
-            description="Download high-res event images, press releases, and official exhibition guides."
+            // description="Download high-res event images, press releases, and official exhibition guides."
           />
 
           {/* 📄 PDF SECTION */}
@@ -265,9 +274,7 @@ export default function NewsPage() {
                       <span className="text-[9px] font-black uppercase mt-0.5">PDF</span>
                     </div>
                     <div>
-                      <span className="text-[11px] font-bold text-[#5b6b74] uppercase tracking-wide">
-                        {pdf.size}
-                      </span>
+                    
                       <h4 className="text-base font-bold text-[#14212b] group-hover:text-[#05756a] transition-colors leading-snug">
                         {pdf.title}
                       </h4>

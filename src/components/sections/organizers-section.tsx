@@ -35,46 +35,49 @@ interface PartnerLogo {
 const supportedByLogos: PartnerLogo[] = [
   {
     id: 1,
-    name: "Nepal Chamber of Commerce",
+    name: "NEPAL CHAMBER OF COMMERCE",
     src: "/logo/nepal-chamber.png",
     url: "https://ncc.org.np/",
     scale: 1.1,
   },
   {
     id: 2,
-    name: "Nepal Electricity Authority",
+    name: "NEPAL ENGINEER’S ASSOCIATION",
     src: "/logo/nepal-logo.png",
     url: "https://www.neanepal.org.np/",
     scale: 1,
   },
   {
     id: 3,
-    name: "IPPAN",
+    name: "INDEPENDENT POWER PRODUCERS’ ASSOCIATION, NEPAL",
     src: "/logo/IPPAN-New-Logo.png",
     url: "https://www.ippan.org.np/",
     scale: 0.6,
   },
   {
     id: 4,
-    name: "SEEN",
+    name: "SOCIETY OF ELECTRICAL ENGINEERS, NEPAL",
     src: "/logo/60.png",
+    url: "https://seen.org.np/",
     scale: 1,
   },
   {
     id: 5,
-    name: "SCAEF Nepal",
+    name: "SOCIETY OF CONSULTING ARCHITECTURAL & ENGINEERING FIRMS, NEPAL",
     src: "/logo/scaff.png",
     url: "https://scaef.org.np/",
     scale: 0.9,
   },
   {
     id: 6,
-    name: "IDEA Nepal",
+    name: "INTERIOR DESIGNERS ASSOCIATION OF NEPAL",
     src: "/logo/01.png",
     url: "https://ideanp.com/",
     scale: 0.7,
   },
 ];
+
+
 
 // ========================================================
 // 2. MEDIA PARTNER LOGOS (8 LOGOS -> 5 top row, 3 bottom row)
@@ -306,41 +309,48 @@ export function OrganizersSection({
             </div>
 
             {/* Logo Grid - 3 columns for desktop/tablet, 2 for mobile */}
-            <div className="mx-auto mt-6 sm:mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:gap-6">
-              {supportedByLogos.map((logo) => {
-                const isLink = Boolean(logo.url);
-                const CardWrapper = isLink ? "a" : "div";
-                const wrapperProps = isLink
-                  ? {
-                      href: logo.url,
-                      target: "_blank",
-                      rel: "noopener noreferrer",
-                      title: `Visit ${logo.name}`,
-                    }
-                  : {};
+         {/* Logo Grid - 3 columns for desktop/tablet, 2 for mobile */}
+<div className="mx-auto mt-6 sm:mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:gap-6">
+  {supportedByLogos.map((logo) => {
+    const isLink = Boolean(logo.url);
+    const CardWrapper = isLink ? "a" : "div";
+    const wrapperProps = isLink
+      ? {
+          href: logo.url,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          title: `Visit ${logo.name}`,
+        }
+      : {};
 
-                return (
-                  <CardWrapper
-                    key={logo.id}
-                    {...wrapperProps}
-                    className="anim-patron-card group col-span-1 flex items-center justify-center rounded-xl border border-slate-200/80 bg-white p-3 sm:p-4 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-md"
-                  >
-                    <div className="relative flex h-16 sm:h-20 w-full items-center justify-center p-1">
-                      <Image
-                        src={logo.src}
-                        alt={logo.name}
-                        fill
-                        className="object-contain transition-transform duration-300 group-hover:scale-105"
-                        style={{
-                          transform: `scale(${logo.scale ?? 1})`,
-                        }}
-                        sizes="(max-width: 640px) 40vw, (max-width: 1024px) 30vw, 200px"
-                      />
-                    </div>
-                  </CardWrapper>
-                );
-              })}
-            </div>
+    return (
+      <CardWrapper
+        key={logo.id}
+        {...wrapperProps}
+        className="anim-patron-card group col-span-1 flex flex-col items-center justify-between rounded-xl border border-slate-200/80 bg-white p-3 sm:p-4 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-md"
+      >
+        {/* Image Wrapper */}
+        <div className="relative flex h-16 sm:h-20 w-full items-center justify-center p-1">
+          <Image
+            src={logo.src}
+            alt={logo.name}
+            fill
+            className="object-contain transition-transform duration-300 group-hover:scale-105"
+            style={{
+              transform: `scale(${logo.scale ?? 1})`,
+            }}
+            sizes="(max-width: 640px) 40vw, (max-width: 1024px) 30vw, 200px"
+          />
+        </div>
+
+        {/* Text Name below Image */}
+        <span className="mt-2 text-center text-xs font-semibold uppercase tracking-wider text-slate-700 group-hover:text-teal-600 line-clamp-2">
+          {logo.name}
+        </span>
+      </CardWrapper>
+    );
+  })}
+</div>
           </div>
         )}
 

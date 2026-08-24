@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV !== "production";
+
+// Development me unsafe-eval aur dynamic hot-reloading allow hai
 const scriptSrc = isDev
   ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com https://connect.facebook.net"
   : "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://www.gstatic.com https://connect.facebook.net";
@@ -31,11 +33,13 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       scriptSrc,
-      "style-src 'self' 'unsafe-inline' https://www.gstatic.com",
-      "img-src 'self' data: https://www.google-analytics.com https://www.google.com https://www.gstatic.com https://*.facebook.com https://*.fbcdn.net",
-      "font-src 'self' data:",
-      "connect-src 'self' https://www.google-analytics.com https://*.supabase.co https://www.google.com",
-      // 👇 Google Maps ke subdomains aur maps.google.com ko frame-src me allow kar diya hai
+      // Fixed: Google Fonts & Dynamic Tailwind Chunks
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.gstatic.com",
+      // Fixed: Added blob: and relative uploads path for images
+      "img-src 'self' data: blob: https: https://www.google-analytics.com https://www.google.com https://www.gstatic.com https://*.facebook.com https://*.fbcdn.net",
+      // Fixed: Added fonts.gstatic.com for Google Fonts
+      "font-src 'self' data: https://fonts.gstatic.com",
+      "connect-src 'self' https://www.google-analytics.com https://*.supabase.co https://www.google.com https://stats.g.doubleclick.net",
       "frame-src 'self' https://www.google.com https://maps.google.com https://*.google.com https://recaptcha.google.com https://www.facebook.com https://web.facebook.com https://*.facebook.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
@@ -45,6 +49,18 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Production optimization options
+  reactStrictMode: true,
+  images: {
+    // Large layout shifts ko rokne ke liye responsive sizes
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
   async headers() {
     return [
       {

@@ -33,7 +33,7 @@ type Particle = {
   opacity: number;
 };
 
-/** Canvas-based ambient particles that gently drift and repel from the cursor. */
+/** Canvas-based ambient particles with safe RAF fallback. */
 function HeroParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -9999, y: -9999 });
@@ -49,11 +49,11 @@ function HeroParticles() {
 
     let width = 0;
     let height = 0;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 2);
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     function initParticles() {
-      const count = Math.max(50, Math.min(120, Math.floor((width * height) / 9000)));
+      const count = Math.max(40, Math.min(90, Math.floor((width * height) / 12000)));
       particlesRef.current = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -68,6 +68,8 @@ function HeroParticles() {
       if (!canvas || !parent || !ctx) return;
       width = parent.clientWidth;
       height = parent.clientHeight;
+      if (width === 0 || height === 0) return;
+
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       canvas.style.width = `${width}px`;
@@ -77,7 +79,8 @@ function HeroParticles() {
     }
 
     function onMouseMove(e: MouseEvent) {
-      const rect = parent!.getBoundingClientRect();
+      if (!parent) return;
+      const rect = parent.getBoundingClientRect();
       mouseRef.current.x = e.clientX - rect.left;
       mouseRef.current.y = e.clientY - rect.top;
     }
@@ -125,9 +128,6 @@ function HeroParticles() {
     resize();
     if (!prefersReducedMotion) {
       animate();
-    } else {
-      animate();
-      cancelAnimationFrame(rafRef.current);
     }
 
     window.addEventListener("resize", resize);
@@ -135,7 +135,7 @@ function HeroParticles() {
     parent.addEventListener("mouseleave", onMouseLeave);
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", resize);
       parent.removeEventListener("mousemove", onMouseMove);
       parent.removeEventListener("mouseleave", onMouseLeave);
@@ -152,8 +152,7 @@ function HeroParticles() {
 }
 
 /**
- * Mobile: infinite auto-scrolling carousel.
- * Hidden on desktop (`lg:hidden`).
+ * Mobile: Butter-smooth infinite auto-scrolling carousel with GSAP Context.
  */
 function MobileImageCarousel() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -165,31 +164,33 @@ function MobileImageCarousel() {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
-    const tween = gsap.to(track, {
-      xPercent: -50,
-      duration: GALLERY_IMAGES.length * 4,
-      ease: "none",
-      repeat: -1,
-    });
+    // Use gsap.context for clean cleanup and smooth render
+    const ctx = gsap.context(() => {
+      gsap.to(track, {
+        xPercent: -50,
+        duration: GALLERY_IMAGES.length * 3.5,
+        ease: "none",
+        repeat: -1,
+        force3D: true, // Hardware acceleration for ultra-smooth scrolling
+      });
+    }, track);
 
-    return () => {
-      tween.kill();
-    };
+    return () => ctx.revert();
   }, []);
 
   const loopedImages = [...GALLERY_IMAGES, ...GALLERY_IMAGES];
 
   return (
     <div className="relative w-full overflow-hidden lg:hidden">
-      {/* Fade edges so images don't hard-cut at the container bounds */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-black/40 to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-black/40 to-transparent" />
+      {/* Fade edges */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-slate-950/80 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-slate-950/80 to-transparent" />
 
-      <div ref={trackRef} className="flex w-max gap-3 py-1">
+      <div ref={trackRef} className="flex w-max gap-3 py-1 will-change-transform">
         {loopedImages.map((img, i) => (
           <div
             key={`${img.src}-${i}`}
-            className="relative h-32 w-44 flex-shrink-0 overflow-hidden rounded-xl border border-white/15 shadow-lg shadow-black/20 sm:h-36 sm:w-52"
+            className="relative h-32 w-44 flex-shrink-0 overflow-hidden rounded-xl border border-white/15 shadow-lg shadow-black/20 sm:h-36 sm:w-52 bg-slate-900"
           >
             <Image src={img.src} alt={img.alt} fill className="object-cover" sizes="220px" />
           </div>
@@ -206,8 +207,12 @@ export function Hero() {
     setIsMounted(true);
   }, []);
 
+  // Structural opacity fallback prevents blank screen during slow hydration
+  const animationClass = isMounted
+    ? "translate-y-0 opacity-100"
+    : "translate-y-0 opacity-100 sm:translate-y-4 sm:opacity-90";
+
   return (
-    /* Solid background addition fixes white screen flash on slow load */
     <section className="relative overflow-hidden bg-slate-950 text-white min-h-[550px]">
       {/* 1. Background Image */}
       <Image
@@ -219,13 +224,13 @@ export function Hero() {
         sizes="100vw"
       />
 
-      {/* Dark overlay to guarantee contrast during load & render */}
+      {/* Dark overlay */}
       <div 
         className="pointer-events-none absolute inset-0 z-[1] bg-black/40" 
         aria-hidden="true" 
       />
 
-      {/* Subtle radial accent */}
+      {/* Radial accent */}
       <div
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
@@ -240,39 +245,31 @@ export function Hero() {
 
       <Container className="relative z-[2] py-10 sm:py-16 lg:py-20">
         <div className="max-w-3xl">
-          {/* Tagline Animation */}
+          {/* Tagline */}
           <p 
-            className={`text-xs font-bold uppercase tracking-widest text-yellow drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] transition-all duration-700 ease-out ${
-              isMounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
+            className={`text-xs font-bold uppercase tracking-widest text-yellow drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] transition-all duration-700 ease-out ${animationClass}`}
           >
             5TH NEPAL ELECTRIC, POWER AND LIGHTS INTERNATIONAL EXPO 2026
           </p>
 
-          {/* Heading Animation */}
+          {/* Heading */}
           <h1 
-            className={`mt-2.5 max-w-2xl text-[26px] leading-[1.2] text-white sm:text-[38px] lg:text-[48px] font-extrabold drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] transition-all duration-700 delay-100 ease-out ${
-              isMounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
+            className={`mt-2.5 max-w-2xl text-[26px] leading-[1.2] text-white sm:text-[38px] lg:text-[48px] font-extrabold drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] transition-all duration-700 delay-100 ease-out ${animationClass}`}
           >
             {siteConfig.marketingLine}
           </h1>
 
-          {/* Subtitle Animation */}
+          {/* Subtitle */}
           <p 
-            className={`mt-3 max-w-xl text-sm leading-relaxed text-white/90 sm:text-base drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] transition-all duration-700 delay-200 ease-out ${
-              isMounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
+            className={`mt-3 max-w-xl text-sm leading-relaxed text-white/90 sm:text-base drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] transition-all duration-700 delay-200 ease-out ${animationClass}`}
           >
             Meet manufacturers, suppliers, buyers, engineers, distributors and project professionals across
             Nepal&apos;s electrical, power, lighting, renewable-energy and allied industries.
           </p>
 
-          {/* Event Details Badge Animation */}
+          {/* Event Details Badge */}
           <div 
-            className={`mt-5 inline-flex items-center gap-3 rounded-lg border border-white/20 bg-black/30 backdrop-blur-md px-4 py-2.5 shadow-lg transition-all duration-700 delay-300 ease-out ${
-              isMounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
+            className={`mt-5 inline-flex items-center gap-3 rounded-lg border border-white/20 bg-black/30 backdrop-blur-md px-4 py-2.5 shadow-lg transition-all duration-700 delay-300 ease-out ${animationClass}`}
           >
             <div className="h-8 w-1 rounded-full bg-yellow" aria-hidden="true" />
             <p className="text-xs font-semibold text-white sm:text-sm">
@@ -281,11 +278,9 @@ export function Hero() {
             </p>
           </div>
 
-          {/* Buttons Animation */}
+          {/* Buttons */}
           <div 
-            className={`mt-6 flex flex-wrap items-center gap-3 sm:gap-4 transition-all duration-700 delay-400 ease-out ${
-              isMounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
+            className={`mt-6 flex flex-wrap items-center gap-3 sm:gap-4 transition-all duration-700 delay-400 ease-out ${animationClass}`}
           >
             <TrackedLink
               event={AnalyticsEvents.BOOK_STAND_START}
@@ -321,14 +316,12 @@ export function Hero() {
             </TrackedLink>
           </div>
 
-          {/* Mobile-only Carousel Animation */}
-         <div 
-      className={`mt-8 lg:hidden transition-all duration-700 delay-500 ease-out ${
-        isMounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-      }`}
-    >
-      <MobileImageCarousel />
-    </div>
+          {/* Mobile-only Carousel */}
+          <div 
+            className={`mt-8 lg:hidden transition-all duration-700 delay-500 ease-out ${animationClass}`}
+          >
+            <MobileImageCarousel />
+          </div>
         </div>
       </Container>
     </section>

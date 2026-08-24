@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { SkipLink } from "@/components/layout/skip-link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { StickyMobileBar } from "@/components/layout/sticky-mobile-bar";
@@ -15,7 +14,7 @@ const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  display: "swap",
+  display: "swap", // FOUC (CSS drop/font delay) protect karne ke liye
 });
 
 export const metadata: Metadata = {
@@ -64,7 +63,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  // Google Sitelinks Navigation Schema (Only Important Core Pages)
   const sitelinksSchema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -97,21 +95,25 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   };
 
   return (
-    <html lang="en" className={`${poppins.variable} h-full antialiased`}>
+    <html 
+      lang="en" 
+      className={`${poppins.variable} h-full antialiased scroll-smooth`} 
+      suppressHydrationWarning
+    >
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(sitelinksSchema) }}
         />
       </head>
-      <body className="flex min-h-full flex-col bg-white text-ink" suppressHydrationWarning>
+      <body className="flex min-h-screen flex-col bg-white text-ink overflow-x-hidden" suppressHydrationWarning>
         <AnalyticsScripts />
         <OrganizationJsonLd />
         <EventJsonLd />
         <ToastProvider>
-          <SkipLink />
           <Header />
-          <main id="main-content" className="flex-1 pb-16 xl:pb-0">
+          {/* overflow-x-hidden aur relative add hone se body ka scroll lock nahi hoga */}
+          <main id="main-content" className="relative flex-1 w-full overflow-x-hidden pb-16 xl:pb-0">
             {children}
           </main>
           <Footer />

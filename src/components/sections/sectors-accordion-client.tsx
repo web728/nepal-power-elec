@@ -39,5 +39,9 @@ const accordionItems: AccordionSector[] = [
 ];
 
 export function SectorsAccordionClient() {
-  return <InteractiveImageAccordion items={accordionItems} />;
+  return (
+    <div className="w-full overflow-hidden">
+      <InteractiveImageAccordion items={accordionItems} />
+    </div>
+  );
 }

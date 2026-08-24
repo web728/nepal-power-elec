@@ -27,18 +27,17 @@ function saveConsent(consent: ConsentState) {
 }
 
 export function ConsentBanner() {
+  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
   const [managing, setManaging] = useState(false);
   const [analytics, setAnalytics] = useState(false);
   const [marketing, setMarketing] = useState(false);
 
   useEffect(() => {
-    // Reading localStorage (an external system) on mount to decide whether
-    // to show the banner — not derivable from props/state, so this must
-    // happen in an effect rather than a lazy useState initializer (which
-    // would mismatch between server and client render).
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (!getConsent()) setVisible(true);
+    setMounted(true);
+    if (!getConsent()) {
+      setVisible(true);
+    }
     const openSettings = () => {
       setManaging(true);
       setVisible(true);
@@ -47,7 +46,8 @@ export function ConsentBanner() {
     return () => window.removeEventListener("open-cookie-settings", openSettings);
   }, []);
 
-  if (!visible) return null;
+  // Prevent layout shifts during hydration
+  if (!mounted || !visible) return null;
 
   const acceptAll = () => {
     saveConsent({ essential: true, analytics: true, marketing: true });
@@ -67,7 +67,8 @@ export function ConsentBanner() {
       role="dialog"
       aria-modal="false"
       aria-label="Cookie preferences"
-      className="fixed inset-x-0 bottom-0 z-[70] border-t border-border bg-white p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.12)] sm:p-6"
+      // Added mb-[57px] xl:mb-0 to prevent overlapping with StickyMobileBar on mobile
+      className="fixed inset-x-0 bottom-0 z-[70] mb-[57px] border-t border-border bg-white p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.12)] sm:p-6 xl:mb-0"
     >
       <div className="mx-auto max-w-4xl">
         <p className="text-sm text-ink">

@@ -47,14 +47,14 @@ const supportedByLogos: PartnerLogo[] = [
     url: "https://www.neanepal.org.np/",
     scale: 1,
   },
-   {
+  {
     id: 3,
     name: "IPPAN",
     src: "/logo/IPPAN-New-Logo.png",
     url: "https://www.ippan.org.np/",
     scale: 0.6,
   },
-   {
+  {
     id: 4,
     name: "SEEN",
     src: "/logo/60.png",
@@ -67,8 +67,13 @@ const supportedByLogos: PartnerLogo[] = [
     url: "https://scaef.org.np/",
     scale: 0.9,
   },
- 
- 
+  {
+    id: 6,
+    name: "IDEA Nepal",
+    src: "/logo/01.png",
+    url: "https://ideanp.com/",
+    scale: 0.7,
+  },
 ];
 
 // ========================================================
@@ -238,64 +243,28 @@ export function OrganizersSection({
           ease: "power2.out",
           scrollTrigger: {
             trigger: ".anim-org-head",
-            start: "top 85%",
-            toggleActions: "play none none reverse",
+            start: "top 90%",
+            toggleActions: "play none none none",
           },
         }
       );
 
-    // Organizers Section Title
-gsap.fromTo(
-  ".anim-org-head",
-  { opacity: 0, y: 20 },
-  {
-    opacity: 1,
-    y: 0,
-    duration: 0.5,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: ".anim-org-head",
-      start: "top 90%", // Jaldi trigger hoga
-      toggleActions: "play none none none", // Ek baar play hone ke baad gayab nahi hoga
-    },
-  }
-);
-
-// Organizers Cards Grid
-gsap.fromTo(
-  ".anim-org-card",
-  { opacity: 0, y: 20 },
-  {
-    opacity: 1,
-    y: 0,
-    duration: 0.4,
-    stagger: 0.08,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: ".anim-org-head", // Trigger parent/heading ko banaya taaki saare cards ek sath time par aayein
-      start: "top 80%",
-      toggleActions: "play none none none", // Up/Down scroll par disappear nahi hoga
-    },
-  }
-);
-
-// Contact Cards Grid
-gsap.fromTo(
-  ".anim-contact-card",
-  { opacity: 0, y: 20 },
-  {
-    opacity: 1,
-    y: 0,
-    duration: 0.4,
-    stagger: 0.08,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: ".anim-contact-card",
-      start: "top 20%",
-      toggleActions: "play none none none",
-    },
-  }
-);
+      gsap.fromTo(
+        ".anim-org-card",
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.4,
+          stagger: 0.08,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".anim-org-head",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
 
       gsap.fromTo(
         ".anim-contact-card",
@@ -336,9 +305,9 @@ gsap.fromTo(
               />
             </div>
 
-            {/* Logo Grid */}
-            <div className="mx-auto mt-6 sm:mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 md:grid-cols-5 lg:gap-6">
-              {supportedByLogos.map((logo, index) => {
+            {/* Logo Grid - 3 columns for desktop/tablet, 2 for mobile */}
+            <div className="mx-auto mt-6 sm:mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:gap-6">
+              {supportedByLogos.map((logo) => {
                 const isLink = Boolean(logo.url);
                 const CardWrapper = isLink ? "a" : "div";
                 const wrapperProps = isLink
@@ -350,18 +319,11 @@ gsap.fromTo(
                     }
                   : {};
 
-                const isLastOddItem =
-                  supportedByLogos.length % 2 !== 0 && index === supportedByLogos.length - 1;
-
                 return (
                   <CardWrapper
                     key={logo.id}
                     {...wrapperProps}
-                    className={`anim-patron-card group flex items-center justify-center rounded-xl border border-slate-200/80 bg-white p-3 sm:p-4 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-md ${
-                      isLastOddItem
-                        ? "col-span-2 mx-auto w-full max-w-[calc(50%-0.375rem)] sm:col-span-1 sm:mx-0 sm:w-auto sm:max-w-none"
-                        : "col-span-1"
-                    }`}
+                    className="anim-patron-card group col-span-1 flex items-center justify-center rounded-xl border border-slate-200/80 bg-white p-3 sm:p-4 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-teal-500/40 hover:shadow-md"
                   >
                     <div className="relative flex h-16 sm:h-20 w-full items-center justify-center p-1">
                       <Image

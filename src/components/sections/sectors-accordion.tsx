@@ -8,10 +8,6 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { SectorsAccordionClient } from "@/components/sections/sectors-accordion-client";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 export function SectorsAccordion() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
@@ -19,30 +15,48 @@ export function SectorsAccordion() {
   const buttonRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Register plugin inside effect safely
+    if (typeof window !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    const targets = [headingRef.current, accordionRef.current, buttonRef.current].filter(Boolean);
+    if (!targets.length) return;
+
     const ctx = gsap.context(() => {
-      // Scroll-triggered Staggered Fade-in Animation
+      // Safe animation with clearProps to avoid permanent opacity lock
       gsap.fromTo(
-        [headingRef.current, accordionRef.current, buttonRef.current],
+        targets,
         {
           opacity: 0,
-          y: 35,
+          y: 25,
         },
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
-          stagger: 0.2,
+          duration: 0.6,
+          stagger: 0.15,
           ease: "power2.out",
+          clearProps: "transform", // Animation complete hone ke baad transform styles clean kar dega
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 80%", // Jab section screen ke 80% par aaye
-            toggleActions: "play none none reverse",
+            start: "top 85%", // Smooth early trigger
+            toggleActions: "play none none none", // Once played, stay visible (prevents layout freeze)
+            once: true, // Prevents re-animating and browser reflow
           },
         }
       );
     }, sectionRef);
 
-    return () => ctx.revert();
+    // Refresh ScrollTrigger when layout shift happens
+    const refreshTimeout = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 500);
+
+    return () => {
+      clearTimeout(refreshTimeout);
+      ctx.revert();
+    };
   }, []);
 
   return (

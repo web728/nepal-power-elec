@@ -5,11 +5,13 @@ import {
   Newspaper,
   FileText,
   Download,
-  Image as ImageIcon,
-  CheckCircle2,
   Sparkles,
   Zap,
   Eye,
+  CheckCircle2,
+  Calendar,
+  ArrowUpRight,
+  Image,
 } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 import { PageHero } from "@/components/sections/page-hero";
@@ -23,7 +25,7 @@ const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.04 },
+    transition: { staggerChildren: 0.05 },
   },
 };
 
@@ -40,6 +42,7 @@ type MediaItem = {
   title: string;
   source: string;
   href: string;
+  date?: string;
 };
 
 type PressAsset = {
@@ -63,11 +66,11 @@ const pressAssets: PressAsset[] = [
   },
   {
     id: "pdf-2",
-    title: "News Release in Nepali",
+    title: "News Coverage",
     size: "4.8 MB PDF",
     href: "/media/expo-guidebook-2026.pdf",
     type: "pdf",
-    description: "News paper coverage regarding the 5th Nepal Electric, Power, Light & Consumer Electronics International Expo 2026.",
+    description: "News paper coverage regarding the 5th Nepal Electric International Expo 2026.",
   },
   {
     id: "img-1",
@@ -114,6 +117,24 @@ const pressAssets: PressAsset[] = [
     type: "image",
     description: "Lighting and renewable power tech exhibits.",
   },
+  {
+    id: "img-6",
+    title: "Nepal Power News Clipping",
+    size: "3.1 MB JPG",
+    href: "/media/nepal-power-news.jpeg",
+    previewUrl: "/media/nepal-power-news.jpeg",
+    type: "image",
+    description: "Lighting and renewable power tech exhibits.",
+  },
+  {
+    id: "img-7",
+    title: "Media Coverage Highlights 2026",
+    size: "3.1 MB JPG",
+    href: "/media/news-2026.jpeg",
+    previewUrl: "/media/news-2026.jpeg",
+    type: "image",
+    description: "Lighting and renewable power tech exhibits.",
+  },
 ];
 
 const mediaCoverage: MediaItem[] = [
@@ -155,6 +176,7 @@ const mediaCoverage: MediaItem[] = [
   { title: "भृकुटीमण्डपमा विद्युत्, इलेक्ट्रोनिक्स तथा होम अप्लायन्सेसको अन्तर्राष्ट्रिय प्रदर्शनी हुँदै", source: "Kalika Khabar", href: "https://kalikakhabar.com/bhrikutiimn-dpma-wid-yut-ilek-t-ronik-s-ttha-hom-ap-layn-sesko-an-tr-rash-t-riy-p-rdr-shnii-hundai/" },
   { title: "नेपाल इलेक्ट्रिक, पावर, लाइट तथा नेपाल कन्ज्युमर इलेक्ट्रोनिक्स अन्तर्राष्ट्रिय प्रदर्शनी आयोजना हुँदै", source: "Bizness Views", href: "https://biznessviews.com/market/62893/" },
   { title: "प्रदर्शनी सम्बन्धी आधिकारिक अपडेट (Official Notice)", source: "Facebook", href: "https://www.facebook.com/share/1E4A3Nvhe4/" },
+  { title: "प्रदर्शनी सम्बन्धी आधिकारिक अपडेट (Official Notice)", source: "Jana Akash", href: "https://www.janaakash.com/2026/08/21/52544/" },
 ];
 
 const uniqueSources = Array.from(new Set(mediaCoverage.map((item) => item.source)));
@@ -191,7 +213,7 @@ export default function NewsPage() {
           .
         </motion.p>
 
-       {/* 🌟 HERO MASTHEAD */}
+        {/* 🌟 HERO MASTHEAD */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -226,13 +248,13 @@ export default function NewsPage() {
             </div>
           </div>
 
-        {/* 🎡 SLOW & SMOOTH MARQUEE SCROLL */}
+          {/* 🎡 SLOW & SMOOTH MARQUEE SCROLL */}
           <div className="relative mt-8 pt-6 border-t border-white/15 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
             <motion.div
               className="flex gap-4 w-max"
               animate={{ x: ["0%", "-50%"] }}
               transition={{
-                duration: 80, // Duration badha di hai for slow & smooth movement
+                duration: 80,
                 ease: "linear",
                 repeat: Infinity,
               }}
@@ -250,89 +272,110 @@ export default function NewsPage() {
           </div>
         </motion.div>
 
-        {/* 📥 DOWNLOADABLE PRESS ASSETS SECTION */}
+        {/* 📥 PRESS ASSETS & MEDIA GALLERY SECTION */}
         <div className="mt-16">
           <SectionHeading
-            title="Press Kit & Downloadable Media"
-            // description="Download high-res event images, press releases, and official exhibition guides."
+            title="Press Kit & Official Assets"
+            description="Download press releases and high-resolution visuals."
           />
 
-          {/* 📄 PDF SECTION */}
-          <div className="mt-8">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-[#05756a] flex items-center gap-2 mb-4">
-              <FileText className="h-4 w-4" /> Press Documents (PDF)
-            </h3>
-            <div className="grid gap-5 sm:grid-cols-2">
-              {pdfAssets.map((pdf) => (
-                <div
-                  key={pdf.id}
-                  className="group flex flex-col justify-between rounded-2xl border border-[#dce4e6] bg-white p-5 shadow-sm hover:border-[#05756a] hover:shadow-md transition-all"
-                >
-                  <div className="flex gap-4">
-                    <div className="flex h-16 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-gradient-to-b from-rose-50 to-rose-100 border border-rose-200 text-rose-600 shadow-inner">
-                      <FileText className="h-7 w-7" />
-                      <span className="text-[9px] font-black uppercase mt-0.5">PDF</span>
-                    </div>
-                    <div>
-                    
-                      <h4 className="text-base font-bold text-[#14212b] group-hover:text-[#05756a] transition-colors leading-snug">
-                        {pdf.title}
-                      </h4>
-                      <p className="mt-1 text-xs text-[#5b6b74] line-clamp-2">
-                        {pdf.description}
-                      </p>
-                    </div>
-                  </div>
+         {/* 📄 PDF SECTION (Clean & Reliable Card Layout) */}
+<div className="mt-8">
+  <h3 className="text-sm font-bold uppercase tracking-wider text-[#05756a] flex items-center gap-2 mb-4">
+    <FileText className="h-4 w-4" /> Official Press Documents & Releases
+  </h3>
+  <div className="grid gap-6 sm:grid-cols-2">
+    {pdfAssets.map((pdf) => (
+      <div
+        key={pdf.id}
+        className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#dce4e6] bg-white p-6 shadow-sm hover:border-[#05756a] hover:shadow-xl transition-all duration-300"
+      >
+        {/* Top Meta Bar */}
+        <div className="flex items-center justify-between pb-4 border-b border-[#dce4e6]/60">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#05756a]/10 border border-[#05756a]/20 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-[#05756a]">
+            <Sparkles className="h-3 w-3 text-[#ebbc17]" />
+            2026 OFFICIAL PDF
+          </span>
+        </div>
 
-                  <div className="mt-5 flex items-center gap-2 pt-3 border-t border-[#dce4e6]/60">
-                    <a
-                      href={pdf.href}
-                      download
-                      className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#05756a] hover:bg-[#044f47] px-4 py-2.5 text-xs font-bold text-white shadow-sm transition-all active:scale-95"
-                    >
-                      <Download className="h-4 w-4" />
-                      Download PDF
-                    </a>
-                    <a
-                      href={pdf.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-xl border border-[#dce4e6] p-2.5 text-[#5b6b74] hover:bg-[#f5f8f9] hover:text-[#14212b] transition-colors"
-                      title="View PDF"
-                    >
-                      <Eye className="h-4 w-4" />
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Card Body with Document Preview Graphics */}
+        <div className="my-6 flex items-start gap-4">
+          <div className="flex h-16 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-gradient-to-b from-rose-50 to-rose-100 border border-rose-200 text-rose-600 shadow-inner group-hover:scale-105 transition-transform">
+            <FileText className="h-7 w-7" />
+            <span className="text-[9px] font-black uppercase mt-0.5">PDF</span>
           </div>
+          <div>
+            <h4 className="text-base font-bold text-[#14212b] group-hover:text-[#05756a] transition-colors leading-snug">
+              {pdf.title}
+            </h4>
+            <p className="mt-1.5 text-xs text-[#5b6b74] leading-relaxed line-clamp-2">
+              {pdf.description}
+            </p>
+          </div>
+        </div>
 
-          {/* 🖼️ HIGH-RES IMAGES SECTION (CLEAN PORTRAIT / CUTOUT FRIENDLY) */}
+        {/* Action Buttons */}
+        <div className="pt-4 border-t border-[#dce4e6]/60 flex items-center gap-2">
+          <a
+            href={pdf.href}
+            download
+            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#05756a] hover:bg-[#044f47] px-4 py-2.5 text-xs font-bold text-white shadow-sm transition-all active:scale-95"
+          >
+            <Download className="h-4 w-4" />
+            Download PDF
+          </a>
+          <a
+            href={pdf.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[#dce4e6] px-3.5 py-2.5 text-xs font-bold text-[#5b6b74] hover:bg-[#f5f8f9] hover:text-[#14212b] transition-colors"
+            title="View PDF"
+          >
+            <Eye className="h-4 w-4" />
+            Preview
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+          {/* 🖼️ HIGH-RES IMAGES SECTION (WITH 2026 TOP BADGE) */}
           <div className="mt-12">
-        
-
+            <h3 className="text-sm font-bold uppercase tracking-wider text-[#35a8e0] flex items-center gap-2 mb-4">
+              <Image className="h-4 w-4" /> High-Res Exhibition Visuals
+            </h3>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {imageAssets.map((img) => (
                 <div
                   key={img.id}
                   className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#dce4e6] bg-white shadow-sm hover:border-[#35a8e0] hover:shadow-xl transition-all duration-300"
                 >
-                  {/* Clean Image Container with Natural Aspect Ratio */}
+                  {/* Clean Image Container with Glassmorphism 2026 Badge */}
                   <div className="relative w-full bg-[#f8fafc] p-3 flex items-center justify-center border-b border-[#dce4e6]/60">
-                    {/* Size Tag Badge */}
-                 
+                    {/* 2026 TOP BADGE */}
+                    <div className="absolute top-5 left-5 z-10 inline-flex items-center gap-1 rounded-full bg-[#14212b]/80 backdrop-blur-md px-3 py-1 text-[10px] font-black uppercase tracking-wider text-white border border-white/20 shadow-md">
+                      <Calendar className="h-3 w-3 text-[#ebbc17]" />
+                      EXPO 2026
+                    </div>
 
                     <img
                       src={img.previewUrl || "/placeholder.jpg"}
                       alt={img.title || "Press Clipping"}
-                      className="w-full h-auto max-h-[420px] object-contain rounded-lg shadow-sm transition-transform duration-500 group-hover:scale-[1.02]"
+                      className="w-full h-auto max-h-[380px] object-contain rounded-lg shadow-sm transition-transform duration-500 group-hover:scale-[1.02]"
                     />
                   </div>
 
                   {/* Card Content & Download Bar */}
                   <div className="p-5 flex flex-col justify-between flex-1">
-                
+                    <div>
+                      <h4 className="text-base font-bold text-[#14212b] group-hover:text-[#35a8e0] transition-colors leading-snug">
+                        {img.title}
+                      </h4>
+                      <p className="mt-1 text-xs text-[#5b6b74] line-clamp-2">
+                        {img.description}
+                      </p>
+                    </div>
 
                     <div className="mt-5 flex items-center gap-2 pt-3 border-t border-[#dce4e6]/60">
                       <a
@@ -360,11 +403,11 @@ export default function NewsPage() {
           </div>
         </div>
 
-        {/* 📰 ONLINE NEWS COVERAGE LISTING */}
+        {/* 📰 REDESIGNED EDITORIAL NEWS COVERAGE CARDS */}
         <div className="mt-16">
           <SectionHeading
-            description="Verified press links from leading Nepali news platforms."
-            title="Press Articles & Media Highlights"
+            description="Verified press articles published across national and international media houses."
+            title="Press Coverage & Articles"
           />
 
           <motion.div
@@ -372,7 +415,7 @@ export default function NewsPage() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
-            className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
           >
             {mediaCoverage.map((item, index) => (
               <motion.a
@@ -381,26 +424,37 @@ export default function NewsPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 variants={itemVariants}
-                whileHover={{ y: -4 }}
-                className="group relative flex flex-col justify-between rounded-2xl border border-[#dce4e6] bg-white p-5 shadow-sm hover:border-[#35a8e0] hover:shadow-md transition-all"
+                whileHover={{ y: -5 }}
+                className="group relative flex flex-col justify-between rounded-2xl border border-[#dce4e6] bg-white p-6 shadow-sm hover:border-[#05756a] hover:shadow-xl transition-all duration-300"
               >
+                {/* Top Accent Line on Hover */}
+                <div className="absolute top-0 left-6 right-6 h-1 bg-gradient-to-r from-[#05756a] to-[#35a8e0] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl" />
+
                 <div>
+                  {/* Publisher Badge & Icon */}
                   <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#f5f8f9] border border-[#dce4e6] px-3 py-1 text-[11px] font-bold text-[#05756a]">
-                      <Newspaper className="h-3 w-3 text-[#35a8e0]" />
+                    <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#f0f7f7] border border-[#05756a]/15 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-[#05756a]">
+                      <Newspaper className="h-3.5 w-3.5 text-[#05756a]" />
                       {item.source}
                     </span>
-                    <ExternalLink className="h-3.5 w-3.5 text-[#5b6b74] group-hover:text-[#35a8e0] transition-colors" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f5f8f9] text-[#5b6b74] group-hover:bg-[#05756a] group-hover:text-white transition-all">
+                      <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </div>
                   </div>
 
-                  <h3 className="mt-3 text-sm font-bold leading-snug text-[#14212b] group-hover:text-[#2688b8] transition-colors line-clamp-3">
+                  {/* Article Title */}
+                  <h3 className="mt-4 text-base font-bold leading-snug text-[#14212b] group-hover:text-[#05756a] transition-colors line-clamp-3">
                     {item.title}
                   </h3>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-[#dce4e6]/60 flex items-center justify-between text-xs font-semibold text-[#5b6b74] group-hover:text-[#05756a] transition-colors">
-                  <span>Read full story</span>
-                  <span className="text-[#35a8e0]">→</span>
+                {/* Footer Action Bar */}
+                <div className="mt-6 pt-3.5 border-t border-[#dce4e6]/60 flex items-center justify-between text-xs font-bold text-[#5b6b74] group-hover:text-[#05756a] transition-colors">
+                  <span className="flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#05756a]" />
+                    Read Article
+                  </span>
+                  <ExternalLink className="h-3.5 w-3.5 text-[#35a8e0]" />
                 </div>
               </motion.a>
             ))}

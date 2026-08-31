@@ -92,7 +92,7 @@ export default function RegisterToVisitPage() {
               <div className="flex items-center gap-4 text-xs font-semibold text-slate-600">
                 <span className="flex items-center gap-1">
                   <CalendarDays className="h-3.5 w-3.5 text-teal" />
-                  4 - 6 September 2026
+                  18 - 20 December 2026
                 </span>
                 <span className="flex items-center gap-1">
                   <MapPin className="h-3.5 w-3.5 text-teal" />

@@ -6,7 +6,7 @@ significant deploy. Where a step has a copy-pasteable command, `<URL>` means you
 
 ## 1. Homepage
 
-- Visit `<URL>/`. Confirm event name, dates (4-6 September 2026), venue (Bhrikuti Mandap Exhibition Hall,
+- Visit `<URL>/`. Confirm event name, dates (18-20 December 2026), venue (Bhrikuti Mandap Exhibition Hall,
   Kathmandu, Nepal), and both primary CTAs (Book a Stand, Register to Visit) are visible without
   scrolling on a 1280px-wide viewport.
 - Confirm the "organizer-reported" qualifier is visible next to the 150+/5+/15,000+ stats.

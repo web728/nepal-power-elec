@@ -350,9 +350,9 @@ export default function PhotoGalleryPage() {
 
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-end justify-between p-4">
-                  <span className="text-xs font-semibold text-white drop-shadow-xs line-clamp-1">
+                  {/* <span className="text-xs font-semibold text-white drop-shadow-xs line-clamp-1">
                     {image.alt}
-                  </span>
+                  </span> */}
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-xs transition-transform group-hover:scale-110">
                     <Maximize2 className="h-4 w-4" />
                   </div>
@@ -403,9 +403,9 @@ export default function PhotoGalleryPage() {
         >
           {/* Lightbox Header Controls */}
           <div className="absolute top-4 right-4 z-50 flex items-center gap-4">
-            <span className="text-xs font-semibold tracking-widest uppercase text-slate-300 bg-slate-900/80 px-3 py-1.5 rounded-full border border-slate-800">
+            {/* <span className="text-xs font-semibold tracking-widest uppercase text-slate-300 bg-slate-900/80 px-3 py-1.5 rounded-full border border-slate-800">
               {activeImageIndex + 1} / {ALL_GALLERY_IMAGES.length}
-            </span>
+            </span> */}
             <button
               onClick={closeLightbox}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900/80 text-white hover:bg-slate-800 border border-slate-800 transition-colors"
@@ -440,9 +440,9 @@ export default function PhotoGalleryPage() {
               className="max-h-[80vh] w-auto object-contain rounded-xl"
             />
             <div className="bg-slate-900/90 p-4 text-center border-t border-slate-800">
-              <p className="text-sm font-medium text-slate-200">
+              {/* <p className="text-sm font-medium text-slate-200">
                 {ALL_GALLERY_IMAGES[activeImageIndex].alt}
-              </p>
+              </p> */}
             </div>
           </div>
 

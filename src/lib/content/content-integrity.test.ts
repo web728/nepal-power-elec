@@ -16,9 +16,9 @@ function sumValues(items: { value: number }[]) {
 
 describe("site-config facts", () => {
   it("uses the verified 2026 event dates", () => {
-    expect(siteConfig.dates.start).toBe("2026-09-04");
-    expect(siteConfig.dates.end).toBe("2026-09-06");
-    expect(siteConfig.dates.display).toBe("4-6 September 2026");
+    expect(siteConfig.dates.start).toBe("2026-12-18");
+    expect(siteConfig.dates.end).toBe("2026-12-20");
+    expect(siteConfig.dates.display).toBe("18-20 December 2026");
   });
 
   it("uses the verified venue", () => {

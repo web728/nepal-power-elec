@@ -21,12 +21,12 @@ export const siteConfig = {
   shortName: "Nepal Electric, Power and Lights International Expo",
   edition: "5th",
   tagline:
-    "Nepal's trade exhibition for the electrical, power, energy and lighting industries — 4-6 September 2026, Kathmandu.",
+    "Nepal's trade exhibition for the electrical, power, energy and lighting industries — 18-20 December 2026, Kathmandu.",
   marketingLine: "Powering Connections. Advancing Electrical and Energy Business.",
   dates: {
-    start: "2026-09-04",
-    end: "2026-09-06",
-    display: "4-6 September 2026",
+    start: "2026-12-18",
+    end: "2026-12-20",
+    display: "18-20 December 2026",
   },
   venue: {
     name: "Bhrikuti Mandap Exhibition Hall",
@@ -80,7 +80,7 @@ export const siteConfig = {
     phoneHref: "+9779801171141",
     email: "info@mss.com.np",
     logo: "/logo/Media-Space.png", // Path update karein
-    url: "https://www.mediaspace.com.np", // Add website URL
+    url: "https://mss.com.np/", // Add website URL
   },
 ] as Organizer[],
 

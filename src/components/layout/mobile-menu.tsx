@@ -81,11 +81,11 @@ export function MobileMenu({ onClose }: { onClose: () => void }) {
             </span>
           </div>
           <Image
-            src="/logo/concurrent-event-logo.png"
+            src="/logo/concurrent-event.png"
             alt="Concurrent Event Logo"
             width={120}
             height={40}
-            className="h-15 w-auto object-contain"
+            className="h-10 w-auto object-contain"
           />
         </div>
 

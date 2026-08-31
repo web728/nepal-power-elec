@@ -35,7 +35,7 @@
 
 | Requirement | Result |
 |---|---|
-| All event dates are 4–6 September 2026 (2026 edition) / 29–31 August 2025 (2025 edition) | ✅ Every date string found in source matches one of these two ranges exactly — zero drift, automated-test-covered |
+| All event dates are 18-20 December 2026 (2026 edition) / 29–31 August 2025 (2025 edition) | ✅ Every date string found in source matches one of these two ranges exactly — zero drift, automated-test-covered |
 | Venue is Bhrikuti Mandap Exhibition Hall, Kathmandu, Nepal | ✅ Single source of truth in `site-config.ts`, automated-test-covered |
 | All three organizers have equal visibility | ✅ Single shared array drives footer, Organizers page, Contact page, and all email fan-out — automated-test-covered (equal-shape data check) |
 | 2025 statistics labelled organizer-reported | ✅ 10 distinct "organizer-reported" qualifier occurrences found across stats-bearing pages |

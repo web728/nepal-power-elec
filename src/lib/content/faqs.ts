@@ -9,11 +9,11 @@ export type Faq = {
 export const generalFaqs: Faq[] = [
   {
     question: "When and where will the Nepal Electric, Power and Lights Expo 2026 take place?",
-    answer: "The 5th Nepal Electric, Power and Lights International Expo 2026 will take place from 4-6 September 2026 at Bhrikuti Mandap Exhibition Hall in Kathmandu, Nepal.",
+    answer: "The 5th Nepal Electric, Power and Lights International Expo 2026 will take place from 18-20 December 2026 at Bhrikuti Mandap Exhibition Hall in Kathmandu, Nepal.",
   },
   {
     question: "What are the exhibition timings?",
-    answer: "The exhibition will be open from 10:00 AM to 6:00 PM on all three event days: 4, 5, and 6 September 2026."
+    answer: "The exhibition will be open from 10:00 AM to 6:00 PM on all three event days: 18, 19, and 20 December 2026."
   },
   {
     question: "What industries and product categories does the 5th Nepal Power Expo cover?",

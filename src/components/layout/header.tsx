@@ -149,11 +149,11 @@ export function Header() {
               Concurrent Show
             </span>
             <Image
-              src="/logo/concurrent-event-logo.png"
+              src="/logo/concurrent-event.png"
               alt="5th Home Appliances Concurrent Event Logo"
               width={200}
               height={70}
-              className="h-15 sm:h-15 lg:h-15 w-auto object-contain"
+              className="h-12 sm:h-12 lg:h-12 w-auto object-contain"
             />
           </div>
 

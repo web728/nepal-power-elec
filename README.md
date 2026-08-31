@@ -1,6 +1,6 @@
 # 5th Nepal Electric, Power and Lights International Expo 2026 — Website
 
-Production website for the **5th Nepal Electric, Power and Lights International Expo 2026** (4–6 September
+Production website for the **5th Nepal Electric, Power and Lights International Expo 2026** (18-20 December
 2026, Bhrikuti Mandap Exhibition Hall, Kathmandu, Nepal) — built with Next.js 16 (App Router), TypeScript,
 Tailwind CSS v4, and Supabase.
 

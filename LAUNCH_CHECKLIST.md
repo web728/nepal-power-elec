@@ -117,7 +117,7 @@ exists), `docs/FINAL_RELEASE_NOTES.md` (overall release summary).
 - [ ] Latest Chrome on Android (360px and 412px widths)
 
 ## Final Content Verification
-- [ ] Event name, dates (4–6 September 2026) and venue (Bhrikuti Mandap Exhibition Hall, Kathmandu, Nepal)
+- [ ] Event name, dates (18-20 December 2026) and venue (Bhrikuti Mandap Exhibition Hall, Kathmandu, Nepal)
       identical across header, footer, every page, structured data, and emails **(verified in this build
       via automated tests + grep audit — zero date discrepancies found)**
 - [ ] All three organizers equally visible everywhere they appear **(verified — identical card treatment,

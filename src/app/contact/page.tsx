@@ -20,7 +20,7 @@ const quickContactCards = [
   {
     icon: Calendar,
     title: "Event Dates",
-    detail: "September 04 - 06, 2026", // Apni actual dates yaha dalein
+    detail: "December 18 - 20, 2026", // Apni actual dates yaha dalein
     subDetail: "Friday - Sunday | 10:00 AM - 6:00 PM NPT",
     href: "#", // Ya calendar add event link
   },

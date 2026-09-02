@@ -231,7 +231,7 @@ export default function NewsPage() {
                         className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#35a8e0] hover:bg-[#2688b8] px-4 py-2.5 text-xs font-bold text-white shadow-sm transition-all active:scale-95"
                       >
                         <Download className="h-4 w-4" />
-                        Download High-Res
+                        Download
                       </a>
                       <a
                         href={img.href}

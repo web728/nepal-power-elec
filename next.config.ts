@@ -74,7 +74,13 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
-    return [];
+    return [
+      {
+        source: '/register-to-visit',
+        destination: 'https://exporegistration.in/nepalpowerelec-visitor.aspx',
+        permanent: false, // 307 temporary redirect
+      },
+    ];
   },
 };
 

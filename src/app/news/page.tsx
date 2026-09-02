@@ -18,6 +18,11 @@ import { PageHero } from "@/components/sections/page-hero";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import {
+  pressAssets,
+  mediaCoverage,
+  uniqueSources,
+} from "@/lib/content/news-data";
 
 const breadcrumbs = [{ label: "Media", href: "/news" }, { label: "News" }];
 
@@ -37,149 +42,6 @@ const itemVariants: Variants = {
     transition: { duration: 0.4, ease: "easeOut" },
   },
 };
-
-type MediaItem = {
-  title: string;
-  source: string;
-  href: string;
-  date?: string;
-};
-
-type PressAsset = {
-  id: string;
-  title: string;
-  size: string;
-  href: string;
-  type: "pdf" | "image";
-  description: string;
-  previewUrl?: string;
-};
-
-const pressAssets: PressAsset[] = [
-  {
-    id: "pdf-1",
-    title: "NewsPaper Coverage",
-    size: "2.4 MB PDF",
-    href: "/media/press-release-official-2026.pdf",
-    type: "pdf",
-    description: "Official news regarding the 5th Nepal Electric & Consumer Electronics Expo.",
-  },
-  {
-    id: "pdf-2",
-    title: "News Coverage",
-    size: "4.8 MB PDF",
-    href: "/media/expo-guidebook-2026.pdf",
-    type: "pdf",
-    description: "News paper coverage regarding the 5th Nepal Electric International Expo 2026.",
-  },
-  {
-    id: "img-1",
-    title: "Official Expo HD Banner",
-    size: "1.8 MB JPG",
-    href: "/media/expo-banner-hd.jpeg",
-    previewUrl: "/media/expo-banner-hd.jpeg",
-    type: "image",
-    description: "High-resolution main poster image for news publishing.",
-  },
-  {
-    id: "img-2",
-    title: "Inauguration Stage Visual",
-    size: "2.1 MB JPG",
-    href: "/media/inauguration-ceremony.jpeg",
-    previewUrl: "/media/inauguration-ceremony.jpeg",
-    type: "image",
-    description: "Official stage setup photo with event branding.",
-  },
-  {
-    id: "img-3",
-    title: "Exhibition Hall Overview",
-    size: "3.5 MB JPG",
-    href: "/media/exhibition-floor-view.jpeg",
-    previewUrl: "/media/exhibition-floor-view.jpeg",
-    type: "image",
-    description: "Wide angle shot of Bhrikutimandap expo floor.",
-  },
-  {
-    id: "img-4",
-    title: "Consumer Electronics Zone",
-    size: "2.9 MB JPG",
-    href: "/media/consumer-electronics-zone.jpeg",
-    previewUrl: "/media/consumer-electronics-zone.jpeg",
-    type: "image",
-    description: "Snapshots of home appliances and smart tech stalls.",
-  },
-  {
-    id: "img-5",
-    title: "Power & Energy Stalls",
-    size: "3.1 MB JPG",
-    href: "/media/power-energy-stalls.jpeg",
-    previewUrl: "/media/power-energy-stalls.jpeg",
-    type: "image",
-    description: "Lighting and renewable power tech exhibits.",
-  },
-  {
-    id: "img-6",
-    title: "Nepal Power News Clipping",
-    size: "3.1 MB JPG",
-    href: "/media/nepal-power-news.jpeg",
-    previewUrl: "/media/nepal-power-news.jpeg",
-    type: "image",
-    description: "Lighting and renewable power tech exhibits.",
-  },
-  {
-    id: "img-7",
-    title: "Media Coverage Highlights 2026",
-    size: "3.1 MB JPG",
-    href: "/media/news-2026.jpeg",
-    previewUrl: "/media/news-2026.jpeg",
-    type: "image",
-    description: "Lighting and renewable power tech exhibits.",
-  },
-];
-
-const mediaCoverage: MediaItem[] = [
-  { title: "भृकुटीमण्डपमा विद्युत् र इलेक्ट्रोनिक्सको अन्तर्राष्ट्रिय प्रदर्शनी हुने", source: "Kantipur Press", href: "https://kantipurpress.com/2026/3912/" },
-  { title: "नेपाल इलेक्ट्रिक, पावर, लाइट तथा नेपाल कन्ज्युमर इलेक्ट्रोनिक्स एण्ड होम अप्लायन्सेस अन्तर्राष्ट्रिय प्रदर्शनी २०८३ आयोजना हुँदै", source: "Banijya Post", href: "https://banijyapost.com/news/electronic-expo" },
-  { title: "भदौ १९ देखि काठमाडौंमा विद्युत् तथा इलेक्ट्रोनिक्स प्रदर्शनी", source: "Britant News", href: "https://britantnews.com/2026/08/20/48945/electrical-and-electronics-exhibition-in-kathmandu-from-bhadra-19/" },
-  { title: "भदौ १९ देखि विद्युत् तथा इलेक्ट्रोनिक्स अन्तर्राष्ट्रिय प्रदर्शनी, १०० बढी कम्पनी सहभागी हुने", source: "Bizpati", href: "https://bizpati.com/2026/08/214988/" },
-  { title: "'नेपाल इलेक्ट्रिक, पावर, लाइट तथा नेपाल कन्ज्युमर इलेक्ट्रोनिक्स एण्ड होम अप्लायन्सेस अन्तर्राष्ट्रिय प्रदर्शनी २०८३' आयोजना हुँदै", source: "Bizshala", href: "https://bizshala.com/article/31906" },
-  { title: "नेपाल इलेक्ट्रिक, पावर, लाइट तथा नेपाल कन्ज्युमर इलेक्ट्रोनिक्स एण्ड होम अप्लायन्सेस अन्तर्राष्ट्रिय प्रदर्शनी २०८३ आयोजना हुँदै", source: "Equity Nepal", href: "https://equitynepal.com/2026/08/20/97987/" },
-  { title: "नेपाल इलेक्ट्रिक, पावर, लाइट तथा नेपाल कन्ज्युमर इलेक्ट्रोनिक्स एण्ड होम अप्लायन्सेस अन्तर्राष्ट्रिय प्रदर्शनी २०८३ आयोजना हुँदै", source: "Mountain Khabar", href: "https://www.mountainkhabar.com/2026/08/20/235570/" },
-  { title: "नेपाल इलेक्ट्रिक तथा कन्ज्युमर इलेक्ट्रोनिक्स अन्तर्राष्ट्रिय प्रदर्शनी २०८३ आयोजना हुने", source: "Hamro Artha", href: "https://hamroartha.com/news/134973" },
-  { title: "नेपाल इलेक्ट्रिक, पावर, लाइट तथा नेपाल कन्ज्युमर इलेक्ट्रोनिक्स एण्ड होम अप्लायन्सेस अन्तर्राष्ट्रिय प्रदर्शनी २०८३ आयोजना हुँदै", source: "CNN Khabar", href: "https://cnnkhabar.com/content/15606" },
-  { title: "भदौ १९ गतेदेखि २१ गतेसम्म इलेक्ट्रिक तथा इलेक्ट्रोनिक्सको अन्तर्राष्ट्रिय प्रदर्शनी", source: "Corporate Khabar", href: "https://corporatekhabar.com/electric-and-electronics/" },
-  { title: "१०० भन्दा बढी इलेक्ट्रिकल तथा इलेक्ट्रोनिक्स कम्पनीहरूको प्रदर्शनी", source: "Aarthik News", href: "https://aarthiknews.com/news/125753/exhibition-of-more-than-100-electrical-and/" },
-  { title: "भदौ १९ देखि विद्युत्, इलेक्ट्रोनिक्स तथा होम अप्लायन्सेसको अन्तर्राष्ट्रिय प्रदर्शनी हुँदै", source: "Arthakoartha", href: "https://arthakoartha.com/archives/115373" },
-  { title: "काठमाडौंमा भदौ १९ देखि 'नेपाल इलेक्ट्रिक, पावर, लाइट तथा कन्ज्युमर इलेक्ट्रोनिक्स' प्रदर्शनी हुने", source: "Merolagani", href: "https://merolagani.com/NewsDetail.aspx?newsID=129907" },
-  { title: "भदौ १९ देखि भृकुटीमण्डपमा विद्युत् तथा इलेक्ट्रोनिक्ससम्बन्धी अन्तर्राष्ट्रिय प्रदर्शनी हुँदै", source: "Arthabazar", href: "https://arthabazar.com/131948" },
-  { title: "भदौ १९ देखि प्रदर्शनी हुँदै", source: "Arthapranali", href: "https://arthapranali.com/2026/08/33701/" },
-  { title: "भृकुटीमण्डपमा विद्युत, ऊर्जा र विद्युतीय उपकरणको अन्तर्राष्ट्रिय प्रदर्शनी हुँदै, ३० हजारभन्दा बढी आगन्तुकको अपेक्षा", source: "Nepal Profit", href: "https://nepalprofit.com/2026/08/58753/" },
-  { title: "नेपाल इलेक्ट्रिक तथा कन्ज्युमर इलेक्ट्रोनिक्स अन्तर्राष्ट्रिय प्रदर्शनी २०८३ आयोजना हुँदै", source: "Notebazar", href: "https://notebazar.com/news/2026/08/20/165322/" },
-  { title: "भदौ १९ देखि काठमाडौंमा विद्युत् तथा इलेक्ट्रोनिक्सको अन्तर्राष्ट्रिय प्रदर्शनी", source: "Sourya Online", href: "https://www.souryaonline.com/2026/08/727407.html" },
-  { title: "नेपाल इलेक्ट्रिक, पावर, लाइट तथा नेपाल कन्ज्युमर इलेक्ट्रोनिक्स प्रदर्शनी हुँदै", source: "Corporate Nepal", href: "https://www.corporatenepal.com/story/285416" },
-  { title: "भदौ १९ देखि भृकुटीमण्डपमा 'नेपाल इलेक्ट्रिक, पावर तथा कन्ज्युमर इलेक्ट्रोनिक्स' अन्तर्राष्ट्रिय प्रदर्शनी हुने", source: "Bittiya Post", href: "https://www.bittiyapost.com/news/2026/08/20/25903" },
-  { title: "भदौ १९ देखि विद्युत्, इलेक्ट्रोनिक्स तथा होम अप्लायन्सेसको अन्तर्राष्ट्रिय प्रदर्शनी हुँदै", source: "Artha Nepal", href: "https://arthanepal.com/2026/08/115866/" },
-  { title: "भदौ १९ देखि काठमाडौंमा विद्युत् तथा इलेक्ट्रोनिक्सको अन्तर्राष्ट्रिय प्रदर्शनी", source: "Sagarmatha Pana", href: "https://sagarmathapana.com/news/36952" },
-  { title: "नेपाल इलेक्ट्रिक, पावर, लाइट तथा नेपाल कन्ज्युमर इलेक्ट्रोनिक्स एण्ड होम अप्लायन्सेस अन्तर्राष्ट्रिय प्रदर्शनी २०८३ आयोजना हुँदै", source: "Hulak Sanchar", href: "https://www.hulaksanchar.com/2026/08/20/14/118244/" },
-  { title: "भदौ १९ देखि काठमाडौंमा नेपाल इलेक्ट्रिक, पावर, लाइट तथा नेपाल कन्ज्युमर इलेक्ट्रोनिक्स एण्ड होम अप्लायन्सेस अन्तर्राष्ट्रिय प्रदर्शनी", source: "Arthikpati", href: "https://www.arthikpati.com/content/2026/08/20/143984" },
-  { title: "नेपाल इलेक्ट्रिक, पावर, लाइट तथा कन्ज्युमर इलेक्ट्रोनिक्स प्रदर्शनी हुँदै", source: "Karobar Daily", href: "https://www.karobardaily.com/news/407691" },
-  { title: "भदौ १९ गतेदेखि २१ गतेसम्म इलेक्ट्रिक तथा इलेक्ट्रोनिक्सको अन्तर्राष्ट्रिय प्रदर्शनी", source: "Pahilo Awaj", href: "https://pahiloawaj.com/2026/08/20/12/593/" },
-  { title: "नेपाल इलेक्ट्रिक, पावर, लाइट एण्ड नेपाल कन्ज्युमर इलेक्ट्रोनिक्स एण्ड होम अप्लायन्सेस अन्तर्राष्ट्रिय प्रदर्शनी आयोजना हुँदै", source: "Nagarik News", href: "https://nagariknews.nagariknetwork.com/Bazar/nepal-electric-power-light-and-nepal-consumer-electronics-and-home-appliances-international-exhibition-being-organized-16-71.html" },
-  { title: "भदौ १९ देखि काठमाडौंमा विद्युत् तथा इलेक्ट्रोनिक्सको अन्तर्राष्ट्रिय प्रदर्शनी", source: "Desh Sanchar", href: "https://deshsanchar.com/2026/08/20/1217993/" },
-  { title: "काठमाडौंमा विद्युत् तथा इलेक्ट्रोनिक्सको अन्तर्राष्ट्रिय प्रदर्शनी हुँदै", source: "Arthik Pati", href: "https://www.arthikpati.com/content/2026/08/20/143984" },
-  { title: "भदौ १९ देखि काठमाडौंमा विद्युत् तथा इलेक्ट्रोनिक्सको अन्तर्राष्ट्रिय प्रदर्शनी", source: "Ukeraa", href: "https://www.ukeraa.com/news/detail/178951/" },
-  { title: "नेपाल इलेक्ट्रिक, पावर, लाइट तथा नेपाल कन्ज्युमर इलेक्ट्रोनिक्स प्रदर्शनी आयोजना हुँदै", source: "News of Nepal", href: "https://newsofnepal.com/2026/08/20/783098/" },
-  { title: "भदौ १९ देखि भृकुटीमण्डपमा विद्युत् प्रदर्शनी", source: "Nepal Purbadhar", href: "https://nepalpurbadhar.com/53641/" },
-  { title: "विद्युत् तथा इलेक्ट्रोनिक्सको अन्तर्राष्ट्रिय प्रदर्शनी हुँदै", source: "Corporate Bazar", href: "https://corporatebazar.com/corporate-bazar/45013.html" },
-  { title: "नेपाल इलेक्ट्रिक, पावर, लाइट तथा नेपाल कन्ज्युमर इलेक्ट्रोनिक्स अन्तर्राष्ट्रिय प्रदर्शनी आयोजना हुँदै", source: "Kendrabindu", href: "https://kendrabindu.com/economy/547552/" },
-  { title: "भदौ १९ देखि काठमाडौंमा विद्युत् तथा इलेक्ट्रोनिक्सको अन्तर्राष्ट्रिय प्रदर्शनी", source: "Arthatantra", href: "https://www.arthatantra.com/2026/08/20/230699/" },
-  { title: "भृकुटीमण्डपमा विद्युत्, इलेक्ट्रोनिक्स तथा होम अप्लायन्सेसको अन्तर्राष्ट्रिय प्रदर्शनी हुँदै", source: "Kalika Khabar", href: "https://kalikakhabar.com/bhrikutiimn-dpma-wid-yut-ilek-t-ronik-s-ttha-hom-ap-layn-sesko-an-tr-rash-t-riy-p-rdr-shnii-hundai/" },
-  { title: "नेपाल इलेक्ट्रिक, पावर, लाइट तथा नेपाल कन्ज्युमर इलेक्ट्रोनिक्स अन्तर्राष्ट्रिय प्रदर्शनी आयोजना हुँदै", source: "Bizness Views", href: "https://biznessviews.com/market/62893/" },
-  { title: "प्रदर्शनी सम्बन्धी आधिकारिक अपडेट (Official Notice)", source: "Facebook", href: "https://www.facebook.com/share/1E4A3Nvhe4/" },
-  { title: "प्रदर्शनी सम्बन्धी आधिकारिक अपडेट (Official Notice)", source: "Jana Akash", href: "https://www.janaakash.com/2026/08/21/52544/" },
-];
-
-const uniqueSources = Array.from(new Set(mediaCoverage.map((item) => item.source)));
 
 export default function NewsPage() {
   const pdfAssets = pressAssets.filter((item) => item.type === "pdf");
@@ -230,7 +92,7 @@ export default function NewsPage() {
                 Media Coverage Spotlight
               </div>
               <h2 className="mt-3 text-2xl font-extrabold text-white sm:text-3xl tracking-tight">
-                Featured In <span className="text-[#35a8e0]">{mediaCoverage.length}+</span> Publications
+                Featured In
               </h2>
               <p className="mt-1 text-sm text-[#dce4e6] max-w-xl">
                 Leading news portals and media publications covering the biggest electrical and electronics expo in Nepal.
@@ -242,7 +104,7 @@ export default function NewsPage() {
                 <Zap className="h-6 w-6" />
               </div>
               <div>
-                <div className="text-2xl font-black text-white">{uniqueSources.length}+</div>
+                {/* <div className="text-2xl font-black text-white">{uniqueSources.length}+</div> */}
                 <div className="text-xs font-medium text-[#dce4e6]">Media Portals</div>
               </div>
             </div>
@@ -275,85 +137,78 @@ export default function NewsPage() {
         {/* 📥 PRESS ASSETS & MEDIA GALLERY SECTION */}
         <div className="mt-16">
           <SectionHeading
-            title="Press Kit & Official Assets"
-            description="Download press releases and high-resolution visuals."
+            title="Press Kit & Assets"
+            description="Download press releases."
           />
 
-         {/* 📄 PDF SECTION (Clean & Reliable Card Layout) */}
-<div className="mt-8">
-  <h3 className="text-sm font-bold uppercase tracking-wider text-[#05756a] flex items-center gap-2 mb-4">
-    <FileText className="h-4 w-4" /> Official Press Documents & Releases
-  </h3>
-  <div className="grid gap-6 sm:grid-cols-2">
-    {pdfAssets.map((pdf) => (
-      <div
-        key={pdf.id}
-        className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#dce4e6] bg-white p-6 shadow-sm hover:border-[#05756a] hover:shadow-xl transition-all duration-300"
-      >
-        {/* Top Meta Bar */}
-        <div className="flex items-center justify-between pb-4 border-b border-[#dce4e6]/60">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#05756a]/10 border border-[#05756a]/20 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-[#05756a]">
-            <Sparkles className="h-3 w-3 text-[#ebbc17]" />
-            2026 OFFICIAL PDF
-          </span>
-        </div>
-
-        {/* Card Body with Document Preview Graphics */}
-        <div className="my-6 flex items-start gap-4">
-          <div className="flex h-16 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-gradient-to-b from-rose-50 to-rose-100 border border-rose-200 text-rose-600 shadow-inner group-hover:scale-105 transition-transform">
-            <FileText className="h-7 w-7" />
-            <span className="text-[9px] font-black uppercase mt-0.5">PDF</span>
-          </div>
-          <div>
-            <h4 className="text-base font-bold text-[#14212b] group-hover:text-[#05756a] transition-colors leading-snug">
-              {pdf.title}
-            </h4>
-            <p className="mt-1.5 text-xs text-[#5b6b74] leading-relaxed line-clamp-2">
-              {pdf.description}
-            </p>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="pt-4 border-t border-[#dce4e6]/60 flex items-center gap-2">
-          <a
-            href={pdf.href}
-            download
-            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#05756a] hover:bg-[#044f47] px-4 py-2.5 text-xs font-bold text-white shadow-sm transition-all active:scale-95"
-          >
-            <Download className="h-4 w-4" />
-            Download PDF
-          </a>
-          <a
-            href={pdf.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[#dce4e6] px-3.5 py-2.5 text-xs font-bold text-[#5b6b74] hover:bg-[#f5f8f9] hover:text-[#14212b] transition-colors"
-            title="View PDF"
-          >
-            <Eye className="h-4 w-4" />
-            Preview
-          </a>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
-
-          {/* 🖼️ HIGH-RES IMAGES SECTION (WITH 2026 TOP BADGE) */}
-          <div className="mt-12">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-[#35a8e0] flex items-center gap-2 mb-4">
-              <Image className="h-4 w-4" /> High-Res Exhibition Visuals
+          {/* 📄 PDF SECTION */}
+          <div className="mt-8">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-[#05756a] flex items-center gap-2 mb-4">
+              <FileText className="h-4 w-4" /> Official Press Documents & Releases
             </h3>
+            <div className="grid gap-6 sm:grid-cols-2">
+              {pdfAssets.map((pdf) => (
+                <div
+                  key={pdf.id}
+                  className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#dce4e6] bg-white p-6 shadow-sm hover:border-[#05756a] hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="flex items-center justify-between pb-4 border-b border-[#dce4e6]/60">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#05756a]/10 border border-[#05756a]/20 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-[#05756a]">
+                      <Sparkles className="h-3 w-3 text-[#ebbc17]" />
+                      2026 OFFICIAL PDF
+                    </span>
+                  </div>
+
+                  <div className="my-6 flex items-start gap-4">
+                    <div className="flex h-16 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-gradient-to-b from-rose-50 to-rose-100 border border-rose-200 text-rose-600 shadow-inner group-hover:scale-105 transition-transform">
+                      <FileText className="h-7 w-7" />
+                      <span className="text-[9px] font-black uppercase mt-0.5">PDF</span>
+                    </div>
+                    <div>
+                      <h4 className="text-base font-bold text-[#14212b] group-hover:text-[#05756a] transition-colors leading-snug">
+                        {pdf.title}
+                      </h4>
+                      <p className="mt-1.5 text-xs text-[#5b6b74] leading-relaxed line-clamp-2">
+                        {pdf.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-[#dce4e6]/60 flex items-center gap-2">
+                    <a
+                      href={pdf.href}
+                      download
+                      className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#05756a] hover:bg-[#044f47] px-4 py-2.5 text-xs font-bold text-white shadow-sm transition-all active:scale-95"
+                    >
+                      <Download className="h-4 w-4" />
+                      Download PDF
+                    </a>
+                    <a
+                      href={pdf.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[#dce4e6] px-3.5 py-2.5 text-xs font-bold text-[#5b6b74] hover:bg-[#f5f8f9] hover:text-[#14212b] transition-colors"
+                      title="View PDF"
+                    >
+                      <Eye className="h-4 w-4" />
+                      Preview
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 🖼️ HIGH-RES IMAGES SECTION */}
+          <div className="mt-12">
+          
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {imageAssets.map((img) => (
                 <div
                   key={img.id}
                   className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#dce4e6] bg-white shadow-sm hover:border-[#35a8e0] hover:shadow-xl transition-all duration-300"
                 >
-                  {/* Clean Image Container with Glassmorphism 2026 Badge */}
                   <div className="relative w-full bg-[#f8fafc] p-3 flex items-center justify-center border-b border-[#dce4e6]/60">
-                    {/* 2026 TOP BADGE */}
                     <div className="absolute top-5 left-5 z-10 inline-flex items-center gap-1 rounded-full bg-[#14212b]/80 backdrop-blur-md px-3 py-1 text-[10px] font-black uppercase tracking-wider text-white border border-white/20 shadow-md">
                       <Calendar className="h-3 w-3 text-[#ebbc17]" />
                       EXPO 2026
@@ -361,21 +216,13 @@ export default function NewsPage() {
 
                     <img
                       src={img.previewUrl || "/placeholder.jpg"}
-                      alt={img.title || "Press Clipping"}
+                      // alt={img.title || "Press Clipping"}
                       className="w-full h-auto max-h-[380px] object-contain rounded-lg shadow-sm transition-transform duration-500 group-hover:scale-[1.02]"
                     />
                   </div>
 
-                  {/* Card Content & Download Bar */}
                   <div className="p-5 flex flex-col justify-between flex-1">
-                    <div>
-                      <h4 className="text-base font-bold text-[#14212b] group-hover:text-[#35a8e0] transition-colors leading-snug">
-                        {img.title}
-                      </h4>
-                      <p className="mt-1 text-xs text-[#5b6b74] line-clamp-2">
-                        {img.description}
-                      </p>
-                    </div>
+                 
 
                     <div className="mt-5 flex items-center gap-2 pt-3 border-t border-[#dce4e6]/60">
                       <a
@@ -427,11 +274,9 @@ export default function NewsPage() {
                 whileHover={{ y: -5 }}
                 className="group relative flex flex-col justify-between rounded-2xl border border-[#dce4e6] bg-white p-6 shadow-sm hover:border-[#05756a] hover:shadow-xl transition-all duration-300"
               >
-                {/* Top Accent Line on Hover */}
                 <div className="absolute top-0 left-6 right-6 h-1 bg-gradient-to-r from-[#05756a] to-[#35a8e0] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl" />
 
                 <div>
-                  {/* Publisher Badge & Icon */}
                   <div className="flex items-center justify-between gap-2">
                     <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#f0f7f7] border border-[#05756a]/15 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-[#05756a]">
                       <Newspaper className="h-3.5 w-3.5 text-[#05756a]" />
@@ -442,13 +287,11 @@ export default function NewsPage() {
                     </div>
                   </div>
 
-                  {/* Article Title */}
                   <h3 className="mt-4 text-base font-bold leading-snug text-[#14212b] group-hover:text-[#05756a] transition-colors line-clamp-3">
                     {item.title}
                   </h3>
                 </div>
 
-                {/* Footer Action Bar */}
                 <div className="mt-6 pt-3.5 border-t border-[#dce4e6]/60 flex items-center justify-between text-xs font-bold text-[#5b6b74] group-hover:text-[#05756a] transition-colors">
                   <span className="flex items-center gap-1.5">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#05756a]" />

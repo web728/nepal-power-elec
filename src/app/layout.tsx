@@ -14,7 +14,7 @@ const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  display: "swap", // FOUC (CSS drop/font delay) protect karne ke liye
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -63,35 +63,63 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const baseUrl = siteConfig.siteUrl.replace(/\/+$/, "");
+
+  // Google ke valid ItemList / SiteNavigationElement format ke anusaar
   const sitelinksSchema = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WebSite",
-        "@id": `${siteConfig.siteUrl}/#website`,
-        "url": siteConfig.siteUrl,
+        "@id": `${baseUrl}/#website`,
+        "url": baseUrl,
         "name": siteConfig.eventName,
         "description": siteConfig.tagline,
       },
       {
-        "@type": "SiteNavigationElement",
-        "@id": `${siteConfig.siteUrl}/#navigation`,
-        "name": [
-          "About Expo",
-          "Exhibitors Profile",
-          "Visitors Profile",
-          "Venue & Contact",
-          "Organizers"
+        "@type": "ItemList",
+        "@id": `${baseUrl}/#navigation`,
+        "name": "Main Navigation",
+        "itemListElement": [
+          {
+            "@type": "SiteNavigationElement",
+            "position": 1,
+            "name": "Register to Visit",
+            "url": `${baseUrl}/register-to-visit`,
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 2,
+            "name": "Why Exhibit",
+            "url": `${baseUrl}/why-exhibit`,
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 3,
+            "name": "Book a Stand",
+            "url": `${baseUrl}/book-a-stand`,
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 4,
+            "name": "About the Expo",
+            "url": `${baseUrl}/about-the-expo`,
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 5,
+            "name": "Venue",
+            "url": `${baseUrl}/venue`,
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 6,
+            "name": "Contact",
+            "url": `${baseUrl}/contact`,
+          },
         ],
-        "url": [
-          `${siteConfig.siteUrl}/about`,
-          `${siteConfig.siteUrl}/exhibitors`,
-          `${siteConfig.siteUrl}/visitors`,
-          `${siteConfig.siteUrl}/contact`,
-          `${siteConfig.siteUrl}/organizers`
-        ]
-      }
-    ]
+      },
+    ],
   };
 
   return (
@@ -112,7 +140,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <EventJsonLd />
         <ToastProvider>
           <Header />
-          {/* overflow-x-hidden aur relative add hone se body ka scroll lock nahi hoga */}
           <main id="main-content" className="relative flex-1 w-full overflow-x-hidden pb-16 xl:pb-0">
             {children}
           </main>

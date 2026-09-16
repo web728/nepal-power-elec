@@ -17,20 +17,27 @@ export async function appendToGoogleSheet(data: {
 }) {
   try {
     const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-    let privateKey = process.env.GOOGLE_PRIVATE_KEY;
+    const rawPrivateKey = process.env.GOOGLE_PRIVATE_KEY;
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
 
-    if (!clientEmail || !privateKey || !spreadsheetId) {
+    if (!clientEmail || !rawPrivateKey || !spreadsheetId) {
       console.error("Google Sheets credentials missing in environment variables.");
       return;
     }
 
-    // Fix for Private Key newlines formatting issues
-    privateKey = privateKey.replace(/^["']|["']$/g, "").replace(/\\n/g, "\n");
+    // Decode Base64 Private Key back to PEM format string
+    let privateKey = Buffer.from(rawPrivateKey, 'base64').toString('utf8');
+    
+    // Fallback in case it wasn't strictly base64 or had extra quotes
+    if (!privateKey.includes("BEGIN PRIVATE KEY")) {
+      privateKey = rawPrivateKey.replace(/^["']|["']$/g, "").replace(/\\n/g, "\n");
+    }
 
-    const auth = new google.auth.JWT({
-      email: clientEmail,
-      key: privateKey,
+    const auth = new google.auth.GoogleAuth({
+      credentials: {
+        client_email: clientEmail,
+        private_key: privateKey,
+      },
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
 
@@ -71,6 +78,8 @@ export async function appendToGoogleSheet(data: {
         values: [rowValues],
       },
     });
+
+    console.log("Successfully appended data to Google Sheet for platform:", data.platform);
   } catch (error) {
     console.error("Error appending data to Google Sheet:", error);
   }

@@ -5,6 +5,7 @@ import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
 import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
 import { brochureDownloadAckEmail, organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
 
 async function verifyRecaptcha(token: string) {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
@@ -67,6 +68,17 @@ export async function POST(request: Request) {
 
   try {
     const { referenceNumber } = await submitLead("brochure_downloads", parsed.data, "BRO");
+
+    // Save to Google Sheet
+    await appendToGoogleSheet({
+      platform: "Event Brochure Download",
+      companyName: parsed.data.company,
+      contactPerson: parsed.data.fullName,
+      email: parsed.data.email,
+      mobile: parsed.data.phone,
+      country: parsed.data.country,
+    });
+
     const downloadUrl = "/downloads/Nepal-Electric-Power-Lights-Expo-2026-Brochure.pdf";
 
     const ack = brochureDownloadAckEmail(referenceNumber, downloadUrl);

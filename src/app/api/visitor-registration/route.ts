@@ -5,6 +5,7 @@ import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
 import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
 import { visitorRegistrationEmail, organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Import added
 
 // Google reCAPTCHA Verification Helper
 async function verifyRecaptcha(token: string) {
@@ -77,8 +78,22 @@ export async function POST(request: Request) {
   }
 
   try {
-    // 5. Save to Database
+    // 5. Save to Database (MongoDB)
     const { referenceNumber } = await submitLead("visitor_registrations", parsed.data, "VIS");
+
+    // 5.1 Save to Google Sheets (Non-blocking or awaited safely)
+    await appendToGoogleSheet({
+      platform: "Visitor Registration", // <-- Yeh platform name me show hoga
+      companyName: parsed.data.companyName,
+      contactPerson: parsed.data.fullName,
+      designation: parsed.data.designation,
+      email: parsed.data.email,
+      mobile: parsed.data.phone,
+      country: parsed.data.country,
+      website: parsed.data.companyWebsite,
+      areaOfInterest: parsed.data.industry,
+      message: `Purpose: ${parsed.data.visitPurpose}, Categories: ${parsed.data.productCategories?.join(", ")}`,
+    });
 
     // 6. Asynchronous Non-blocking Email Notifications
     const ack = visitorRegistrationEmail(referenceNumber);
@@ -101,7 +116,7 @@ export async function POST(request: Request) {
       ],
     });
 
-    // Fire emails concurrently using Promise.allSettled to prevent failures from breaking client response
+    // Fire emails concurrently using Promise.allSettled
     Promise.allSettled([
       sendEmail({ to: parsed.data.email, subject: ack.subject, html: ack.html }),
       sendNotificationEmails({

@@ -5,6 +5,7 @@ import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
 import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
 import { mediaEnquiryEmail, organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
 
 export async function POST(request: Request) {
   const clientKey = getClientKey(request);
@@ -23,6 +24,19 @@ export async function POST(request: Request) {
 
   try {
     const { referenceNumber } = await submitLead("media_enquiries", parsed.data, "MED");
+
+    // Save to Google Sheet
+    await appendToGoogleSheet({
+      platform: "Media Enquiry",
+      companyName: parsed.data.mediaOrganization,
+      contactPerson: parsed.data.fullName,
+      designation: parsed.data.designation,
+      email: parsed.data.email,
+      mobile: parsed.data.phone,
+      website: parsed.data.mediaWebsite,
+      country: parsed.data.country,
+      message: `Media Type: ${parsed.data.mediaType}, Language: ${parsed.data.language}, Enquiry Type: ${parsed.data.enquiryType}, Requested Info: ${parsed.data.requestedInformation}, Deadline: ${parsed.data.deadline ?? ""}`,
+    });
 
     const ack = mediaEnquiryEmail(referenceNumber);
     await sendEmail({ to: parsed.data.email, subject: ack.subject, html: ack.html });

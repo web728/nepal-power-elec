@@ -5,6 +5,7 @@ import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
 import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
 import { accessibilityFeedbackEmail, organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
 
 export async function POST(request: Request) {
   const clientKey = getClientKey(request);
@@ -23,6 +24,14 @@ export async function POST(request: Request) {
 
   try {
     const { referenceNumber } = await submitLead("accessibility_feedback", parsed.data, "ACC");
+
+    // Save to Google Sheet
+    await appendToGoogleSheet({
+      platform: "Accessibility Feedback",
+      contactPerson: parsed.data.fullName,
+      email: parsed.data.email,
+      message: `Page/Doc: ${parsed.data.pageOrDocument}, Device/Browser: ${parsed.data.deviceOrBrowser}, Issue: ${parsed.data.issueDescription}, Preferred Contact: ${parsed.data.preferredContactMethod}`,
+    });
 
     const ack = accessibilityFeedbackEmail(referenceNumber);
     await sendEmail({ to: parsed.data.email, subject: ack.subject, html: ack.html });

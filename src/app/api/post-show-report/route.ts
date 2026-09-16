@@ -5,6 +5,7 @@ import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
 import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
 import { postShowReportAckEmail, organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
 
 // Google reCAPTCHA v2 Token Verifier
 async function verifyRecaptcha(token: string) {
@@ -72,8 +73,17 @@ export async function POST(request: Request) {
 
   try {
     // 5. Save in DB via project's submitLead helper
-    // Uses collection "post_show_reports" and prefix "PSR"
     const { referenceNumber } = await submitLead("post_show_reports", parsed.data, "PSR");
+
+    // Save to Google Sheet
+    await appendToGoogleSheet({
+      platform: "Post Show Report Download",
+      companyName: parsed.data.company,
+      contactPerson: parsed.data.fullName,
+      email: parsed.data.email,
+      mobile: parsed.data.phone,
+      country: parsed.data.country,
+    });
 
     // File URL to be returned to client for instant unlock/download
     const downloadUrl = "/downloads/Nepal-Electric-Power-Lights-Expo-2025-Post-Show-Report.pdf";

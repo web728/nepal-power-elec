@@ -5,6 +5,7 @@ import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
 import { sendEmail } from "@/lib/email/send";
 import { newsletterConfirmEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
 
 export async function POST(request: Request) {
   const clientKey = getClientKey(request);
@@ -23,6 +24,13 @@ export async function POST(request: Request) {
 
   try {
     const { referenceNumber } = await submitLead("newsletter_subscribers", parsed.data, "NEWS");
+
+    // Save to Google Sheet
+    await appendToGoogleSheet({
+      platform: "Newsletter Subscription",
+      email: parsed.data.email,
+    });
+
     const { subject, html } = newsletterConfirmEmail();
     await sendEmail({ to: parsed.data.email, subject, html });
     return NextResponse.json({ referenceNumber });

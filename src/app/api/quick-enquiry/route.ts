@@ -5,6 +5,7 @@ import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
 import { quickEnquiryEmail, organizerNotificationEmail } from "@/lib/email/templates";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
+import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
 
 async function verifyRecaptcha(token: string): Promise<boolean> {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
@@ -60,6 +61,16 @@ export async function POST(request: Request) {
 
   try {
     const { referenceNumber } = await submitLead("quick_enquiry", parsed.data, "QEN");
+
+    // Save to Google Sheet
+    await appendToGoogleSheet({
+      platform: "Quick Enquiry",
+      contactPerson: parsed.data.fullName,
+      email: parsed.data.email,
+      mobile: parsed.data.phone,
+      areaOfInterest: parsed.data.interest,
+      message: parsed.data.message,
+    });
 
     const ack = quickEnquiryEmail(referenceNumber);
     await sendEmail({ to: parsed.data.email, subject: ack.subject, html: ack.html });

@@ -5,6 +5,7 @@ import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
 import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
 import { contactEnquiryEmail, organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
 
 // Google reCAPTCHA v2 Token Verifier
 async function verifyRecaptcha(token: string) {
@@ -58,6 +59,17 @@ export async function POST(request: Request) {
 
   try {
     const { referenceNumber } = await submitLead("contact_enquiries", parsed.data, "GEN");
+
+    // Save to Google Sheet
+    await appendToGoogleSheet({
+      platform: "Contact Enquiry",
+      companyName: parsed.data.company,
+      contactPerson: parsed.data.fullName,
+      email: parsed.data.email,
+      mobile: parsed.data.phone,
+      country: parsed.data.country,
+      message: `Type: ${parsed.data.enquiryType}, Subject: ${parsed.data.subject}, Message: ${parsed.data.message}`,
+    });
 
     const ack = contactEnquiryEmail(referenceNumber);
     await sendEmail({ to: parsed.data.email, subject: ack.subject, html: ack.html });

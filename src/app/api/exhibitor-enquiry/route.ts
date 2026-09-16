@@ -5,6 +5,7 @@ import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
 import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
 import { exhibitorEnquiryEmail, organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
 
 // Google reCAPTCHA v2 Token Verifier
 async function verifyRecaptcha(token: string) {
@@ -58,6 +59,22 @@ export async function POST(request: Request) {
 
   try {
     const { referenceNumber } = await submitLead("exhibitor_enquiries", parsed.data, "EXH");
+
+    // Save to Google Sheet
+    await appendToGoogleSheet({
+      platform: "Exhibitor Enquiry",
+      companyName: parsed.data.companyName,
+      contactPerson: parsed.data.fullName,
+      designation: parsed.data.designation,
+      email: parsed.data.email,
+      mobile: parsed.data.phone,
+      address: parsed.data.companyAddress,
+      website: parsed.data.companyWebsite,
+      country: parsed.data.country,
+      spaceRequired: parsed.data.standRequirement,
+      areaOfInterest: parsed.data.productCategory,
+      message: `Products/Services: ${parsed.data.productsOrServices}, Message: ${parsed.data.message ?? ""}`,
+    });
 
     const ack = exhibitorEnquiryEmail(referenceNumber);
     await sendEmail({ to: parsed.data.email, subject: ack.subject, html: ack.html });

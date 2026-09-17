@@ -3,9 +3,9 @@ import { mediaEnquirySchema } from "@/lib/validations/forms";
 import { checkRateLimit, getClientKey } from "@/lib/rate-limit";
 import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
-import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
-import { mediaEnquiryEmail, organizerNotificationEmail } from "@/lib/email/templates";
-import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
+import { sendNotificationEmails } from "@/lib/email/send";
+import { organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets";
 
 export async function POST(request: Request) {
   const clientKey = getClientKey(request);
@@ -23,9 +23,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { referenceNumber } = await submitLead("media_enquiries", parsed.data, "MED");
+    await submitLead("media_enquiries", parsed.data, "MED");
 
-    // Save to Google Sheet
+    // 1. Save to Google Sheet
     await appendToGoogleSheet({
       platform: "Media Enquiry",
       companyName: parsed.data.mediaOrganization,
@@ -38,12 +38,9 @@ export async function POST(request: Request) {
       message: `Media Type: ${parsed.data.mediaType}, Language: ${parsed.data.language}, Enquiry Type: ${parsed.data.enquiryType}, Requested Info: ${parsed.data.requestedInformation}, Deadline: ${parsed.data.deadline ?? ""}`,
     });
 
-    const ack = mediaEnquiryEmail(referenceNumber);
-    await sendEmail({ to: parsed.data.email, subject: ack.subject, html: ack.html });
-
+    // 2. Send Notification ONLY to Admin Emails (User email acknowledgement removed)
     const notification = organizerNotificationEmail({
       enquiryTypeLabel: "Media Enquiry",
-      referenceNumber,
       submittedAt: new Date(),
       fields: [
         { label: "Full Name", value: parsed.data.fullName },
@@ -61,9 +58,14 @@ export async function POST(request: Request) {
         { label: "Supporting Link", value: parsed.data.supportingLink ?? "" },
       ],
     });
-    await sendNotificationEmails({ subject: notification.subject, html: notification.html, replyTo: parsed.data.email });
 
-    return NextResponse.json({ referenceNumber });
+    await sendNotificationEmails({ 
+      subject: notification.subject, 
+      html: notification.html, 
+      replyTo: parsed.data.email 
+    });
+
+    return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof DuplicateSubmissionError) {
       return NextResponse.json(

@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import { quickEnquirySchema } from "@/lib/validations/forms";
 import { checkRateLimit, getClientKey } from "@/lib/rate-limit";
 import { submitLead, DuplicateSubmissionError } from "@/lib/db";
-import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
-import { quickEnquiryEmail, organizerNotificationEmail } from "@/lib/email/templates";
+import { sendNotificationEmails } from "@/lib/email/send";
+import { organizerNotificationEmail } from "@/lib/email/templates";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
-import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
+import { appendToGoogleSheet } from "@/lib/google-sheets";
 
 async function verifyRecaptcha(token: string): Promise<boolean> {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
@@ -42,7 +42,6 @@ export async function POST(request: Request) {
   const body = await request.json();
   if (isHoneypotFilled(body)) return honeypotResponse();
 
-  // 1. Verify reCAPTCHA Token
   const recaptchaToken = body.recaptchaToken;
   if (!recaptchaToken) {
     return NextResponse.json({ error: "reCAPTCHA verification failed. Missing token." }, { status: 400 });
@@ -53,16 +52,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "reCAPTCHA verification failed. Please try again." }, { status: 400 });
   }
 
-  // 2. Validate Schema
   const parsed = quickEnquirySchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid submission." }, { status: 400 });
   }
 
   try {
-    const { referenceNumber } = await submitLead("quick_enquiry", parsed.data, "QEN");
+    await submitLead("quick_enquiry", parsed.data, "QEN");
 
-    // Save to Google Sheet
+    // 1. Save to Google Sheet
     await appendToGoogleSheet({
       platform: "Quick Enquiry",
       contactPerson: parsed.data.fullName,
@@ -72,12 +70,9 @@ export async function POST(request: Request) {
       message: parsed.data.message,
     });
 
-    const ack = quickEnquiryEmail(referenceNumber);
-    await sendEmail({ to: parsed.data.email, subject: ack.subject, html: ack.html });
-
+    // 2. Send Notification ONLY to Admin Emails (User email acknowledgement removed)
     const notification = organizerNotificationEmail({
       enquiryTypeLabel: "Quick Enquiry (Homepage)",
-      referenceNumber,
       submittedAt: new Date(),
       fields: [
         { label: "Full Name", value: parsed.data.fullName },
@@ -87,9 +82,14 @@ export async function POST(request: Request) {
         { label: "Message", value: parsed.data.message },
       ],
     });
-    await sendNotificationEmails({ subject: notification.subject, html: notification.html, replyTo: parsed.data.email });
 
-    return NextResponse.json({ referenceNumber });
+    await sendNotificationEmails({ 
+      subject: notification.subject, 
+      html: notification.html, 
+      replyTo: parsed.data.email 
+    });
+
+    return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof DuplicateSubmissionError) {
       return NextResponse.json(

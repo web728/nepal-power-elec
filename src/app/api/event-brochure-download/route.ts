@@ -3,9 +3,9 @@ import { brochureDownloadSchema } from "@/lib/validations/forms";
 import { checkRateLimit, getClientKey } from "@/lib/rate-limit";
 import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
-import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
-import { brochureDownloadAckEmail, organizerNotificationEmail } from "@/lib/email/templates";
-import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
+import { sendNotificationEmails } from "@/lib/email/send";
+import { organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets";
 
 async function verifyRecaptcha(token: string) {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
@@ -67,9 +67,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { referenceNumber } = await submitLead("brochure_downloads", parsed.data, "BRO");
+    await submitLead("brochure_downloads", parsed.data, "BRO");
 
-    // Save to Google Sheet
+    // 1. Save to Google Sheet
     await appendToGoogleSheet({
       platform: "Event Brochure Download",
       companyName: parsed.data.company,
@@ -81,16 +81,9 @@ export async function POST(request: Request) {
 
     const downloadUrl = "/downloads/Nepal-Electric-Power-Lights-Expo-2026-Brochure.pdf";
 
-    const ack = brochureDownloadAckEmail(referenceNumber, downloadUrl);
-    await sendEmail({
-      to: parsed.data.email,
-      subject: ack.subject,
-      html: ack.html,
-    });
-
+    // 2. Send Notification ONLY to Admin Emails (User email acknowledgement removed)
     const notification = organizerNotificationEmail({
       enquiryTypeLabel: "Event Brochure Download Request",
-      referenceNumber,
       submittedAt: new Date(),
       fields: [
         { label: "Full Name", value: parsed.data.fullName },
@@ -107,7 +100,7 @@ export async function POST(request: Request) {
       replyTo: parsed.data.email,
     });
 
-    return NextResponse.json({ referenceNumber, downloadUrl });
+    return NextResponse.json({ success: true, downloadUrl });
   } catch (err) {
     if (err instanceof DuplicateSubmissionError) {
       return NextResponse.json(

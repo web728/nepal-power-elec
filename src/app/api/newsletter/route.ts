@@ -3,9 +3,9 @@ import { newsletterSchema } from "@/lib/validations/forms";
 import { checkRateLimit, getClientKey } from "@/lib/rate-limit";
 import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
-import { sendEmail } from "@/lib/email/send";
-import { newsletterConfirmEmail } from "@/lib/email/templates";
-import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
+import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
+import { newsletterConfirmEmail, organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets";
 
 export async function POST(request: Request) {
   const clientKey = getClientKey(request);
@@ -23,17 +23,34 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { referenceNumber } = await submitLead("newsletter_subscribers", parsed.data, "NEWS");
+    await submitLead("newsletter_subscribers", parsed.data, "NEWS");
 
-    // Save to Google Sheet
+    // 1. Save to Google Sheet
     await appendToGoogleSheet({
       platform: "Newsletter Subscription",
       email: parsed.data.email,
     });
 
+    // 2. Send confirmation email to the subscriber (Required for newsletters)
     const { subject, html } = newsletterConfirmEmail();
     await sendEmail({ to: parsed.data.email, subject, html });
-    return NextResponse.json({ referenceNumber });
+
+    // 3. Send Notification to Admin Emails as well
+    const notification = organizerNotificationEmail({
+      enquiryTypeLabel: "Newsletter Subscription",
+      submittedAt: new Date(),
+      fields: [
+        { label: "Subscriber Email", value: parsed.data.email },
+      ],
+    });
+
+    await sendNotificationEmails({
+      subject: notification.subject,
+      html: notification.html,
+      replyTo: parsed.data.email,
+    });
+
+    return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof DuplicateSubmissionError) {
       return NextResponse.json(

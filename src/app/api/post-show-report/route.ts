@@ -5,9 +5,8 @@ import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
 import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
 import { postShowReportAckEmail, organizerNotificationEmail } from "@/lib/email/templates";
-import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
+import { appendToGoogleSheet } from "@/lib/google-sheets";
 
-// Google reCAPTCHA v2 Token Verifier
 async function verifyRecaptcha(token: string) {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
   if (!secretKey) {
@@ -31,7 +30,6 @@ async function verifyRecaptcha(token: string) {
 }
 
 export async function POST(request: Request) {
-  // 1. Rate Limiting Check
   const clientKey = getClientKey(request);
   const rate = checkRateLimit(`post-show-report:${clientKey}`);
   if (!rate.allowed) {
@@ -41,11 +39,9 @@ export async function POST(request: Request) {
     );
   }
 
-  // 2. Honeypot Check
   const body = await request.json();
   if (isHoneypotFilled(body)) return honeypotResponse();
 
-  // 3. Extract & Verify reCAPTCHA Token
   const { recaptchaToken, ...formData } = body;
   if (!recaptchaToken) {
     return NextResponse.json(
@@ -62,7 +58,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // 4. Validate Form Data with Zod
   const parsed = postShowReportSchema.safeParse(formData);
   if (!parsed.success) {
     return NextResponse.json(
@@ -72,10 +67,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    // 5. Save in DB via project's submitLead helper
     const { referenceNumber } = await submitLead("post_show_reports", parsed.data, "PSR");
 
-    // Save to Google Sheet
+    // 1. Save to Google Sheet
     await appendToGoogleSheet({
       platform: "Post Show Report Download",
       companyName: parsed.data.company,
@@ -85,10 +79,9 @@ export async function POST(request: Request) {
       country: parsed.data.country,
     });
 
-    // File URL to be returned to client for instant unlock/download
     const downloadUrl = "/downloads/Nepal-Electric-Power-Lights-Expo-2025-Post-Show-Report.pdf";
 
-    // 6. Send User Acknowledgment Email
+    // 2. Send PDF link to user (Needed for file download fulfillment)
     const ack = postShowReportAckEmail(referenceNumber, downloadUrl);
     await sendEmail({
       to: parsed.data.email,
@@ -96,10 +89,9 @@ export async function POST(request: Request) {
       html: ack.html,
     });
 
-    // 7. Send Organizer Notification Email
+    // 3. Send Notification to Admin Emails
     const notification = organizerNotificationEmail({
       enquiryTypeLabel: "Post-Show Report Download Request",
-      referenceNumber,
       submittedAt: new Date(),
       fields: [
         { label: "Full Name", value: parsed.data.fullName },
@@ -116,8 +108,7 @@ export async function POST(request: Request) {
       replyTo: parsed.data.email,
     });
 
-    // 8. Return success status with Reference Number and Download URL
-    return NextResponse.json({ referenceNumber, downloadUrl });
+    return NextResponse.json({ success: true, downloadUrl });
   } catch (err) {
     if (err instanceof DuplicateSubmissionError) {
       return NextResponse.json(

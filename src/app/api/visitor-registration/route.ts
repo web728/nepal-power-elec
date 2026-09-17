@@ -3,9 +3,9 @@ import { visitorRegistrationSchema } from "@/lib/validations/forms";
 import { checkRateLimit, getClientKey } from "@/lib/rate-limit";
 import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
-import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
-import { visitorRegistrationEmail, organizerNotificationEmail } from "@/lib/email/templates";
-import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Import added
+import { sendNotificationEmails } from "@/lib/email/send";
+import { organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets";
 
 // Google reCAPTCHA Verification Helper
 async function verifyRecaptcha(token: string) {
@@ -33,7 +33,6 @@ async function verifyRecaptcha(token: string) {
 }
 
 export async function POST(request: Request) {
-  // 1. Rate Limiting Check
   const clientKey = getClientKey(request);
   const rate = checkRateLimit(`visitor-registration:${clientKey}`);
   if (!rate.allowed) {
@@ -43,11 +42,9 @@ export async function POST(request: Request) {
     );
   }
 
-  // 2. Honeypot Verification
   const body = await request.json();
   if (isHoneypotFilled(body)) return honeypotResponse();
 
-  // 3. Extract & Verify reCAPTCHA
   const { recaptchaToken, ...formData } = body;
 
   if (!recaptchaToken) {
@@ -65,7 +62,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // 4. Schema Validation
   const parsed = visitorRegistrationSchema.safeParse(formData);
   if (!parsed.success) {
     return NextResponse.json(
@@ -78,12 +74,11 @@ export async function POST(request: Request) {
   }
 
   try {
-    // 5. Save to Database (MongoDB)
-    const { referenceNumber } = await submitLead("visitor_registrations", parsed.data, "VIS");
+    await submitLead("visitor_registrations", parsed.data, "VIS");
 
-    // 5.1 Save to Google Sheets (Non-blocking or awaited safely)
+    // 1. Save to Google Sheets
     await appendToGoogleSheet({
-      platform: "Visitor Registration", // <-- Yeh platform name me show hoga
+      platform: "Visitor Registration",
       companyName: parsed.data.companyName,
       contactPerson: parsed.data.fullName,
       designation: parsed.data.designation,
@@ -95,11 +90,9 @@ export async function POST(request: Request) {
       message: `Purpose: ${parsed.data.visitPurpose}, Categories: ${parsed.data.productCategories?.join(", ")}`,
     });
 
-    // 6. Asynchronous Non-blocking Email Notifications
-    const ack = visitorRegistrationEmail(referenceNumber);
+    // 2. Send Notification ONLY to Admin Emails (User email acknowledgement removed)
     const notification = organizerNotificationEmail({
       enquiryTypeLabel: "Visitor Registration",
-      referenceNumber,
       submittedAt: new Date(),
       fields: [
         { label: "Full Name", value: parsed.data.fullName },
@@ -116,29 +109,18 @@ export async function POST(request: Request) {
       ],
     });
 
-    // Fire emails concurrently using Promise.allSettled
-    Promise.allSettled([
-      sendEmail({ to: parsed.data.email, subject: ack.subject, html: ack.html }),
-      sendNotificationEmails({
-        subject: notification.subject,
-        html: notification.html,
-        replyTo: parsed.data.email,
-      }),
-    ]).then((results) => {
-      results.forEach((result, index) => {
-        if (result.status === "rejected") {
-          console.error(`Visitor registration email dispatch failed [Index ${index}]:`, result.reason);
-        }
-      });
+    await sendNotificationEmails({
+      subject: notification.subject,
+      html: notification.html,
+      replyTo: parsed.data.email,
     });
 
-    return NextResponse.json({ referenceNumber });
+    return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof DuplicateSubmissionError) {
       return NextResponse.json(
         {
-          error:
-            "This looks like a duplicate submission. If you already submitted this, no further action is needed.",
+          error: "This looks like a duplicate submission. If you already submitted this, no further action is needed.",
         },
         { status: 409 }
       );

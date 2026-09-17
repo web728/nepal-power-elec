@@ -3,9 +3,9 @@ import { accessibilityFeedbackSchema } from "@/lib/validations/forms";
 import { checkRateLimit, getClientKey } from "@/lib/rate-limit";
 import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
-import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
-import { accessibilityFeedbackEmail, organizerNotificationEmail } from "@/lib/email/templates";
-import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
+import { sendNotificationEmails } from "@/lib/email/send";
+import { organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets";
 
 export async function POST(request: Request) {
   const clientKey = getClientKey(request);
@@ -23,9 +23,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { referenceNumber } = await submitLead("accessibility_feedback", parsed.data, "ACC");
+    await submitLead("accessibility_feedback", parsed.data, "ACC");
 
-    // Save to Google Sheet
+    // 1. Save to Google Sheet
     await appendToGoogleSheet({
       platform: "Accessibility Feedback",
       contactPerson: parsed.data.fullName,
@@ -33,12 +33,9 @@ export async function POST(request: Request) {
       message: `Page/Doc: ${parsed.data.pageOrDocument}, Device/Browser: ${parsed.data.deviceOrBrowser}, Issue: ${parsed.data.issueDescription}, Preferred Contact: ${parsed.data.preferredContactMethod}`,
     });
 
-    const ack = accessibilityFeedbackEmail(referenceNumber);
-    await sendEmail({ to: parsed.data.email, subject: ack.subject, html: ack.html });
-
+    // 2. Send Notification ONLY to Admin Emails
     const notification = organizerNotificationEmail({
       enquiryTypeLabel: "Accessibility Feedback",
-      referenceNumber,
       submittedAt: new Date(),
       fields: [
         { label: "Full Name", value: parsed.data.fullName },
@@ -49,9 +46,14 @@ export async function POST(request: Request) {
         { label: "Preferred Contact Method", value: parsed.data.preferredContactMethod },
       ],
     });
-    await sendNotificationEmails({ subject: notification.subject, html: notification.html, replyTo: parsed.data.email });
 
-    return NextResponse.json({ referenceNumber });
+    await sendNotificationEmails({ 
+      subject: notification.subject, 
+      html: notification.html, 
+      replyTo: parsed.data.email 
+    });
+
+    return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof DuplicateSubmissionError) {
       return NextResponse.json(

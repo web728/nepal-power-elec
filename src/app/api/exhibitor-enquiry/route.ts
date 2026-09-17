@@ -3,11 +3,10 @@ import { exhibitorEnquirySchema } from "@/lib/validations/forms";
 import { checkRateLimit, getClientKey } from "@/lib/rate-limit";
 import { submitLead, DuplicateSubmissionError } from "@/lib/db";
 import { isHoneypotFilled, honeypotResponse } from "@/lib/honeypot";
-import { sendEmail, sendNotificationEmails } from "@/lib/email/send";
-import { exhibitorEnquiryEmail, organizerNotificationEmail } from "@/lib/email/templates";
-import { appendToGoogleSheet } from "@/lib/google-sheets"; // <-- Imported Google Sheet helper
+import { sendNotificationEmails } from "@/lib/email/send";
+import { organizerNotificationEmail } from "@/lib/email/templates";
+import { appendToGoogleSheet } from "@/lib/google-sheets";
 
-// Google reCAPTCHA v2 Token Verifier
 async function verifyRecaptcha(token: string) {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
   if (!secretKey) {
@@ -40,7 +39,6 @@ export async function POST(request: Request) {
   const body = await request.json();
   if (isHoneypotFilled(body)) return honeypotResponse();
 
-  // 1. Extract & Verify reCAPTCHA Token
   const { recaptchaToken, ...formData } = body;
   if (!recaptchaToken) {
     return NextResponse.json({ error: "Please complete the reCAPTCHA verification." }, { status: 400 });
@@ -51,16 +49,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "reCAPTCHA verification failed. Please try again." }, { status: 400 });
   }
 
-  // 2. Validate Form Data with Zod
   const parsed = exhibitorEnquirySchema.safeParse(formData);
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid submission.", details: parsed.error.flatten() }, { status: 400 });
   }
 
   try {
-    const { referenceNumber } = await submitLead("exhibitor_enquiries", parsed.data, "EXH");
+    await submitLead("exhibitor_enquiries", parsed.data, "EXH");
 
-    // Save to Google Sheet
+    // 1. Save to Google Sheet
     await appendToGoogleSheet({
       platform: "Exhibitor Enquiry",
       companyName: parsed.data.companyName,
@@ -76,12 +73,9 @@ export async function POST(request: Request) {
       message: `Products/Services: ${parsed.data.productsOrServices}, Message: ${parsed.data.message ?? ""}`,
     });
 
-    const ack = exhibitorEnquiryEmail(referenceNumber);
-    await sendEmail({ to: parsed.data.email, subject: ack.subject, html: ack.html });
-
+    // 2. Send Notification ONLY to Admin Emails (User email acknowledgement removed)
     const notification = organizerNotificationEmail({
       enquiryTypeLabel: "Exhibitor Enquiry",
-      referenceNumber,
       submittedAt: new Date(),
       fields: [
         { label: "Full Name", value: parsed.data.fullName },
@@ -99,9 +93,14 @@ export async function POST(request: Request) {
         { label: "Message", value: parsed.data.message ?? "" },
       ],
     });
-    await sendNotificationEmails({ subject: notification.subject, html: notification.html, replyTo: parsed.data.email });
 
-    return NextResponse.json({ referenceNumber });
+    await sendNotificationEmails({ 
+      subject: notification.subject, 
+      html: notification.html, 
+      replyTo: parsed.data.email 
+    });
+
+    return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof DuplicateSubmissionError) {
       return NextResponse.json(

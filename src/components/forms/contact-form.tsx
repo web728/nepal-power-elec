@@ -216,6 +216,7 @@ export function ContactForm() {
             />
             <TextField
               id="phone"
+               required
               type="tel"
               label="Phone"
               placeholder="+1 234 567 890"
@@ -235,6 +236,7 @@ export function ContactForm() {
             <TextField
               id="company"
               label="Company"
+               required
               placeholder="e.g. Acme Corp"
               value={values.company}
               onChange={(e) => update("company", e.target.value)}

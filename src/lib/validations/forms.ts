@@ -61,7 +61,7 @@ export const exhibitorEnquirySchema = z.object({
   fullName: z.string().min(1, "Enter your full name.").max(150),
   designation: z.string().min(1, "Enter your designation.").max(150),
   email: z.string().min(1, "Enter a valid email address.").email("Enter a valid email address."),
-  phone: requiredPhone,
+  phone: optionalPhone, // Made optional
   country: z.string().min(1, "Enter your country.").max(100),
   companyName: z.string().min(1, "Enter your company name.").max(200),
   companyWebsite: flexibleUrl,
@@ -80,7 +80,7 @@ export const visitorRegistrationSchema = z.object({
   fullName: z.string().min(1, "Enter your full name.").max(150),
   designation: z.string().min(1, "Enter your designation.").max(150),
   email: z.string().min(1, "Enter a valid email address.").email("Enter a valid email address."),
-  phone: requiredPhone,
+  phone: optionalPhone, // Made optional
   country: z.string().min(1, "Enter your country.").max(100),
   companyName: z.string().min(1, "Enter your company or organization.").max(200),
   companyWebsite: flexibleUrl,
@@ -99,7 +99,7 @@ export const mediaEnquirySchema = z.object({
   mediaOrganization: z.string().min(1, "Enter your media organization.").max(200),
   mediaWebsite: flexibleUrl,
   email: z.string().min(1, "Enter a valid email address.").email("Enter a valid email address."),
-  phone: requiredPhone,
+  phone: optionalPhone, // Made optional
   country: z.string().min(1, "Enter your country.").max(100),
   mediaType: z.string().min(1, "Select a media type."),
   language: z.string().min(1, "Select a language."),
@@ -156,8 +156,6 @@ export const quickEnquirySchema = z.object({
 });
 export type QuickEnquiryInput = z.infer<typeof quickEnquirySchema>;
 
-
-
 // Post-Show Report Download Lead Form Schema
 export const postShowReportSchema = z.object({
   fullName: z.string().min(1, "Enter your full name.").max(150),
@@ -167,9 +165,7 @@ export const postShowReportSchema = z.object({
   company: z.string().optional().or(z.literal("")),
   privacyConsent: consentRequired,
 });
-
 export type PostShowReportInput = z.infer<typeof postShowReportSchema>;
-
 
 // Event Brochure Download Lead Form Schema
 export const brochureDownloadSchema = z.object({
@@ -180,5 +176,4 @@ export const brochureDownloadSchema = z.object({
   company: z.string().optional().or(z.literal("")),
   privacyConsent: consentRequired,
 });
-
 export type BrochureDownloadInput = z.infer<typeof brochureDownloadSchema>;

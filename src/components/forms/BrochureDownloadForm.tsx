@@ -181,6 +181,7 @@ export function BrochureDownloadForm() {
         <div className="grid gap-5 sm:grid-cols-2">
           <TextField
             id="phone"
+            required
             type="tel"
             label="Phone Number"
             placeholder="+1 234 567 890"
@@ -201,6 +202,7 @@ export function BrochureDownloadForm() {
 
         <TextField
           id="company"
+           required
           label="Company / Organization"
           placeholder="e.g. Acme Corp"
           value={values.company}

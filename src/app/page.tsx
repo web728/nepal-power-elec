@@ -10,7 +10,7 @@ import { DownloadsSection } from "@/components/sections/downloads-section";
 import { OrganizersSection } from "@/components/sections/organizers-section";
 import { EnquirySection } from "@/components/sections/enquiry-section";
 import { FinalCta } from "@/components/sections/final-cta";
-import { VideoPopup } from "@/components/sections/video-popup"; // <--- Import here
+// import { VideoPopup } from "@/components/sections/video-popup"; // <--- Import here
 import { whyExhibitBenefits, whyVisitBenefits } from "@/lib/content/home-content";
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <VideoPopup /> 
+      {/* <VideoPopup />  */}
       <Hero />
       <QuickActionCards />
       <EventOverview />
